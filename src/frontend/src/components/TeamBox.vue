@@ -32,7 +32,7 @@
 				<stat-box
 					v-for="(value, statName) in team.teamStats[0].splits[rawOrRank].stat"
 					v-bind:key="statName"
-					v-bind:stat="{name: statName, value: value}"
+					v-bind:stat="{ name: statName, value: value }"
 				></stat-box>
 			</div>
 		</div>
@@ -48,18 +48,18 @@ export default {
 		return {
 			team: {},
 			visible: false,
-			rawOrRank: 1
+			rawOrRank: 1,
 		};
 	},
 	components: {
 		FlipperSwitch,
-		StatBox
+		StatBox,
 	},
 	methods: {
-		rawOrRankEvent: function(state) {
+		rawOrRankEvent: function (state) {
 			this.rawOrRank = state ? 1 : 0;
-		}
-	}
+		},
+	},
 };
 </script>
 

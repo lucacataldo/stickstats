@@ -1,10 +1,10 @@
 <template>
-	<div class="root" :style="{fontSize: height}">
-        {{optOne}} 
+	<div class="root" :style="{ fontSize: height }">
+		{{ optOne }}
 		<div class="wrapper" :style="{ height: height, width: width }" @click="flip">
 			<div class="switch" :style="{ height: height }" :class="{ flipped: state }"></div>
 		</div>
-        {{optTwo}}
+		{{ optTwo }}
 	</div>
 </template>
 
@@ -13,49 +13,49 @@ export default {
 	name: "FlipperSwitch",
 	data() {
 		return {
-			state: false
+			state: false,
 		};
 	},
 	methods: {
-		flip: function() {
+		flip: function () {
 			this.state = !this.state;
 			this.$emit("flipped", this.state);
-		}
+		},
 	},
 	props: {
 		height: {
 			type: String,
-			default: "20px"
+			default: "20px",
 		},
 		width: {
 			type: String,
-			default: "100px"
+			default: "100px",
 		},
 		defaultState: Boolean,
 		optOne: {
 			type: String,
-			default: ""
+			default: "",
 		},
 		optTwo: {
 			type: String,
-			default: ""
-		}
+			default: "",
+		},
 	},
 	mounted() {
 		this.state = this.defaultState;
-	}
+	},
 };
 </script>
 
 <style scoped>
-.root{
-    display: flex;
-    align-items: center;
-    justify-content: left;
+.root {
+	display: flex;
+	align-items: center;
+	justify-content: left;
 }
 
 .wrapper {
-    margin: 0px 10px;
+	margin: 0px 10px;
 	display: inline-block;
 	width: 100px;
 	height: 40px;
