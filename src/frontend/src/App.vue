@@ -13,11 +13,7 @@
 		</div>
 
 		<ul class="searchResults">
-			<li
-				v-for="team in searchResults"
-				v-bind:key="team.id"
-				@click="openTeam(team)"
-			>
+			<li v-for="team in searchResults" v-bind:key="team.id" @click="openTeam(team)">
 				{{ team.name }}
 			</li>
 		</ul>
@@ -44,10 +40,7 @@ export default {
 	methods: {
 		search: function () {
 			this.searchResults = this.teams.filter(
-				(t) =>
-					t.name
-						.toLowerCase()
-						.indexOf(this.searchTerm.toLowerCase()) > -1
+				(t) => t.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
 			);
 		},
 		openTeam: function (team) {
@@ -56,12 +49,10 @@ export default {
 		},
 	},
 	mounted() {
-		axios
-			.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats")
-			.then((response) => {
-				this.teams = response.data.teams;
-				console.log(response);
-			});
+		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then((response) => {
+			this.teams = response.data.teams;
+			console.log(response);
+		});
 	},
 };
 </script>
@@ -73,11 +64,17 @@ export default {
 }
 
 :root {
-	--highlight: #38ada9;
-	--light: #e9e9e9;
-	font-family: Arial, Helvetica, sans-serif;
+	--mainBg: #16181a;
+	--mainText: #efefef;
+	--highlight: #a3cb38;
+	--light: #222429;
+	font-family: Heebo, Arial, Helvetica, sans-serif;
 }
 
+body {
+	background: var(--mainBg);
+	color: var(--mainText);
+}
 .searchBar {
 	font-size: 25px;
 	text-align: center;
@@ -102,6 +99,7 @@ export default {
 }
 
 .searchBar input {
+	color: var(--mainText);
 	width: 50%;
 	font-size: 20px;
 	border: none;
@@ -110,5 +108,6 @@ export default {
 	padding: 5px;
 	margin: 5px;
 	box-shadow: 0px 2px 0px var(--highlight);
+	text-transform: capitalize;
 }
 </style>
