@@ -45,8 +45,8 @@ export default {
 		faceOffWinPercentage: "Faceoff Win Percentage",
 		shootingPctg: "Shooting Percentage",
 		savePctg: "Save Percentage",
-		savePctRank: "Save Percentage Rank",
-		shootingPctRank: "Shooting Percentage Rank",
+		savePctRank: "Save Percentage",
+		shootingPctRank: "Shooting Percentage",
 	},
 };
 </script>

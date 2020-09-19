@@ -19,15 +19,15 @@
 		</p>
 
 		<div class="statsCont">
+			<stat-box v-bind:stat="{ name: 'HockeyMan Rank', value: '1st' }"></stat-box>
 			<flipper-switch
 				@flipped="rawOrRankEvent"
 				height="20px"
 				width="80px"
-				defaultState="true"
+				v-bind:default-state="true"
 				optOne="Raw Data"
 				optTwo="Rankings"
 			></flipper-switch>
-
 			<div class="stats">
 				<stat-box
 					v-for="(value, statName) in team.teamStats[0].splits[rawOrRank].stat"
@@ -48,18 +48,28 @@ export default {
 		return {
 			team: {},
 			visible: false,
-			rawOrRank: 1,
+			rawOrRank: 1
 		};
 	},
 	components: {
 		FlipperSwitch,
-		StatBox,
+		StatBox
 	},
 	methods: {
-		rawOrRankEvent: function (state) {
+		rawOrRankEvent: function(state) {
 			this.rawOrRank = state ? 1 : 0;
 		},
-	},
+		open: function(passed) {
+			this.team = passed;
+			var sorted = this.team.teamStats[0].splits[1].stat;
+			sorted = Object.entries(sorted).sort((a, b) => {
+				return parseInt(b[1].slice(0, -2)) < parseInt(a[1].slice(0, -2));
+			});
+
+			this.team.teamStats[0].splits[1].stat = Object.fromEntries(sorted);
+			this.visible = true;
+		}
+	}
 };
 </script>
 

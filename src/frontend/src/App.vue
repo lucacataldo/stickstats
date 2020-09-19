@@ -44,14 +44,12 @@ export default {
 			);
 		},
 		openTeam: function (team) {
-			this.$refs.teamBox.team = team;
-			this.$refs.teamBox.visible = true;
+			this.$refs.teamBox.open(team);
 		},
 	},
 	mounted() {
 		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then((response) => {
 			this.teams = response.data.teams;
-			console.log(response);
 		});
 	},
 };
