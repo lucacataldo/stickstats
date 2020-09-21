@@ -1,25 +1,37 @@
 <template>
 	<div v-if="visible" class="container">
-		<div
-			class="close"
-			@click="
-				visible = false;
-				rawOrRank = 1;
-			"
-		>
-			X
+		<div class="top">
+			<div class="logo">
+				<img
+					v-bind:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
+					"
+					width="200px"
+				/>
+			</div>
+			<div>
+				<div
+					class="close"
+					@click="
+						visible = false;
+						rawOrRank = 1;
+					"
+				>
+					X
+				</div>
+				<h1>
+					{{ team.name }}
+				</h1>
+				<p>
+					The {{ team.name }} play in the {{ team.division.name }} division of the
+					{{ team.conference.name }} conference. They played their first game in
+					{{ team.firstYearOfPlay }} and are <span v-if="!team.active">not</span> actively playing in the NHL.
+				</p>
+			</div>
 		</div>
-		<h1>
-			{{ team.name }}
-		</h1>
-		<p>
-			The {{ team.name }} play in the {{ team.division.name }} division of the
-			{{ team.conference.name }} conference. They played their first game in {{ team.firstYearOfPlay }} and are
-			<span v-if="!team.active">not</span> actively playing in the NHL.
-		</p>
 
 		<div class="statsCont">
-			<stat-box v-bind:stat="{ name: 'HockeyMan Rank', value: team.overall }"></stat-box>
+			<stat-box v-bind:stat="{ name: 'HockeyMan Score', value: team.overall }"></stat-box>
 			<flipper-switch
 				@flipped="rawOrRankEvent"
 				height="20px"
@@ -67,7 +79,6 @@ export default {
 			});
 			this.team.teamStats[0].splits[1].stat = Object.fromEntries(sorted);
 
-
 			this.visible = true;
 		}
 	}
@@ -89,10 +100,20 @@ h1 {
 	top: 0px;
 	left: 0px;
 	overflow-y: auto;
+	z-index: 10;
 }
 
 p {
 	font-weight: 100;
+}
+
+.top{
+	display: flex;
+	align-items: center;
+}
+
+.logo{
+	padding-right: 50px;
 }
 
 .close {

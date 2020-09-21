@@ -1,23 +1,26 @@
 <template>
 	<div id="app">
-		<div class="searchBar">
-			<label for="teamSearch">Search Teams</label>
-			<br />
-			<input
-				type="text"
-				name="teamSearch"
-				v-model="searchTerm"
-				v-on:keyup="search"
-				placeholder="ex. Toronto Maple Leafs"
-			/>
+		<div class="header">
+			<h1> <span class="highlight">{</span> HockeyMan Stats <span class="highlight">}</span></h1>
 		</div>
-
-		<ul class="searchResults">
-			<li v-for="team in searchResults" v-bind:key="team.id" @click="openTeam(team)">
-				{{ team.name }} | {{team.overall}}
-			</li>
-		</ul>
-
+		<div class="teamGrid">
+			<div class="team" v-for="team in teams" v-bind:key="team.id" @click="openTeam(team)">
+				<div class="teamMask">
+					<div>
+						<h3>{{team.name}}</h3>
+						<img
+							v-bind:src="
+								`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
+							"
+						/>
+						<span class="subtitle">HockeyMan Score</span>
+						<span class="rating">
+							{{ team.overall }}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
 		<team-box ref="teamBox"></team-box>
 	</div>
 </template>
@@ -50,18 +53,22 @@ export default {
 	mounted() {
 		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then(response => {
 			this.teams = response.data.teams;
-
 			// Inject overall rating to each team
 			this.teams.forEach((team, i) => {
 				const stats = team.teamStats[0].splits[1].stat;
 				var sum = 0;
-				var num = 0;
+				var num = 1;
 				for (const rank in stats) {
 					sum += parseInt(stats[rank].slice(0, -2));
 					num++;
 				}
-				this.teams[i].overall =  (sum/num).toFixed(1);
+				this.teams[i].overall = (100 * (num - sum / num) / num).toFixed(1);
 			});
+
+			this.teams.sort((a, b) => {
+				return b.overall - a.overall;
+			});
+			console.log(this.teams);
 		});
 	}
 };
@@ -74,9 +81,9 @@ export default {
 }
 
 :root {
-	--mainBg: #16181a;
-	--mainText: #efefef;
-	--highlight: #a3cb38;
+	--mainBg: #0e0f11;
+	--mainText: #fefefe;
+	--highlight: #28F7D1;
 	--light: #222429;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 }
@@ -85,39 +92,83 @@ body {
 	background: var(--mainBg);
 	color: var(--mainText);
 }
-.searchBar {
-	font-size: 25px;
-	text-align: center;
-	padding: 20px;
+
+.highlight{
+	color: var(--highlight);
 }
 
-.searchResults {
-	list-style: none;
-	text-align: center;
-	width: 50%;
-	margin-left: 25%;
+.subtitle{
+	font-weight: 100;
+	line-height: 5px;
+	opacity: 0.3;
 }
 
-.searchResults li {
-	padding: 5px;
-	margin: 2px;
+h1{
+	font-size: 60px;
+}
+
+.header {
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+}
+
+.teamGrid {
+	margin: 0px 100px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.team {
+	position: relative;
+	margin: 15px;
+	box-sizing: border-box;
 	cursor: pointer;
-}
-
-.searchResults li:hover {
-	background: var(--light);
-}
-
-.searchBar input {
-	color: var(--mainText);
-	width: 50%;
 	font-size: 20px;
-	border: none;
-	background: var(--light);
 	text-align: center;
-	padding: 5px;
-	margin: 5px;
-	box-shadow: 0px 2px 0px var(--highlight);
-	text-transform: capitalize;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all 0.6s ease;
+	font-weight: 900;
+	overflow: hidden;
+	background: var(--light);
+	border-radius: 15px;
+}
+
+.teamMask {
+	width: 100%;
+	height: 100%;
+	padding: 25px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.3s ease;
+	z-index: 2;
+	color: var(--mainText);
+}
+
+.rating {
+	line-height: 60px;
+	font-size: 50px;
+}
+
+
+
+@media screen and (max-width: 1280px) {
+	.teamGrid{
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		margin: 0px 25px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.teamGrid{
+		grid-template-columns: 1fr 1fr;
+		margin: 0px 10px;
+	}
 }
 </style>

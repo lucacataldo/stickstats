@@ -59,7 +59,8 @@ export default {
 	display: inline-block;
 	width: 100px;
 	height: 40px;
-	outline: 1px solid var(--highlight);
+	border: 1px solid var(--highlight);
+	border-radius: 15px;
 	cursor: pointer;
 }
 
@@ -70,6 +71,7 @@ export default {
 	background: var(--highlight);
 	margin-left: 0px;
 	transition: all 0.2s ease;
+	border-radius: 15px 0px 0px 15px;
 }
 
 .switch:hover {
@@ -78,5 +80,6 @@ export default {
 
 .flipped {
 	margin-left: 50%;
+	border-radius: 0px 15px 15px 0px;
 }
 </style>
