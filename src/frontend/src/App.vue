@@ -14,7 +14,7 @@
 
 		<ul class="searchResults">
 			<li v-for="team in searchResults" v-bind:key="team.id" @click="openTeam(team)">
-				{{ team.name }}
+				{{ team.name }} | {{team.overall}}
 			</li>
 		</ul>
 
@@ -31,27 +31,39 @@ export default {
 		return {
 			teams: [],
 			searchTerm: "",
-			searchResults: [],
+			searchResults: []
 		};
 	},
 	components: {
-		TeamBox,
+		TeamBox
 	},
 	methods: {
-		search: function () {
+		search: function() {
 			this.searchResults = this.teams.filter(
-				(t) => t.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
+				t => t.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
 			);
 		},
-		openTeam: function (team) {
+		openTeam: function(team) {
 			this.$refs.teamBox.open(team);
-		},
+		}
 	},
 	mounted() {
-		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then((response) => {
+		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then(response => {
 			this.teams = response.data.teams;
+
+			// Inject overall rating to each team
+			this.teams.forEach((team, i) => {
+				const stats = team.teamStats[0].splits[1].stat;
+				var sum = 0;
+				var num = 0;
+				for (const rank in stats) {
+					sum += parseInt(stats[rank].slice(0, -2));
+					num++;
+				}
+				this.teams[i].overall =  (sum/num).toFixed(1);
+			});
 		});
-	},
+	}
 };
 </script>
 

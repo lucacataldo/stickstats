@@ -19,7 +19,7 @@
 		</p>
 
 		<div class="statsCont">
-			<stat-box v-bind:stat="{ name: 'HockeyMan Rank', value: '1st' }"></stat-box>
+			<stat-box v-bind:stat="{ name: 'HockeyMan Rank', value: team.overall }"></stat-box>
 			<flipper-switch
 				@flipped="rawOrRankEvent"
 				height="20px"
@@ -65,8 +65,9 @@ export default {
 			sorted = Object.entries(sorted).sort((a, b) => {
 				return parseInt(b[1].slice(0, -2)) < parseInt(a[1].slice(0, -2));
 			});
-
 			this.team.teamStats[0].splits[1].stat = Object.fromEntries(sorted);
+
+
 			this.visible = true;
 		}
 	}
