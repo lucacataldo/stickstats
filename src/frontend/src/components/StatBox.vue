@@ -33,10 +33,10 @@ export default {
 		penaltyKillPercentage: "PK Percentage",
 		shotsPerGame: "Shots / Game",
 		shotsAllowed: "Shots Allowed",
-		winScoreFirst: "Wins After Scoring 1st",
-		winOppScoreFirst: "Wins After Opp. Scores 1st",
-		winLeadFirstPer: "Wins After Leading 1st",
-		winLeadSecondPer: "Wins After Leading 2nd",
+		winScoreFirst: "Wins - Scores 1st",
+		winOppScoreFirst: "Wins - Opp. Scores 1st",
+		winLeadFirstPer: "Wins - Leads 1st",
+		winLeadSecondPer: "Wins - Leads 2nd",
 		winOutshootOpp: "Wins (Outshot Opp.)",
 		winOutshotByOpp: "Wins (Opp. Outshot)",
 		faceOffsTaken: "Faceoffs",
@@ -57,7 +57,22 @@ h1 {
 	font-size: 100px;
 }
 
+h2{
+	font-size: 26px;
+}
+
 .wrapper {
-	margin: 15px 0px;
+	margin: 20px 0px;
+}
+
+
+@media screen and (max-width: 768px) {
+	h1{
+		font-size: 50px;
+	}
+
+	h2{
+		font-size: 24px;
+	}
 }
 </style>

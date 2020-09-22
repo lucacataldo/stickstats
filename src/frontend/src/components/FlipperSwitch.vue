@@ -59,7 +59,7 @@ export default {
 	display: inline-block;
 	width: 100px;
 	height: 40px;
-	border: 1px solid var(--highlight);
+	border: 2px solid var(--highlight);
 	border-radius: 15px;
 	cursor: pointer;
 }
@@ -81,5 +81,11 @@ export default {
 .flipped {
 	margin-left: 50%;
 	border-radius: 0px 15px 15px 0px;
+}
+
+@media screen and (max-width: 768px) {
+	.root{
+		justify-content: center;
+	}
 }
 </style>

@@ -1,27 +1,13 @@
 <template>
 	<div id="app">
 		<div class="header">
-			<h1> <span class="highlight">{</span> HockeyMan Stats <span class="highlight">}</span></h1>
+			<router-link to="/">
+				<h1><span class="highlight">{</span> HockeyMan Stats <span class="highlight">}</span></h1>
+			</router-link>
 		</div>
-		<router-view></router-view>
-		<div class="teamGrid">
-			<div class="team" v-for="team in teams" v-bind:key="team.id" @click="openTeam(team)">
-				<div class="teamMask">
-					<div>
-						<h3>{{team.name}}</h3>
-						<img
-							v-bind:src="
-								`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
-							"
-						/>
-						<span class="subtitle">HockeyMan Score</span>
-						<span class="rating">
-							{{ team.overall }}
-						</span>
-					</div>
-				</div>
-			</div>
-		</div>
+		<transition name="route">
+			<router-view></router-view>
+		</transition>
 		<team-box ref="teamBox"></team-box>
 	</div>
 </template>
@@ -63,13 +49,14 @@ export default {
 					sum += parseInt(stats[rank].slice(0, -2));
 					num++;
 				}
-				this.teams[i].overall = (100 * (num - sum / num) / num).toFixed(1);
+				this.teams[i].overall = ((100 * (num - sum / num)) / num).toFixed(1);
 			});
 
 			this.teams.sort((a, b) => {
 				return b.overall - a.overall;
 			});
-			console.log(this.teams);
+
+			this.$emit("dataLoaded");
 		});
 	}
 };
@@ -84,7 +71,7 @@ export default {
 :root {
 	--mainBg: #0e0f11;
 	--mainText: #fefefe;
-	--highlight: #28F7D1;
+	--highlight: #28f7d1;
 	--light: #222429;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 }
@@ -94,17 +81,17 @@ body {
 	color: var(--mainText);
 }
 
-.highlight{
+.highlight {
 	color: var(--highlight);
 }
 
-.subtitle{
+.subtitle {
 	font-weight: 100;
 	line-height: 5px;
 	opacity: 0.3;
 }
 
-h1{
+h1 {
 	font-size: 60px;
 }
 
@@ -116,60 +103,38 @@ h1{
 	height: 200px;
 }
 
-.teamGrid {
-	margin: 0px 100px;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-}
-
-.team {
-	position: relative;
-	margin: 15px;
-	box-sizing: border-box;
-	cursor: pointer;
-	font-size: 20px;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.6s ease;
-	font-weight: 900;
-	overflow: hidden;
-	background: var(--light);
-	border-radius: 15px;
-}
-
-.teamMask {
-	width: 100%;
-	height: 100%;
-	padding: 25px;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: background 0.3s ease;
-	z-index: 2;
+a:link,
+a:visited,
+:target {
 	color: var(--mainText);
+	text-decoration: none;
+	border: none;
+	outline: none;
 }
 
-.rating {
-	line-height: 60px;
-	font-size: 50px;
+.route-enter-active,
+.route-enter-active {
+	transition: opacity 1s ease;
 }
 
+.route-enter, .route-leave-to{
+	opacity: 0;
+}
 
 
 @media screen and (max-width: 1280px) {
-	.teamGrid{
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		margin: 0px 25px;
+	h1{
+		font-size: 40px;
 	}
-}
 
-@media screen and (max-width: 768px) {
-	.teamGrid{
-		grid-template-columns: 1fr 1fr;
-		margin: 0px 10px;
+	.header{
+		height: 150px;
+	}
+
+	.subtitle{
+		display: block;
+		font-size: 18px;
+		line-height: 18px;
 	}
 }
 </style>

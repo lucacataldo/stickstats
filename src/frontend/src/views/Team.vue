@@ -1,22 +1,18 @@
 <template>
-	<div v-if="visible" class="container">
+	<div class="container" v-if="team !== undefined">
+		<router-link to="/" class="close">
+			<i class="fas fa-arrow-left"></i>
+		</router-link>
 		<div class="top">
 			<div class="logo">
 				<img
-					v-bind:src="`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`"
+					v-bind:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
+					"
 					width="200px"
 				/>
 			</div>
 			<div>
-				<div
-					class="close"
-					@click="
-						visible = false;
-						rawOrRank = 1;
-					"
-				>
-					X
-				</div>
 				<h1>
 					{{ team.name }}
 				</h1>
@@ -29,7 +25,6 @@
 		</div>
 
 		<div class="statsCont">
-			<stat-box v-bind:stat="{ name: 'HockeyMan Score', value: team.overall }"></stat-box>
 			<flipper-switch
 				@flipped="rawOrRankEvent"
 				height="20px"
@@ -50,27 +45,33 @@
 </template>
 
 <script>
-import FlipperSwitch from "./FlipperSwitch";
-import StatBox from "./StatBox";
+import FlipperSwitch from "../components/FlipperSwitch";
+import StatBox from "../components/StatBox";
 export default {
-	name: "TeamView",
-	data() {
-		return {
-			team: {},
-			visible: false,
-			rawOrRank: 1,
-		};
-	},
+	name: "Team",
 	components: {
 		FlipperSwitch,
-		StatBox,
+		StatBox
+	},
+	data() {
+		return {
+			team: undefined,
+			rawOrRank: 1
+		};
+	},
+	mounted() {
+		if (this.$parent.teams.length > 0) {
+			this.loadTeam();
+		} else {
+			this.$parent.$on("dataLoaded", this.loadTeam);
+		}
 	},
 	methods: {
-		rawOrRankEvent: function (state) {
-			this.rawOrRank = state ? 1 : 0;
-		},
-		open: function (passed) {
-			this.team = passed;
+		loadTeam: function() {
+			this.team = this.$parent.teams.find(element => {
+				return element.id === parseInt(this.$route.params.id);
+			});
+
 			var sorted = this.team.teamStats[0].splits[1].stat;
 			sorted = Object.entries(sorted).sort((a, b) => {
 				return parseInt(b[1].slice(0, -2)) < parseInt(a[1].slice(0, -2));
@@ -78,8 +79,13 @@ export default {
 			this.team.teamStats[0].splits[1].stat = Object.fromEntries(sorted);
 
 			this.visible = true;
+
+			window.scrollTo(0, 0);
 		},
-	},
+		rawOrRankEvent: function(state) {
+			this.rawOrRank = state ? 1 : 0;
+		}
+	}
 };
 </script>
 
@@ -89,15 +95,9 @@ h1 {
 }
 
 .container {
-	position: fixed;
-	width: 100%;
-	height: 100%;
 	box-sizing: border-box;
-	padding: 50px;
+	padding: 0px 100px;
 	background: var(--mainBg);
-	top: 0px;
-	left: 0px;
-	overflow-y: auto;
 	z-index: 10;
 }
 
@@ -115,11 +115,14 @@ p {
 }
 
 .close {
-	position: absolute;
-	right: 50px;
-	top: 50px;
+	position: fixed;
+	background: var(--mainBg);
+	top: 0px;
+	left: 0px;
+	padding: 15px;
 	font-size: 30px;
 	cursor: pointer;
+	z-index: 10;
 }
 
 .statsCont {
@@ -129,5 +132,25 @@ p {
 .stats {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media screen and (max-width: 768px) {
+	.container {
+		text-align: center;
+		padding: 0px 25px;
+	}
+
+	.top {
+		flex-direction: column;
+	}
+
+	.logo {
+		padding: 0px;
+	}
+
+	.stats {
+		text-align: left;
+		grid-template-columns: 1fr 1fr;
+	}
 }
 </style>
