@@ -8,13 +8,11 @@
 		<transition name="route">
 			<router-view></router-view>
 		</transition>
-		<team-box ref="teamBox"></team-box>
 	</div>
 </template>
 
 <script>
 import axios from "axios";
-import TeamBox from "./components/TeamBox";
 export default {
 	name: "App",
 	data() {
@@ -24,17 +22,11 @@ export default {
 			searchResults: []
 		};
 	},
-	components: {
-		TeamBox
-	},
 	methods: {
 		search: function() {
 			this.searchResults = this.teams.filter(
 				t => t.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1
 			);
-		},
-		openTeam: function(team) {
-			this.$refs.teamBox.open(team);
 		}
 	},
 	mounted() {
@@ -86,8 +78,8 @@ body {
 }
 
 .subtitle {
+	display: block;
 	font-weight: 100;
-	line-height: 5px;
 	opacity: 0.3;
 }
 

@@ -7,20 +7,19 @@
 			@click="$parent.openTeam(team)"
 			v-bind:to="`/team/${team.id}`"
 		>
-			<div class="teamMask">
-				<div>
-					<h3>{{ team.name }}</h3>
-					<img
-						v-bind:src="
-							`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
-						"
-					/>
-					<span class="subtitle">HockeyMan Score</span>
-					<span class="rating">
-						{{ team.overall }}
-					</span>
-				</div>
-			</div>
+			
+				<h3>{{ team.name }}</h3>
+				<img
+				class="logo"
+					v-bind:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
+					"
+				/>
+				<span class="subtitle">Our Rating</span>
+				<span class="rating">
+					{{ team.overall }}
+				</span>
+			
 		</router-link>
 	</div>
 </template>
@@ -36,6 +35,10 @@ export default {
 	margin: 0px 100px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.logo{
+	height: 100px;
 }
 
 .team {
@@ -86,7 +89,7 @@ export default {
 		margin: 0px 10px;
 	}
 
-	.rating{
+	.rating {
 		font-size: 40px;
 		line-height: 50px;
 	}
