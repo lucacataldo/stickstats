@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/lucacataldo/hockeyMan/issues"
   },
-  "homepage": "https://github.com/lucacataldo/hockeyMan#readme"
+  "homepage": "https://github.com/lucacataldo/hockeyMan#readme",
+  "devDependencies": {
+    "@vue/cli-plugin-router": "^4.5.6"
+  }
 }

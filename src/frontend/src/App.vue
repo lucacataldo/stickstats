@@ -3,6 +3,7 @@
 		<div class="header">
 			<h1> <span class="highlight">{</span> HockeyMan Stats <span class="highlight">}</span></h1>
 		</div>
+		<router-view></router-view>
 		<div class="teamGrid">
 			<div class="team" v-for="team in teams" v-bind:key="team.id" @click="openTeam(team)">
 				<div class="teamMask">
