@@ -2,8 +2,9 @@
 	<div id="app">
 		<div class="header">
 			<router-link to="/">
-				<h1>
-					<span class="highlight">{</span> Stick Stats <span class="highlight">}</span>
+				<h1 class="title">
+					<span class="beta-tag">BETA</span>
+					<span class="highlight">{</span> StickStats <span class="highlight">}</span>
 				</h1>
 			</router-link>
 		</div>
@@ -116,6 +117,21 @@ a:visited,
 	text-decoration: none;
 	border: none;
 	outline: none;
+}
+
+.title{
+	display: block;
+	position: relative;
+}
+
+.beta-tag{
+	position: absolute;
+	font-size: 15px;
+	opacity: 0.3;
+	top: 0px;
+	right: 0px;
+	margin-top: -10px;
+	margin-right: 30px;
 }
 
 @media screen and (max-width: 1280px) {
