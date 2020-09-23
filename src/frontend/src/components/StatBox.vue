@@ -1,7 +1,11 @@
 <template>
 	<div class="wrapper">
 		<h2>
-			{{ $options.nameTranslations[stat.name] ? $options.nameTranslations[stat.name] : stat.name }}
+			{{
+				$options.nameTranslations[stat.name]
+					? $options.nameTranslations[stat.name]
+					: stat.name
+			}}
 		</h2>
 		<h1>
 			{{ stat.value }}
@@ -57,7 +61,7 @@ h1 {
 	font-size: 100px;
 }
 
-h2{
+h2 {
 	font-size: 26px;
 }
 
@@ -65,13 +69,12 @@ h2{
 	margin: 20px 0px;
 }
 
-
 @media screen and (max-width: 768px) {
-	h1{
+	h1 {
 		font-size: 50px;
 	}
 
-	h2{
+	h2 {
 		font-size: 24px;
 	}
 }

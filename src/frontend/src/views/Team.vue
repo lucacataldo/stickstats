@@ -4,28 +4,28 @@
 			<i class="fas fa-arrow-left"></i>
 		</router-link>
 		<div class="top">
-			<div class="logo">
+			<div class="logo float-up">
 				<img
-					v-bind:src="
-						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
-					"
+					v-bind:src="`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`"
 					width="200px"
 				/>
 			</div>
-			<div>
+			<div class="float-up">
 				<h1>
 					{{ team.name }}
 				</h1>
 				<p>
 					The {{ team.name }} play in the {{ team.division.name }} division of the
 					{{ team.conference.name }} conference. They played their first game in
-					{{ team.firstYearOfPlay }} and are <span v-if="!team.active">not</span> actively playing in the NHL.
+					{{ team.firstYearOfPlay }} and are <span v-if="!team.active">not</span> actively
+					playing in the NHL.
 				</p>
 			</div>
 		</div>
 
 		<div class="statsCont">
 			<flipper-switch
+				class="float-up"
 				@flipped="rawOrRankEvent"
 				height="20px"
 				width="80px"
@@ -35,6 +35,7 @@
 			></flipper-switch>
 			<div class="stats">
 				<stat-box
+					class="float-up"
 					v-for="(value, statName) in team.teamStats[0].splits[rawOrRank].stat"
 					v-bind:key="statName"
 					v-bind:stat="{ name: statName, value: value }"
@@ -51,12 +52,12 @@ export default {
 	name: "Team",
 	components: {
 		FlipperSwitch,
-		StatBox
+		StatBox,
 	},
 	data() {
 		return {
 			team: undefined,
-			rawOrRank: 1
+			rawOrRank: 1,
 		};
 	},
 	mounted() {
@@ -67,8 +68,8 @@ export default {
 		}
 	},
 	methods: {
-		loadTeam: function() {
-			this.team = this.$parent.teams.find(element => {
+		loadTeam: function () {
+			this.team = this.$parent.teams.find((element) => {
 				return element.id === parseInt(this.$route.params.id);
 			});
 
@@ -82,10 +83,10 @@ export default {
 
 			window.scrollTo(0, 0);
 		},
-		rawOrRankEvent: function(state) {
+		rawOrRankEvent: function (state) {
 			this.rawOrRank = state ? 1 : 0;
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -84,7 +84,7 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-	.root{
+	.root {
 		justify-content: center;
 	}
 }
