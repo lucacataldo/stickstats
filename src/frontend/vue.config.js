@@ -1,3 +1,3 @@
 module.exports = {
-    "publicPath": process.env.publicPath
+    "publicPath": "/stickstats/"
 }
