@@ -8,6 +8,13 @@
 			class="searchBox"
 		/>
 		<i class="fas fa-search" @click="search"></i>
+
+		<div class="description float-up">
+			StickStats compiles stats and standings from the NHL regular season to offer simple
+			ratings on a scale from 1-100. You'll find teams listed from best to worst based on these
+			ratings below.
+		</div>
+
 		<div class="teamGrid">
 			<router-link
 				class="team float-up"
@@ -66,8 +73,15 @@ export default {
 </script>
 
 <style scoped>
+.description {
+	width: 50%;
+	margin-left: 25%;
+	text-align: center;
+	font-size: 15px;
+}
+
 .teamGrid {
-	margin: 0px 100px;
+	margin: 0px var(--lrMargins);
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
@@ -141,7 +155,7 @@ export default {
 		margin: 10px;
 	}
 
-	.searchBox {
+	.searchBox, .description {
 		width: 90%;
 		margin-left: 5%;
 	}

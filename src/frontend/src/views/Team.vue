@@ -6,7 +6,9 @@
 		<div class="top">
 			<div class="logo float-up">
 				<img
-					v-bind:src="`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`"
+					v-bind:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
+					"
 					width="200px"
 				/>
 			</div>
@@ -22,6 +24,12 @@
 				</p>
 			</div>
 		</div>
+
+		<stat-box
+			style="margin-top: 50px"
+			class="float-up"
+			v-bind:stat="{ name: 'Our Rating', value: team.overall }"
+		></stat-box>
 
 		<div class="statsCont">
 			<flipper-switch
@@ -52,12 +60,12 @@ export default {
 	name: "Team",
 	components: {
 		FlipperSwitch,
-		StatBox,
+		StatBox
 	},
 	data() {
 		return {
 			team: undefined,
-			rawOrRank: 1,
+			rawOrRank: 1
 		};
 	},
 	mounted() {
@@ -68,25 +76,23 @@ export default {
 		}
 	},
 	methods: {
-		loadTeam: function () {
-			this.team = this.$parent.teams.find((element) => {
+		loadTeam: function() {
+			this.team = this.$parent.teams.find(element => {
 				return element.id === parseInt(this.$route.params.id);
 			});
 
-			var sorted = this.team.teamStats[0].splits[1].stat;
-			sorted = Object.entries(sorted).sort((a, b) => {
-				return parseInt(b[1].slice(0, -2)) < parseInt(a[1].slice(0, -2));
-			});
-			this.team.teamStats[0].splits[1].stat = Object.fromEntries(sorted);
-
-			this.visible = true;
+			// var sorted = this.team.teamStats[0].splits[1].stat;
+			// sorted = Object.entries(sorted).sort((a, b) => {
+			// 	return parseInt(b[1].slice(0, -2)) < parseInt(a[1].slice(0, -2));
+			// });
+			// this.team.teamStats[0].splits[1].stat = Object.fromEntries(sorted);
 
 			window.scrollTo(0, 0);
 		},
-		rawOrRankEvent: function (state) {
+		rawOrRankEvent: function(state) {
 			this.rawOrRank = state ? 1 : 0;
-		},
-	},
+		}
+	}
 };
 </script>
 

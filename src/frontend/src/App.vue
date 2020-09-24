@@ -11,6 +11,8 @@
 		<transition @after-enter="animate()">
 			<router-view></router-view>
 		</transition>
+
+		<div class="copyright">{{copyright}}</div>
 	</div>
 </template>
 
@@ -22,7 +24,8 @@ export default {
 	name: "App",
 	data() {
 		return {
-			teams: []
+			teams: [],
+			copyright: ""
 		};
 	},
 	methods: {
@@ -46,6 +49,7 @@ export default {
 			.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats")
 			.then((response) => {
 				this.teams = response.data.teams;
+				this.copyright = response.data.copyright
 				// Inject overall rating to each team
 				this.teams.forEach((team, i) => {
 					const stats = team.teamStats[0].splits[1].stat;
@@ -80,6 +84,7 @@ export default {
 	--mainText: #fefefe;
 	--highlight: #FBFF12;
 	--light: #222429;
+	--lrMargins: 100px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 }
 
@@ -134,13 +139,31 @@ a:visited,
 	margin-right: 30px;
 }
 
+.copyright{
+	text-align: center;
+	margin: 20px var(--lrMargins);
+	font-size: 13px;
+	opacity: 0.5;
+}
+
 @media screen and (max-width: 1280px) {
+
+	:root{
+		--lrMargins: 25px;
+	}
+
 	h1 {
 		font-size: 40px;
 	}
 
 	.header {
 		height: 150px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	:root{
+		--lrMargins: 10px
 	}
 }
 </style>
