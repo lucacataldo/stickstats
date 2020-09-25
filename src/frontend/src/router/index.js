@@ -14,7 +14,7 @@ const routes = [
 		path: "/team/:id",
 		name: "View Team Stats",
 		component: () => import("../views/Team.vue"),
-	},
+	}
 ];
 
 const router = new VueRouter({

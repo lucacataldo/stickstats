@@ -107,6 +107,7 @@ export default {
 	margin-bottom: 25px;
 	border: solid 2px var(--highlight);
 	text-transform: capitalize;
+	transition: border 0.3s ease;
 }
 
 .logo {

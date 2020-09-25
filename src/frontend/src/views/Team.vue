@@ -124,12 +124,23 @@ p {
 .close {
 	position: fixed;
 	background: var(--mainBg);
-	top: 0px;
-	left: 0px;
+	border-radius: 100%;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 10px;
+	left: 10px;
 	padding: 15px;
 	font-size: 30px;
 	cursor: pointer;
 	z-index: 10;
+	transition: background 0.3s ease;
+}
+
+.close:hover{
+	background: var(--light);
 }
 
 .statsCont {

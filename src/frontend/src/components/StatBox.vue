@@ -7,7 +7,7 @@
 					: stat.name
 			}}
 		</h2>
-		<h1>
+		<h1 class="highlight">
 			{{ stat.value }}
 		</h1>
 	</div>
@@ -57,7 +57,6 @@ export default {
 
 <style scoped>
 h1 {
-	color: var(--highlight);
 	font-size: 100px;
 }
 

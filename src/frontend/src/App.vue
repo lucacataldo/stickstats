@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div v-bind:style="{ '--highlight': themeColour }" id="app">
 		<div class="header">
 			<router-link to="/">
 				<h1 class="title">
@@ -7,30 +7,42 @@
 					<span class="highlight">{</span> StickStats <span class="highlight">}</span>
 				</h1>
 			</router-link>
+			<settings-popup></settings-popup>
 		</div>
 		<transition @after-enter="animate()">
 			<router-view></router-view>
 		</transition>
 
-		<div class="copyright">{{copyright}}</div>
+		<div class="copyright">
+			{{ copyright }}
+			<br />
+			<a href="https://cataldo.ca">
+				Created by <b>Cataldo <i class="fas fa-external-link-alt"></i></b>
+			</a>
+		</div>
 	</div>
 </template>
 
 <script>
 import axios from "axios";
 import gsap from "gsap";
+import SettingsPopup from "./components/SettingsPopup";
 
 export default {
 	name: "App",
 	data() {
 		return {
 			teams: [],
-			copyright: ""
+			copyright: "",
+			themeColour: "#fbff12"
 		};
 	},
+	components: {
+		SettingsPopup
+	},
 	methods: {
-		animate: function () {
-			this.$nextTick(function () {
+		animate: function() {
+			this.$nextTick(function() {
 				setTimeout(() => {
 					let tl = gsap.timeline();
 					tl.set(".float-up", { opacity: 0, y: 50 });
@@ -38,38 +50,41 @@ export default {
 						duration: 0.3,
 						opacity: 1,
 						y: 0,
-						stagger: 0.05,
+						stagger: 0.05
 					});
 				}, 1);
 			});
 		},
+		toggleSettings: function() {}
 	},
 	mounted() {
-		axios
-			.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats")
-			.then((response) => {
-				this.teams = response.data.teams;
-				this.copyright = response.data.copyright
-				// Inject overall rating to each team
-				this.teams.forEach((team, i) => {
-					const stats = team.teamStats[0].splits[1].stat;
-					var sum = 0;
-					var num = 1;
-					for (const rank in stats) {
-						sum += parseInt(stats[rank].slice(0, -2));
-						num++;
-					}
-					this.teams[i].overall = ((100 * (num - sum / num)) / num).toFixed(1);
-				});
-
-				this.teams.sort((a, b) => {
-					return b.overall - a.overall;
-				});
-
-				this.animate();
-				this.$emit("dataLoaded");
+		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then(response => {
+			this.teams = response.data.teams;
+			this.copyright = response.data.copyright;
+			// Inject overall rating to each team
+			this.teams.forEach((team, i) => {
+				const stats = team.teamStats[0].splits[1].stat;
+				var sum = 0;
+				var num = 1;
+				for (const rank in stats) {
+					sum += parseInt(stats[rank].slice(0, -2));
+					num++;
+				}
+				this.teams[i].overall = ((100 * (num - sum / num)) / num).toFixed(1);
 			});
-	},
+
+			this.teams.sort((a, b) => {
+				return b.overall - a.overall;
+			});
+
+			this.animate();
+			this.$emit("dataLoaded");
+
+			if (localStorage.themeColour) {
+				this.themeColour = localStorage.themeColour;
+			}
+		});
+	}
 };
 </script>
 
@@ -82,7 +97,6 @@ export default {
 :root {
 	--mainBg: #0a0903;
 	--mainText: #fefefe;
-	--highlight: #FBFF12;
 	--light: #222429;
 	--lrMargins: 100px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
@@ -94,6 +108,7 @@ body {
 }
 
 .highlight {
+	transition: color 0.4s ease;
 	color: var(--highlight);
 }
 
@@ -124,12 +139,12 @@ a:visited,
 	outline: none;
 }
 
-.title{
+.title {
 	display: block;
 	position: relative;
 }
 
-.beta-tag{
+.beta-tag {
 	position: absolute;
 	font-size: 15px;
 	opacity: 0.3;
@@ -139,7 +154,7 @@ a:visited,
 	margin-right: 30px;
 }
 
-.copyright{
+.copyright {
 	text-align: center;
 	margin: 20px var(--lrMargins);
 	font-size: 13px;
@@ -147,8 +162,7 @@ a:visited,
 }
 
 @media screen and (max-width: 1280px) {
-
-	:root{
+	:root {
 		--lrMargins: 25px;
 	}
 
@@ -162,8 +176,8 @@ a:visited,
 }
 
 @media screen and (max-width: 768px) {
-	:root{
-		--lrMargins: 10px
+	:root {
+		--lrMargins: 10px;
 	}
 }
 </style>
