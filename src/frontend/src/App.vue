@@ -1,5 +1,6 @@
 <template>
 	<div v-bind:style="{ '--highlight': themeColour }" id="app">
+		<toaster ref="toaster"></toaster>
 		<div class="header">
 			<router-link to="/">
 				<h1 class="title">
@@ -27,6 +28,7 @@
 import axios from "axios";
 import gsap from "gsap";
 import SettingsPopup from "./components/SettingsPopup";
+import Toaster from "./components/Toaster";
 
 export default {
 	name: "App",
@@ -38,7 +40,8 @@ export default {
 		};
 	},
 	components: {
-		SettingsPopup
+		SettingsPopup,
+		Toaster
 	},
 	methods: {
 		animate: function() {
@@ -83,6 +86,15 @@ export default {
 			if (localStorage.themeColour) {
 				this.themeColour = localStorage.themeColour;
 			}
+
+			this.$refs.toaster.toast({
+				message: `
+					Hey, thanks for checking out StickStats. We're currently in <b>BETA</b> meaning 
+					that there might be some hiccups and bugs along the way. If you do happen 
+					to come accross a bug or have a suggestion, feel free to send us a message 
+					<b><a href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a><b>`,
+				length: 30000
+			});
 		});
 	}
 };
@@ -95,9 +107,9 @@ export default {
 }
 
 :root {
-	--mainBg: #0a0903;
+	--mainBg: #04030a;
 	--mainText: #fefefe;
-	--light: #222429;
+	--light: hsl(249, 10%, 9%);
 	--lrMargins: 100px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 }

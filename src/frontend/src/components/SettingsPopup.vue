@@ -58,12 +58,15 @@ export default {
 
 .settingsButton {
 	position: absolute;
+	height: 20px;
+	width: 20px;
 	font-size: 20px;
 	opacity: 0.5;
 	top: 0px;
 	right: 0px;
 	cursor: pointer;
 	transition: opacity 0.2s ease;
+	padding: 5px;
 }
 
 .settingsButton:hover {
@@ -103,7 +106,7 @@ export default {
 	flex-shrink: 0;
 	flex-wrap: wrap;
 	width: 100%;
-	justify-content: start;
+	justify-content: flex-start;
 }
 
 li {

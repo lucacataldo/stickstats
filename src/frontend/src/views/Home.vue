@@ -133,7 +133,7 @@ export default {
 }
 
 .team:hover {
-	background: rgba(255, 255, 255, 0.05);
+	background: var(--light);
 }
 
 .team * {
