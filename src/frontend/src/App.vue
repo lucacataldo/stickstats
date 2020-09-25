@@ -92,7 +92,7 @@ export default {
 					Hey, thanks for checking out StickStats. We're currently in <b>BETA</b> meaning 
 					that there might be some hiccups and bugs along the way. If you do happen 
 					to come accross a bug or have a suggestion, feel free to send us a message 
-					<b><a href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> <b> 
+					<b><a href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
 					and check back often for new features!`,
 				length: 30000
 			});
