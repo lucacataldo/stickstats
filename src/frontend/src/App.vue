@@ -5,7 +5,7 @@
 			<router-link to="/">
 				<h1 class="title">
 					<span class="beta-tag">BETA</span>
-					<span class="highlight">{</span> StickStats2 <span class="highlight">}</span>
+					<span class="highlight">{</span> StickStats <span class="highlight">}</span>
 				</h1>
 			</router-link>
 			<settings-popup></settings-popup>
