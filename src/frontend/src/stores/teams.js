@@ -24,7 +24,6 @@ export default Vue.observable({
     var teamData = {}
 
     for (let i = firstYear; i < (new Date().getFullYear()); i++) {
-      console.log(i);
       try {
         if (localStorage.getItem(`${id}-${i}`)) {
           teamData[i] = JSON.parse(localStorage.getItem(`${id}-${i}`)).overall
@@ -48,8 +47,6 @@ export default Vue.observable({
         }, 50);
       })
     }
-
-    console.log(teamData);
 
     return teamData
   },
