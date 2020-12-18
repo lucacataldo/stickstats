@@ -25,7 +25,8 @@ export default {
 	chartObj: {},
 	watch: {
 		theme: function() {
-      this.renderChart()
+			this.chartObj.destroy();
+			this.renderChart();
 		}
 	},
 	methods: {
@@ -89,4 +90,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#chartCanvas {
+  height: 40vh !important;
+}
+</style>
