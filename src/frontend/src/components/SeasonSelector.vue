@@ -1,6 +1,6 @@
 <template>
 	<div class="seasonSelector">
-		<div class="selector noselect float-up" @click="isOpen = !isOpen">
+		<div class="selector noselect" @click="isOpen = !isOpen">
 			{{ `${$teams.season.slice(0, 4)}-${$teams.season.slice(4, 8)}` }}
 			<i class="fa fa-angle-down"></i>
 		</div>

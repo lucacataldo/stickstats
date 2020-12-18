@@ -12,6 +12,9 @@
 						@click="selectColour(colour)"
 					></li>
 				</ul>
+        <br>
+        <div @click="clearStorage()" class="button">Clear Cache</div>
+        
 			</div>
 		</transition>
 	</div>
@@ -31,7 +34,11 @@ export default {
 			colour = "#" + colour;
 			this.$parent.themeColour = colour;
 			localStorage.themeColour = colour;
-		}
+    },
+    clearStorage: function () {
+      localStorage.clear(); 
+      alert('Cleared!');
+    }
 	},
 	mounted() {
 		document.addEventListener("click", e => {

@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<loader v-if="loading" />
+		<loader message="Loading historical ratings..." v-if="loading" />
+		<div v-else class="chartTitle">
+			Historical ratings for the past
+			<input min="2" max="100" v-model.number="range" id="chartRange" type="number" />
+			years
+		</div>
 		<canvas id="chartCanvas"> </canvas>
 	</div>
 </template>
@@ -12,6 +17,7 @@ export default {
 	data() {
 		return {
 			history: [],
+			range: 10,
 			loading: false
 		};
 	},
@@ -23,13 +29,34 @@ export default {
 		theme: String
 	},
 	chartObj: {},
+	timer: 0,
 	watch: {
 		theme: function() {
-			this.chartObj.destroy();
-			this.renderChart();
+			this.refresh();
+		},
+		range: async function(newVal) {
+      clearTimeout(this.timer);
+      console.log(newVal);
+      if(!newVal){
+        return
+      }
+			this.timer = setTimeout(async () => {
+				if (newVal > 100 || newVal < 2) {
+					alert("Sorry, range must be between 2-100 years");
+					this.range = 10;
+					return;
+				}
+				this.chartObj.destroy();
+				await this.getData();
+				this.refresh();
+			}, 500);
 		}
 	},
 	methods: {
+		refresh: function() {
+			this.chartObj.destroy();
+			this.renderChart();
+		},
 		renderChart: function() {
 			let ctx = document.getElementById("chartCanvas").getContext("2d");
 			let color = this.theme;
@@ -58,9 +85,7 @@ export default {
 						display: false
 					},
 					title: {
-						display: true,
-						text: "Historical Ratings",
-						fontSize: 18
+						display: false
 					},
 					tooltips: {
 						enabled: true,
@@ -75,16 +100,19 @@ export default {
 						yPadding: 15,
 						backgroundColor: color
 					},
-					maintainAspectRatio: false,
-					aspectRatio: 2
+					spanGaps: true,
+					maintainAspectRatio: false
 				}
 			});
+		},
+		getData: async function() {
+			this.loading = true;
+			this.history = await this.$teams.getHistoricalRatings(this.teamId, this.range);
+			this.loading = false;
 		}
 	},
 	async mounted() {
-		this.loading = true;
-		this.history = await this.$teams.getHistoricalRatings(this.teamId);
-		this.loading = false;
+		await this.getData();
 		this.renderChart();
 	}
 };
@@ -92,6 +120,34 @@ export default {
 
 <style scoped>
 #chartCanvas {
-  height: 40vh !important;
+	height: 60vh !important;
+}
+
+.chartTitle {
+	font-size: 18px;
+	margin-top: -20px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+#chartRange {
+	border: none;
+	outline: none;
+	color: var(--mainText);
+	text-align: center;
+	-webkit-appearance: none;
+	-moz-appearance: textfield;
+	width: 50px;
+	box-shadow: 0px 2px 0px var(--highlight);
+	padding: 5px;
+	box-sizing: border-box;
+	font-size: 20px;
+	margin: 0;
+	background: none;
+	transition: all 0.3s ease;
+}
+
+#chartRange:focus {
+	box-shadow: 0px 5px 0px var(--highlight);
 }
 </style>
