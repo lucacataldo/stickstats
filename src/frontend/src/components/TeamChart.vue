@@ -36,7 +36,6 @@ export default {
 		},
 		range: async function(newVal) {
       clearTimeout(this.timer);
-      console.log(newVal);
       if(!newVal){
         return
       }
