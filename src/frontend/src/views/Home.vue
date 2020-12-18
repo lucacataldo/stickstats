@@ -1,5 +1,12 @@
 <template>
 	<div>
+		<div>
+			<h2 class="seasonCont">
+				Stats for the
+				<season-selector />
+				season
+			</h2>
+		</div>
 		<input
 			v-model="searchTerm"
 			@keyup="search"
@@ -10,17 +17,18 @@
 		<i class="fas fa-search" @click="search"></i>
 
 		<div class="description float-up">
-			StickStats compiles stats and standings from the NHL regular season to offer simple
-			ratings on a scale from 1-100. You'll find teams listed from best to worst based on these
-			ratings below.
+			StickStats compiles stats and standings from the NHL regular season to offer simple ratings on
+			a scale from 1-100. You'll find teams listed from best to worst based on these ratings below.
 		</div>
 
 		<div class="teamGrid">
+			<loader v-if="$teams.loading" />
 			<router-link
 				class="team float-up"
-				v-for="team in searchResults"
-				v-bind:key="team.id"
-				v-bind:to="`/team/${team.id}`"
+				v-else
+				v-for="team in $teams.teams"
+				v-bind:key="team.id + '' + Date.now()"
+				v-bind:to="`/team/${team.id}/season/${$teams.season.slice(0, 4)}`"
 			>
 				<h3>{{ team.name }}</h3>
 				<img
@@ -28,6 +36,7 @@
 					v-bind:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
 					"
+					@error="fallbackImg"
 				/>
 				<span class="subtitle">Our Rating</span>
 				<span class="rating">
@@ -39,7 +48,10 @@
 </template>
 
 <script>
+import SeasonSelector from "../components/SeasonSelector.vue";
+import Loader from "../components/Loader.vue"
 export default {
+	components: { SeasonSelector, Loader },
 	name: "Home",
 	data() {
 		return {
@@ -60,14 +72,14 @@ export default {
 			Array.prototype.push.apply(this.searchResults, more);
 		}
 	},
-	mounted() {
-		if (this.$parent.teams.length > 0) {
-			this.searchResults = this.$parent.teams;
+	async mounted() {
+		if (this.$route.params.seasonId) {
+			await this.$teams.getData(parseInt(this.$route.params.seasonId));
 		} else {
-			this.$parent.$on("dataLoaded", () => {
-				this.searchResults = this.$parent.teams;
-			});
+			await this.$teams.getData();
 		}
+
+		this.animate();
 	}
 };
 </script>
@@ -91,6 +103,11 @@ export default {
 	font-size: 20px;
 	margin-left: -50px;
 	padding: 10px;
+}
+
+.seasonCont {
+	text-align: center;
+	margin-bottom: 25px;
 }
 
 .searchBox {
@@ -156,7 +173,8 @@ export default {
 		margin: 10px;
 	}
 
-	.searchBox, .description {
+	.searchBox,
+	.description {
 		width: 90%;
 		margin-left: 5%;
 	}

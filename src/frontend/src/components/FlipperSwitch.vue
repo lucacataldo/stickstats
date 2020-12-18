@@ -13,37 +13,37 @@ export default {
 	name: "FlipperSwitch",
 	data() {
 		return {
-			state: false,
+			state: false
 		};
 	},
 	methods: {
-		flip: function () {
+		flip: function() {
 			this.state = !this.state;
 			this.$emit("flipped", this.state);
-		},
+		}
 	},
 	props: {
 		height: {
 			type: String,
-			default: "20px",
+			default: "20px"
 		},
 		width: {
 			type: String,
-			default: "100px",
+			default: "100px"
 		},
 		defaultState: Boolean,
 		optOne: {
 			type: String,
-			default: "",
+			default: ""
 		},
 		optTwo: {
 			type: String,
-			default: "",
-		},
+			default: ""
+		}
 	},
 	mounted() {
 		this.state = this.defaultState;
-	},
+	}
 };
 </script>
 

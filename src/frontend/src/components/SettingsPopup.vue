@@ -35,7 +35,6 @@ export default {
 	},
 	mounted() {
 		document.addEventListener("click", e => {
-			console.log(e.target);
 			if (
 				e.target !== document.querySelector(".settingsButton") &&
 				this.menuOpen === true &&
