@@ -11,7 +11,7 @@
 			<settings-popup></settings-popup>
 		</div>
 		<transition @after-enter="animate()">
-			<router-view :key="$route.path"></router-view>
+			<router-view :theme="themeColour" :key="$route.path"></router-view>
 		</transition>
 
 		<div class="copyright">

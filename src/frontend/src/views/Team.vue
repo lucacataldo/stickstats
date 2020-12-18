@@ -36,7 +36,9 @@
 				style="margin-top: 50px"
 				class="float-up"
 				v-bind:stat="{ name: 'Our Rating', value: team.overall }"
-			></stat-box>
+			/>
+
+      <team-chart :theme="theme" :teamId="team.id" />
 
 			<div class="statsCont">
 				<flipper-switch
@@ -66,20 +68,25 @@ import FlipperSwitch from "../components/FlipperSwitch";
 import SeasonSelector from "../components/SeasonSelector.vue";
 import StatBox from "../components/StatBox";
 import Loader from "../components/Loader"
+import TeamChart from '../components/TeamChart.vue';
 export default {
 	name: "Team",
 	components: {
 		FlipperSwitch,
 		StatBox,
 		SeasonSelector,
-		Loader
+		Loader,
+TeamChart
 	},
 	data() {
 		return {
 			team: undefined,
 			rawOrRank: 1
 		};
-	},
+  },
+  props: {
+    theme: String
+  },
 	async mounted() {
 		window.scrollTo(0, 0);
 		if (this.$route.params.seasonId) {
@@ -89,8 +96,6 @@ export default {
 		}
 
 		this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
-
-		console.log(this.team);
 
 		this.animate();
 	},
