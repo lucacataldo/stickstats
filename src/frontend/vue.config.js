@@ -1,3 +1,4 @@
 module.exports = {
-	publicPath: "/stickstats/"
+  publicPath: "/stickstats/",
+  outputDir: "../../docs"
 };
