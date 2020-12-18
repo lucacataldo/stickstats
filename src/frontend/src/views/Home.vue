@@ -16,7 +16,7 @@
 		</div>
 
 		<div class="teamGrid">
-			<loader v-if="$teams.loading" />
+			<loader message="Working hard, please wait..." v-if="$teams.loading" />
 			<router-link
 				class="team float-up"
 				v-else

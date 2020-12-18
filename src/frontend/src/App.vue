@@ -143,6 +143,21 @@ a:visited,
 	opacity: 0.5;
 }
 
+.button{
+  padding: 10px 20px;
+  border-radius: 100px;
+  color: var(--highlight);
+  box-shadow: 0px 0px 0px 3px var(--highlight);
+  transition: all 0.3s ease;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button:hover{
+  background: var(--highlight);
+  color: var(--mainBg);
+}
+
 @media screen and (max-width: 1280px) {
 	:root {
 		--lrMargins: 25px;
