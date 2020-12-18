@@ -1,11 +1,7 @@
 <template>
 	<div class="wrapper">
 		<h2>
-			{{
-				$options.nameTranslations[stat.name]
-					? $options.nameTranslations[stat.name]
-					: stat.name
-			}}
+			{{ $options.nameTranslations[stat.name] ? $options.nameTranslations[stat.name] : stat.name }}
 		</h2>
 		<h1 class="highlight">
 			{{ stat.value }}
@@ -17,7 +13,7 @@
 export default {
 	name: "StatBox",
 	props: {
-		stat: Object,
+		stat: Object
 	},
 	nameTranslations: {
 		gamesPlayed: "Games Played",
@@ -50,8 +46,8 @@ export default {
 		shootingPctg: "Shooting Percentage",
 		savePctg: "Save Percentage",
 		savePctRank: "Save Percentage",
-		shootingPctRank: "Shooting Percentage",
-	},
+		shootingPctRank: "Shooting Percentage"
+	}
 };
 </script>
 

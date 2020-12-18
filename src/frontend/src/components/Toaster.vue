@@ -5,8 +5,7 @@
 				<i class="fas fa-times close" @click="isOpen = false"></i>
 			</div>
 			<div class="message">
-				<span v-html="options.message">
-				</span>
+				<span v-html="options.message"> </span>
 			</div>
 		</div>
 	</transition>
@@ -25,13 +24,13 @@ export default {
 		};
 	},
 	methods: {
-		toast: function(opts = { message: "message", length: 5000}) {
+		toast: function(opts = { message: "message", length: 5000 }) {
 			this.options = opts;
-			this.isOpen =  true;
+			this.isOpen = true;
 
 			setTimeout(() => {
-				this.isOpen = false
-			}, 25000);
+				this.isOpen = false;
+			}, opts.length);
 		}
 	}
 };
@@ -90,29 +89,29 @@ export default {
 }
 
 .open-enter-active,
-.open-leave-active{
+.open-leave-active {
 	transition: all 0.4s ease;
 }
 
-.open-enter-active{
+.open-enter-active {
 	transition-delay: 1s;
 }
 
-.open-enter, 
-.open-leave-to{
+.open-enter,
+.open-leave-to {
 	opacity: 0;
 	transform: translateY(100px);
 }
 
 @media screen and (max-width: 1280px) {
-	.container{
+	.container {
 		width: 90%;
 		left: 5%;
 		text-align: l;
 		padding: 30px;
 	}
 
-	.message span{
+	.message span {
 		padding: 5px;
 	}
 }

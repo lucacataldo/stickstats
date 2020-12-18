@@ -11,11 +11,11 @@
 			<settings-popup></settings-popup>
 		</div>
 		<transition @after-enter="animate()">
-			<router-view></router-view>
+			<router-view :key="$route.path"></router-view>
 		</transition>
 
 		<div class="copyright">
-			{{ copyright }}
+			{{ $teams.copyright }}
 			<br />
 			<a href="https://cataldo.ca">
 				Created by <b>Cataldo <i class="fas fa-external-link-alt"></i></b>
@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import gsap from "gsap";
 import SettingsPopup from "./components/SettingsPopup";
 import Toaster from "./components/Toaster";
 
@@ -34,7 +32,6 @@ export default {
 	name: "App",
 	data() {
 		return {
-			teams: [],
 			copyright: "",
 			themeColour: "#fbff12"
 		};
@@ -44,58 +41,21 @@ export default {
 		Toaster
 	},
 	methods: {
-		animate: function() {
-			this.$nextTick(function() {
-				setTimeout(() => {
-					let tl = gsap.timeline();
-					tl.set(".float-up", { opacity: 0, y: 50 });
-					tl.to(".float-up", {
-						duration: 0.3,
-						opacity: 1,
-						y: 0,
-						stagger: 0.05
-					});
-				}, 1);
-			});
-		},
 		toggleSettings: function() {}
 	},
-	mounted() {
-		axios.get("https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats").then(response => {
-			this.teams = response.data.teams;
-			this.copyright = response.data.copyright;
-			// Inject overall rating to each team
-			this.teams.forEach((team, i) => {
-				const stats = team.teamStats[0].splits[1].stat;
-				var sum = 0;
-				var num = 1;
-				for (const rank in stats) {
-					sum += parseInt(stats[rank].slice(0, -2));
-					num++;
-				}
-				this.teams[i].overall = ((100 * (num - sum / num)) / num).toFixed(1);
-			});
+	async mounted() {
+		if (localStorage.themeColour) {
+			this.themeColour = localStorage.themeColour;
+		}
 
-			this.teams.sort((a, b) => {
-				return b.overall - a.overall;
-			});
-
-			this.animate();
-			this.$emit("dataLoaded");
-
-			if (localStorage.themeColour) {
-				this.themeColour = localStorage.themeColour;
-			}
-
-			this.$refs.toaster.toast({
-				message: `
-					Hey, thanks for checking out StickStats. We're currently in <b>BETA</b> meaning 
-					that there might be some hiccups and bugs along the way. If you do happen 
-					to come accross a bug or have a suggestion, feel free to send us a message 
-					<b><a href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
-					and check back often for new features!`,
-				length: 30000
-			});
+		this.$refs.toaster.toast({
+			message: `
+				Hey, thanks for checking out StickStats. We're currently in <b>BETA</b> meaning 
+				that there might be some hiccups and bugs along the way. If you do happen 
+				to come accross a bug or have a suggestion, feel free to send us a message 
+				<b><a href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
+				and check back often for new features!`,
+			length: 10000
 		});
 	}
 };
@@ -120,6 +80,15 @@ body {
 	color: var(--mainText);
 }
 
+.noselect {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently*/
+}
+
 .highlight {
 	transition: color 0.4s ease;
 	color: var(--highlight);
@@ -140,7 +109,7 @@ h1 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 200px;
+	height: 150px;
 }
 
 a:link,
