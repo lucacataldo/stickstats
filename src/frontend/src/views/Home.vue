@@ -7,14 +7,8 @@
 				season
 			</h2>
 		</div>
-		<input
-			v-model="searchTerm"
-			@keyup="search"
-			type="text"
-			placeholder="Filter teams..."
-			class="searchBox"
-		/>
-		<i class="fas fa-search" @click="search"></i>
+		<input v-model="searchTerm" type="text" placeholder="Filter teams..." class="searchBox" />
+		<i class="fas fa-search"></i>
 
 		<div class="description float-up">
 			StickStats compiles stats and standings from the NHL regular season to offer simple ratings on
@@ -26,9 +20,9 @@
 			<router-link
 				class="team float-up"
 				v-else
-				v-for="team in $teams.teams"
 				v-bind:key="team.id + '' + Date.now()"
 				v-bind:to="`/team/${team.id}/season/${$teams.season.slice(0, 4)}`"
+				v-for="team in $teams.teams.filter(searchAlgorithm)"
 			>
 				<h3>{{ team.name }}</h3>
 				<img
@@ -60,16 +54,13 @@ export default {
 		};
 	},
 	methods: {
-		search: function() {
-			this.searchResults = this.$parent.teams.filter(
-				t => t.name.toLowerCase().indexOf(this.searchTerm.toLowerCase().trim()) === 0
-			);
-
-			let more = this.$parent.teams.filter(
-				t => t.name.toLowerCase().indexOf(this.searchTerm.toLowerCase().trim()) > 0
-			);
-
-			Array.prototype.push.apply(this.searchResults, more);
+		searchAlgorithm: function(t) {
+      let term = this.searchTerm.toLowerCase()
+      let bool = (
+        t.name.toLowerCase().indexOf(term) > -1
+        || t.abbreviation.toLowerCase() === term
+      );
+			return bool;
 		}
 	},
 	async mounted() {
