@@ -13,7 +13,7 @@
 					></li>
 				</ul>
         <br>
-        <div @click="clearStorage()" class="button">Clear Cache</div>
+        <div @click="clearStorage()" class="button noselect">Clear Cache</div>
         
 			</div>
 		</transition>

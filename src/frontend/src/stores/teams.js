@@ -46,7 +46,7 @@ export default Vue.observable({
       await new Promise(resolve => {
         setTimeout(() => {
           resolve()
-        }, 50);
+        }, 75);
       })
     }
 

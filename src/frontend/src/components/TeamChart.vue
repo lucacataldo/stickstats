@@ -3,10 +3,12 @@
 		<loader message="Loading historical ratings..." v-if="loading" />
 		<div v-else class="chartTitle">
 			Historical ratings for the past
-			<input min="2" max="100" v-model.number="range" id="chartRange" type="number" />
+			<input @focus="range = ''" min="2" max="100" v-model.number="range" id="chartRange" type="number" />
 			years
 		</div>
-		<canvas id="chartCanvas"> </canvas>
+    <div style="position: relative">
+      <canvas id="chartCanvas"> </canvas>
+    </div>
 	</div>
 </template>
 
@@ -100,7 +102,9 @@ export default {
 						backgroundColor: color
 					},
 					spanGaps: true,
-					maintainAspectRatio: false
+          maintainAspectRatio: true,
+          aspectRatio: 2.5,
+          responsiveAnimationDuration: 500
 				}
 			});
 		},
@@ -118,9 +122,6 @@ export default {
 </script>
 
 <style scoped>
-#chartCanvas {
-	height: 60vh !important;
-}
 
 .chartTitle {
 	font-size: 18px;
