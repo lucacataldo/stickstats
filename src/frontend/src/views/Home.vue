@@ -2,9 +2,7 @@
 	<div>
 		<div>
 			<h2 class="seasonCont">
-				Stats for the
 				<season-selector />
-				season
 			</h2>
 		</div>
 		<input v-model="searchTerm" type="text" placeholder="Filter teams..." class="searchBox" />
@@ -43,7 +41,7 @@
 
 <script>
 import SeasonSelector from "../components/SeasonSelector.vue";
-import Loader from "../components/Loader.vue"
+import Loader from "../components/Loader.vue";
 export default {
 	components: { SeasonSelector, Loader },
 	name: "Home",
@@ -55,11 +53,8 @@ export default {
 	},
 	methods: {
 		searchAlgorithm: function(t) {
-      let term = this.searchTerm.toLowerCase()
-      let bool = (
-        t.name.toLowerCase().indexOf(term) > -1
-        || t.abbreviation.toLowerCase() === term
-      );
+			let term = this.searchTerm.toLowerCase();
+			let bool = t.name.toLowerCase().indexOf(term) > -1 || t.abbreviation.toLowerCase() === term;
 			return bool;
 		}
 	},
