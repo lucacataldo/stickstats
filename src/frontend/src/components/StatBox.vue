@@ -4,7 +4,7 @@
 			{{ $options.nameTranslations[stat.name] ? $options.nameTranslations[stat.name] : stat.name }}
 		</h2>
 		<h1 class="highlight">
-			{{ stat.value }}
+			{{ parsedValue }}
 		</h1>
 	</div>
 </template>
@@ -14,6 +14,16 @@ export default {
 	name: "StatBox",
 	props: {
 		stat: Object
+	},
+	computed: {
+		parsedValue: function() {
+			let stringy = this.stat.value.toString();
+			if (stringy.indexOf("t") > -1 || stringy.indexOf("d") > -1) {
+				return stringy;
+			} else {
+				return Math.round(parseFloat(this.stat.value) * 100) / 100;
+			}
+		}
 	},
 	nameTranslations: {
 		gamesPlayed: "Games Played",
@@ -61,7 +71,17 @@ h2 {
 }
 
 .wrapper {
-	margin: 20px 0px;
+	padding: 5px;
+}
+
+@media screen and (max-width: 992px) {
+	h1 {
+		font-size: 70px;
+	}
+
+	h2 {
+		font-size: 22px;
+	}
 }
 
 @media screen and (max-width: 768px) {
@@ -70,7 +90,7 @@ h2 {
 	}
 
 	h2 {
-		font-size: 24px;
+		font-size: 18px;
 	}
 }
 </style>

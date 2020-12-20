@@ -105,8 +105,8 @@ export default {
 
 .seasonResult {
 	display: block;
-	padding: 5px 20px;
-	margin: 5px 0px;
+	padding: 5px 10px;
+	margin: 2px 0px;
 	color: var(--mainText);
 	border-radius: 20px;
 	transition: all 0.3s ease;

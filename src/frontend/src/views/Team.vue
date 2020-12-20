@@ -3,7 +3,7 @@
 		<div @click="$router.go(-1)" class="close">
 			<i class="fas fa-arrow-left"></i>
 		</div>
-		<loader v-if="$teams.loading"/>
+		<loader v-if="$teams.loading" />
 		<div v-else class="loaded">
 			<div class="top">
 				<div class="logo float-up">
@@ -38,7 +38,7 @@
 				v-bind:stat="{ name: 'Our Rating', value: team.overall }"
 			/>
 
-      <team-chart :theme="theme" :teamId="team.id" />
+			<team-chart :theme="theme" :teamId="team.id" />
 
 			<div class="statsCont">
 				<flipper-switch
@@ -50,12 +50,15 @@
 					optOne="Raw Data"
 					optTwo="Rankings"
 				></flipper-switch>
+        <div>
+          <input class="searchBox" v-model="filterTerm" placeholder="filter stats" type="text">
+        </div>
 				<div class="stats">
 					<stat-box
 						class="float-up"
-						v-for="(value, statName) in team.teamStats[0].splits[rawOrRank].stat"
-						v-bind:key="statName"
-						v-bind:stat="{ name: statName, value: value }"
+						v-for="stat in sorted.filter(s=>s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1)"
+						v-bind:key="stat.name"
+						v-bind:stat="stat"
 					></stat-box>
 				</div>
 			</div>
@@ -67,8 +70,8 @@
 import FlipperSwitch from "../components/FlipperSwitch";
 import SeasonSelector from "../components/SeasonSelector.vue";
 import StatBox from "../components/StatBox";
-import Loader from "../components/Loader"
-import TeamChart from '../components/TeamChart.vue';
+import Loader from "../components/Loader";
+import TeamChart from "../components/TeamChart.vue";
 export default {
 	name: "Team",
 	components: {
@@ -76,17 +79,45 @@ export default {
 		StatBox,
 		SeasonSelector,
 		Loader,
-TeamChart
+		TeamChart
 	},
 	data() {
 		return {
 			team: undefined,
-			rawOrRank: 1
+      rawOrRank: 1,
+      filterTerm: ""
 		};
-  },
-  props: {
-    theme: String
-  },
+	},
+	computed: {
+		sorted: function() {
+			if (this.team && this.rawOrRank) {
+				let statArray = this.team.teamStats[0].splits[this.rawOrRank].stat;
+				let newArray = [];
+
+				let sortedKeys = Object.keys(statArray).sort((a, b) => {
+					return parseInt(statArray[a].slice(0, -2)) - parseInt(statArray[b].slice(0, -2));
+				});
+
+				sortedKeys.forEach((key, i) => {
+					newArray[i] = {
+						name: key,
+						value: statArray[key]
+					};
+				});
+
+				return newArray;
+			} else if (this.team && !this.rawOrRank) {
+				return Object.keys(this.team.teamStats[0].splits[this.rawOrRank].stat).map(key => {
+					return { name: key, value: this.team.teamStats[0].splits[this.rawOrRank].stat[key] };
+				});
+			} else {
+				return [];
+			}
+		}
+	},
+	props: {
+		theme: String
+	},
 	async mounted() {
 		window.scrollTo(0, 0);
 		if (this.$route.params.seasonId) {
@@ -139,7 +170,7 @@ p {
 
 .close {
 	position: fixed;
-	background: var(--mainBg);
+	background: var(--light);
 	border-radius: 100%;
 	width: 20px;
 	height: 20px;
@@ -152,15 +183,16 @@ p {
 	font-size: 30px;
 	cursor: pointer;
 	z-index: 10;
-	transition: background 0.3s ease;
+	transition: all 0.3s ease;
 }
 
 .close:hover {
-	background: var(--light);
+	background: var(--highlight);
+  color: var(--light);
 }
 
-.statsCont {
-	margin-top: 50px;
+.close:active{
+  transform: scale(1.2);
 }
 
 .stats {
@@ -186,5 +218,12 @@ p {
 		text-align: left;
 		grid-template-columns: 1fr 1fr;
 	}
+}
+
+@media (max-width: 576px) {
+  .stats {
+    text-align: center;
+    grid-template-columns: 1fr;
+  }
 }
 </style>

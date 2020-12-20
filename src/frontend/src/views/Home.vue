@@ -87,30 +87,14 @@ export default {
 .fa-search {
 	position: absolute;
 	font-size: 20px;
-	margin-left: -50px;
-	padding: 10px;
+  margin-top: 3px;
+	margin-left: -55px;
+	padding: 15px;
 }
 
 .seasonCont {
 	text-align: center;
 	margin-bottom: 25px;
-}
-
-.searchBox {
-	width: 50%;
-	font-size: 20px;
-	background: none;
-	color: var(--mainText);
-	outline: none;
-	border-radius: 100px;
-	padding: 10px;
-	box-sizing: border-box;
-	text-align: center;
-	margin-left: 25%;
-	margin-bottom: 25px;
-	border: solid 2px var(--highlight);
-	text-transform: capitalize;
-	transition: border 0.3s ease;
 }
 
 .logo {
@@ -131,12 +115,17 @@ export default {
 	overflow: hidden;
 	flex-direction: column;
 	padding: 20px;
-	transition: background 0.3s ease;
+	transition: background 0.4s ease, box-shadow 0.2s ease;
 	border-radius: 20px;
 }
 
 .team:hover {
+  box-shadow: 0px 0px 0px 2px var(--highlight);
 	background: var(--light);
+}
+
+.team:active{
+  box-shadow: 0px 0px 0px 5px var(--highlight);
 }
 
 .team * {

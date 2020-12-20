@@ -50,7 +50,7 @@ export default {
 				this.chartObj.destroy();
 				await this.getData();
 				this.refresh();
-			}, 500);
+			}, 1000);
 		}
 	},
 	methods: {

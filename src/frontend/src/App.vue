@@ -10,7 +10,7 @@
 			</router-link>
 			<settings-popup></settings-popup>
 		</div>
-		<transition @after-enter="animate()">
+		<transition @before-leave="animateOut()" @after-enter="animate()">
 			<router-view :theme="themeColour" :key="$route.path"></router-view>
 		</transition>
 
@@ -153,6 +153,28 @@ a:visited,
   cursor: pointer;
 }
 
+.searchBox {
+	width: 50%;
+	font-size: 20px;
+	background: none;
+	color: var(--mainText);
+	outline: none;
+	border-radius: 100px;
+	padding: 15px;
+	box-sizing: border-box;
+	text-align: center;
+	margin-left: 25%;
+	margin-bottom: 25px;
+	border: solid 2px var(--highlight);
+	text-transform: capitalize;
+	transition: border 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.searchBox:focus{
+  box-shadow: inset 0px 0px 0px 3px var(--highlight);
+}
+
 .button:hover{
   background: var(--highlight);
   color: var(--mainBg);
@@ -170,6 +192,11 @@ a:visited,
 	.header {
 		height: 150px;
 	}
+
+  .searchBox{
+    width: 90%;
+		margin-left: 5%;
+  }
 }
 
 @media screen and (max-width: 768px) {
