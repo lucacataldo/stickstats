@@ -3,6 +3,11 @@
 		<div @click="$router.go(-1)" class="close">
 			<i class="fas fa-arrow-left"></i>
 		</div>
+		<div class="season">
+			<h2>
+				<season-selector :toPrefix="`/team/${team.id}`" />
+			</h2>
+		</div>
 		<loader v-if="$teams.loading" />
 		<div v-else class="loaded">
 			<div class="top">
@@ -27,11 +32,6 @@
 					</p>
 				</div>
 			</div>
-			<div class="season">
-				<h2>
-					<season-selector :toPrefix="`/team/${team.id}`" />
-				</h2>
-			</div>
 			<stat-box
 				style="margin-top: 50px"
 				class="float-up"
@@ -50,13 +50,15 @@
 					optOne="Raw Data"
 					optTwo="Rankings"
 				></flipper-switch>
-        <div>
-          <input class="searchBox" v-model="filterTerm" placeholder="filter stats" type="text">
-        </div>
+				<div>
+					<input class="searchBox" v-model="filterTerm" placeholder="filter stats" type="text" />
+				</div>
 				<div class="stats">
 					<stat-box
 						class="float-up"
-						v-for="stat in sorted.filter(s=>s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1)"
+						v-for="stat in sorted.filter(
+							s => s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
+						)"
 						v-bind:key="stat.name"
 						v-bind:stat="stat"
 					></stat-box>
@@ -84,8 +86,8 @@ export default {
 	data() {
 		return {
 			team: undefined,
-      rawOrRank: 1,
-      filterTerm: ""
+			rawOrRank: 1,
+			filterTerm: ""
 		};
 	},
 	computed: {
@@ -127,8 +129,6 @@ export default {
 		}
 
 		this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
-
-		this.animate();
 	},
 	methods: {
 		rawOrRankEvent: function(state) {
@@ -156,7 +156,8 @@ p {
 .season {
 	position: relative;
 	margin: 20px 0px;
-	z-index: 255;
+	z-index: 100;
+	text-align: center;
 }
 
 .top {
@@ -188,11 +189,11 @@ p {
 
 .close:hover {
 	background: var(--highlight);
-  color: var(--light);
+	color: var(--light);
 }
 
-.close:active{
-  transform: scale(1.2);
+.close:active {
+	transform: scale(1.2);
 }
 
 .stats {
@@ -221,9 +222,9 @@ p {
 }
 
 @media (max-width: 576px) {
-  .stats {
-    text-align: center;
-    grid-template-columns: 1fr;
-  }
+	.stats {
+		text-align: center;
+		grid-template-columns: 1fr;
+	}
 }
 </style>

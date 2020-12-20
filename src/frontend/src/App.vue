@@ -10,7 +10,7 @@
 			</router-link>
 			<settings-popup></settings-popup>
 		</div>
-		<transition @before-leave="animateOut()" @after-enter="animate()">
+		<transition @before-leave="routerLoader = true" @enter="animateOut()" @after-enter="animate()">
 			<router-view :theme="themeColour" :key="$route.path"></router-view>
 		</transition>
 
@@ -46,7 +46,7 @@ export default {
 	async mounted() {
 		if (localStorage.themeColour) {
 			this.themeColour = localStorage.themeColour;
-		}
+    }
 
 		this.$refs.toaster.toast({
 			message: `
@@ -55,8 +55,10 @@ export default {
 				to come accross a bug or have a suggestion, feel free to send us a message 
 				<b><a target="_blank" href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
 				and check back often for new features!`,
-			length: 10000
-		});
+			length: 2000
+    });
+    
+    this.animate()
 	}
 };
 </script>
@@ -65,6 +67,11 @@ export default {
 * {
 	margin: 0px;
 	padding: 0px;
+}
+
+.float-up{
+  opacity: 0;
+
 }
 
 :root {

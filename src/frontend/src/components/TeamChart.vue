@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wrapper">
 		<loader message="Loading historical ratings..." v-if="loading" />
 		<div v-else class="chartTitle">
 			Historical ratings for the past
@@ -125,7 +125,7 @@ export default {
 
 .chartTitle {
 	font-size: 18px;
-	margin-top: -20px;
+	margin-top: 0px;
 	margin-bottom: 20px;
 	text-align: center;
 }

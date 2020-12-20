@@ -2,7 +2,7 @@
 	<div class="seasonSelector">
 		<div class="selector noselect" @click="isOpen = !isOpen">
 			{{ `${$teams.season.slice(0, 4)}-${$teams.season.slice(4, 8)}` }}
-			<i class="fa fa-angle-down"></i>
+			<i class="fa fa-history"></i>
 		</div>
 		<div class="seasons" v-if="isOpen">
 			<i class="fa fa-times close" @click="isOpen = false"></i>
@@ -40,7 +40,11 @@ export default {
 		}
 
 		document.addEventListener("click", e => {
-			if (e.target !== document.querySelector(".seasonResult") && this.isOpen === true && document.querySelector(".seasons").contains(e.target)) {
+			if (
+				e.target !== document.querySelector(".seasonResult") &&
+				this.isOpen === true &&
+				document.querySelector(".seasons").contains(e.target)
+			) {
 				this.isOpen = false;
 			}
 		});
@@ -51,9 +55,6 @@ export default {
 <style scoped>
 .seasonSelector {
 	display: inline-block;
-	padding: 0px 5px;
-	margin: 0px 10px;
-	box-shadow: 0px 2px 0px var(--highlight);
 }
 
 .close {
@@ -71,7 +72,7 @@ export default {
 .seasons {
 	position: fixed;
 	width: 100%;
-	z-index: 255;
+	z-index: 100;
 	height: 100%;
 	top: 0;
 	left: 0;
@@ -95,12 +96,29 @@ export default {
 
 .selector {
 	cursor: pointer;
-	opacity: 1;
-	transition: opacity 0.3s ease;
+  opacity: 0;
+	animation: fadeIn 0.5s 0.3s ease forwards;
+	padding: 0px 5px;
+	margin: 0px 10px;
+	box-shadow: 0px 2px 0px var(--highlight);
 }
 
-.selector:hover {
-	opacity: 0.7;
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.selector i{
+  transition: transform 0.4s ease;
+  transform: scale(0.7);
+}
+
+.selector:hover i {
+	transform: scale(0.7) rotate(-360deg);
 }
 
 .seasonResult {

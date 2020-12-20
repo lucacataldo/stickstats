@@ -64,8 +64,6 @@ export default {
 		} else {
 			await this.$teams.getData();
 		}
-
-		this.animate();
 	}
 };
 </script>
