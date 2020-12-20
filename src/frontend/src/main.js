@@ -13,14 +13,13 @@ Vue.mixin({
     }
   },
   methods: {
-    animate: function () {
+    animate: function (specify = "") {
       if (!this.animateStarted) {
         this.animateStarted = true
         setTimeout(() => {
-          console.log("animate()");
           let tl = gsap.timeline();
-          tl.set(".float-up", { opacity: 0, y: 50 });
-          tl.to(".float-up", {
+          tl.set(specify + ".float-up", { opacity: 0, y: 50 });
+          tl.to(specify + ".float-up", {
             duration: 0.3,
             opacity: 1,
             y: 0,

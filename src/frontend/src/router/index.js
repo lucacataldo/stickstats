@@ -24,6 +24,11 @@ const routes = [
 		path: "/team/:id/season/:seasonId",
 		name: "View Team Stats",
 		component: () => import("../views/Team.vue")
+  },
+  {
+		path: "*",
+		name: "404",
+		component: () => import("../views/404.vue")
 	}
 ];
 

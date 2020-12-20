@@ -64,7 +64,12 @@ export default {
 		} else {
 			await this.$teams.getData();
 		}
-	}
+  },
+  watch: {
+    searchTerm: function () {
+      this.animate(".teamGrid ")
+    }
+  }
 };
 </script>
 

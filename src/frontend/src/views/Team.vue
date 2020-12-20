@@ -59,7 +59,7 @@
 						v-for="stat in sorted.filter(
 							s => s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
 						)"
-						v-bind:key="stat.name"
+						v-bind:key="stat.name + rawOrRank"
 						v-bind:stat="stat"
 					></stat-box>
 				</div>
@@ -132,9 +132,15 @@ export default {
 	},
 	methods: {
 		rawOrRankEvent: function(state) {
-			this.rawOrRank = state ? 1 : 0;
+      this.rawOrRank = state ? 1 : 0;
+      this.animate(".stats ")
 		}
-	}
+  },
+  watch: {
+    filterTerm: function () {
+      this.animate(".stats ")
+    }
+  }
 };
 </script>
 

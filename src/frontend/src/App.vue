@@ -10,7 +10,7 @@
 			</router-link>
 			<settings-popup></settings-popup>
 		</div>
-		<transition @before-leave="routerLoader = true" @enter="animateOut()" @after-enter="animate()">
+		<transition @after-enter="animate()">
 			<router-view :theme="themeColour" :key="$route.path"></router-view>
 		</transition>
 
@@ -55,7 +55,7 @@ export default {
 				to come accross a bug or have a suggestion, feel free to send us a message 
 				<b><a target="_blank" href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
 				and check back often for new features!`,
-			length: 2000
+			length: 15000
     });
     
     this.animate()

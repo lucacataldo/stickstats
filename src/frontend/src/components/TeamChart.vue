@@ -3,12 +3,19 @@
 		<loader message="Loading historical ratings..." v-if="loading" />
 		<div v-else class="chartTitle">
 			Historical ratings for the past
-			<input @focus="range = ''" min="2" max="100" v-model.number="range" id="chartRange" type="number" />
+			<input
+				@focus="range = ''"
+				min="2"
+				max="100"
+				v-model.number="range"
+				id="chartRange"
+				type="number"
+			/>
 			years
 		</div>
-    <div style="position: relative">
-      <canvas id="chartCanvas"> </canvas>
-    </div>
+		<div style="position: relative">
+			<canvas height="300px" id="chartCanvas"> </canvas>
+		</div>
 	</div>
 </template>
 
@@ -37,10 +44,10 @@ export default {
 			this.refresh();
 		},
 		range: async function(newVal) {
-      clearTimeout(this.timer);
-      if(!newVal){
-        return
-      }
+			clearTimeout(this.timer);
+			if (!newVal) {
+				return;
+			}
 			this.timer = setTimeout(async () => {
 				if (newVal > 100 || newVal < 2) {
 					alert("Sorry, range must be between 2-100 years");
@@ -102,11 +109,20 @@ export default {
 						backgroundColor: color
 					},
 					spanGaps: true,
-          maintainAspectRatio: true,
-          aspectRatio: 2.5,
-          responsiveAnimationDuration: 500
+					maintainAspectRatio: false,
+					responsiveAnimationDuration: 500
 				}
 			});
+		},
+		handleChartClick: function(e) {
+      let point
+      try {
+				point = this.chartObj.getElementAtEvent(e)[0]._index;
+			} catch {
+        return
+      }
+			let year = Object.keys(this.history)[point];
+			this.$router.push(`./${year}`);
 		},
 		getData: async function() {
 			this.loading = true;
@@ -116,13 +132,21 @@ export default {
 	},
 	async mounted() {
 		await this.getData();
-		this.renderChart();
+    this.renderChart();
+    
+    document.getElementById("chartCanvas").addEventListener("touchend", (e)=>{
+      e.preventDefault()
+      e.stopPropagation()
+    })
+
+    document.getElementById("chartCanvas").addEventListener("click", (e)=>{
+      this.handleChartClick(e)
+    })
 	}
 };
 </script>
 
 <style scoped>
-
 .chartTitle {
 	font-size: 18px;
 	margin-top: 0px;

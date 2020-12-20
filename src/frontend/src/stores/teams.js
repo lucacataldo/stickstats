@@ -15,11 +15,11 @@ export default Vue.observable({
     return data
   },
   getHistoricalRatings: async function (id, range = 30) {
-    
+
     // let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}`)
     // const firstYear = parseInt(data.data.teams[0].firstYearOfPlay)
 
-    const firstYear = new Date().getFullYear() - range;  
+    const firstYear = new Date().getFullYear() - range;
 
     var teamData = {}
 
@@ -73,10 +73,14 @@ export default Vue.observable({
     }
 
     this.season = season;
-
-    let response = await axios.get(
-      `https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats&season=${season}`
-    );
+    let response;
+    try {
+      response = await axios.get(
+        `https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats&season=${season}`
+      );
+    } catch (error) {
+      window.location = "/404"
+    }
 
     this.teams = response.data.teams;
     this.copyright = response.data.copyright;

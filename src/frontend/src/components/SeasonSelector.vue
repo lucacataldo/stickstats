@@ -6,10 +6,10 @@
 		</div>
 		<div class="seasons" v-if="isOpen">
 			<i class="fa fa-times close" @click="isOpen = false"></i>
-			<h1 class="noselect">Select a season</h1>
+			<h1 class="float-up noselect">Select a season</h1>
 			<router-link
 				:to="`${toPrefix}/season/${season.slice(0, 4)}`"
-				class="seasonResult noselect"
+				class="seasonResult float-up noselect"
 				v-for="season in seasons"
 				:key="season"
 			>
@@ -32,7 +32,14 @@ export default {
 			type: String,
 			default: ""
 		}
-	},
+  },
+  watch: {
+    isOpen: function (newVal) {
+      if (newVal) {
+        this.animate(".seasons ")
+      }
+    }
+  },
 	mounted() {
 		let thisYear = new Date().getFullYear();
 		for (let i = 0; i < 10; i++) {
@@ -127,7 +134,7 @@ export default {
 	margin: 2px 0px;
 	color: var(--mainText);
 	border-radius: 20px;
-	transition: all 0.3s ease;
+	transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .seasonResult:hover {

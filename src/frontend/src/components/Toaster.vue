@@ -2,7 +2,7 @@
 	<transition name="open">
 		<div v-if="isOpen" class="container">
 			<div class="top">
-				<i class="fas fa-times close" @click="isOpen = false"></i>
+				<i class="fas fa-times close noselect" @click="isOpen = false"></i>
 			</div>
 			<div class="message">
 				<span v-html="options.message"> </span>
