@@ -6,6 +6,39 @@ export default Vue.observable({
   copyright: "",
   season: "",
   seasonSimple: "",
+  nameTranslations: {
+    gamesPlayed: "Games Played",
+    wins: "Wins",
+    losses: "Losses",
+    ot: "Overtime Wins",
+    pts: "Points",
+    ptPctg: "Points Percentage",
+    goalsPerGame: "Goals / Game",
+    goalsAgainstPerGame: "Goals Against / Game",
+    evGGARatio: "Even Strength GGA Ratio",
+    powerPlayPercentage: "PP Percentage",
+    powerPlayGoals: "PP Goals",
+    powerPlayGoalsAgainst: "PP Goals Against",
+    powerPlayOpportunities: "PP Opportunities",
+    penaltyKillOpportunities: "PK Opportunities",
+    penaltyKillPercentage: "PK Percentage",
+    shotsPerGame: "Shots / Game",
+    shotsAllowed: "Shots Allowed",
+    winScoreFirst: "Wins - Scores 1st",
+    winOppScoreFirst: "Wins - Opp. Scores 1st",
+    winLeadFirstPer: "Wins - Leads 1st",
+    winLeadSecondPer: "Wins - Leads 2nd",
+    winOutshootOpp: "Wins (Outshot Opp.)",
+    winOutshotByOpp: "Wins (Opp. Outshot)",
+    faceOffsTaken: "Faceoffs",
+    faceOffsWon: "Faceoffs Won",
+    faceOffsLost: "Faceoffs Lost",
+    faceOffWinPercentage: "Faceoff Win Percentage",
+    shootingPctg: "Shooting Percentage",
+    savePctg: "Save Percentage",
+    savePctRank: "Save Percentage",
+    shootingPctRank: "Shooting Percentage"
+  },
   formatSeason: function (season) {
     return `${season}${season + 1}`
   },
@@ -46,7 +79,7 @@ export default Vue.observable({
       await new Promise(resolve => {
         setTimeout(() => {
           resolve()
-        }, 75);
+        }, 25);
       })
     }
 

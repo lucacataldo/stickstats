@@ -63,7 +63,9 @@ export default {
 			await this.$teams.getData(parseInt(this.$route.params.seasonId));
 		} else {
 			await this.$teams.getData();
-		}
+    }
+    
+    this.animate(".teamGrid ")
   },
   watch: {
     searchTerm: function () {
@@ -118,16 +120,15 @@ export default {
 	overflow: hidden;
 	flex-direction: column;
 	padding: 20px;
-	transition: background 0.4s ease, box-shadow 0.2s ease;
+	transition: background 0.4s ease, box-shadow 0.5s ease;
 	border-radius: 20px;
 }
 
 .team:hover {
-  box-shadow: 0px 0px 0px 2px var(--highlight);
 	background: var(--light);
 }
 
-.team:active{
+.team:focus{
   box-shadow: 0px 0px 0px 5px var(--highlight);
 }
 

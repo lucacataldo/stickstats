@@ -82,7 +82,7 @@ export default {
 	display: flex;
 	grid-column: span 5;
 	justify-content: center;
-	margin: 200px 0px;
+	margin: 100px 0px;
 	color: var(--highlight);
 	text-align: center;
 }

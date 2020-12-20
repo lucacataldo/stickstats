@@ -57,9 +57,12 @@
 					<stat-box
 						class="float-up"
 						v-for="stat in sorted.filter(
-							s => s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
+							s => {
+                return (s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1) ||
+                  ($teams.nameTranslations[s.name].toLowerCase().indexOf(filterTerm.toLowerCase()) > -1)
+              }
 						)"
-						v-bind:key="stat.name + rawOrRank"
+						v-bind:key="stat.name + rawOrRank + filterTerm"
 						v-bind:stat="stat"
 					></stat-box>
 				</div>

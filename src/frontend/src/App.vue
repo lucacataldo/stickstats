@@ -10,9 +10,12 @@
 			</router-link>
 			<settings-popup></settings-popup>
 		</div>
-		<transition @after-enter="animate()">
-			<router-view :theme="themeColour" :key="$route.path"></router-view>
-		</transition>
+
+		<div class="routerView">
+			<transition @after-enter="animate()">
+				<router-view :theme="themeColour" :key="$route.path"></router-view>
+			</transition>
+		</div>
 
 		<div class="copyright">
 			{{ $teams.copyright }}
@@ -46,7 +49,7 @@ export default {
 	async mounted() {
 		if (localStorage.themeColour) {
 			this.themeColour = localStorage.themeColour;
-    }
+		}
 
 		this.$refs.toaster.toast({
 			message: `
@@ -56,9 +59,9 @@ export default {
 				<b><a target="_blank" href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
 				and check back often for new features!`,
 			length: 15000
-    });
-    
-    this.animate()
+		});
+
+		this.animate();
 	}
 };
 </script>
@@ -69,13 +72,12 @@ export default {
 	padding: 0px;
 }
 
-.float-up{
-  opacity: 0;
-
+.float-up {
+	opacity: 0;
 }
 
 :root {
-	--mainBg: #04030a;
+	--mainBg: hsl(249, 54%, 3%);
 	--mainText: #fefefe;
 	--light: hsl(249, 10%, 9%);
 	--lrMargins: 100px;
@@ -85,6 +87,10 @@ export default {
 body {
 	background: var(--mainBg);
 	color: var(--mainText);
+}
+
+.routerView {
+	min-height: 700px;
 }
 
 .noselect {
@@ -150,14 +156,14 @@ a:visited,
 	opacity: 0.5;
 }
 
-.button{
-  padding: 10px 20px;
-  border-radius: 100px;
-  color: var(--highlight);
-  box-shadow: 0px 0px 0px 3px var(--highlight);
-  transition: all 0.3s ease;
-  font-weight: bold;
-  cursor: pointer;
+.button {
+	padding: 10px 20px;
+	border-radius: 100px;
+	color: var(--highlight);
+	box-shadow: 0px 0px 0px 3px var(--highlight);
+	transition: all 0.3s ease;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .searchBox {
@@ -175,16 +181,16 @@ a:visited,
 	border: solid 2px var(--highlight);
 	text-transform: capitalize;
 	transition: border 0.3s ease;
-  transition: all 0.3s ease;
+	transition: all 0.3s ease;
 }
 
-.searchBox:focus{
-  box-shadow: inset 0px 0px 0px 3px var(--highlight);
+.searchBox:focus {
+	box-shadow: inset 0px 0px 0px 3px var(--highlight);
 }
 
-.button:hover{
-  background: var(--highlight);
-  color: var(--mainBg);
+.button:hover {
+	background: var(--highlight);
+	color: var(--mainBg);
 }
 
 @media screen and (max-width: 1280px) {
@@ -200,10 +206,10 @@ a:visited,
 		height: 150px;
 	}
 
-  .searchBox{
-    width: 90%;
+	.searchBox {
+		width: 90%;
 		margin-left: 5%;
-  }
+	}
 }
 
 @media screen and (max-width: 768px) {

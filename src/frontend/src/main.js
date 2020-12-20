@@ -26,7 +26,7 @@ Vue.mixin({
             stagger: 0.05
           });
           this.animateStarted = false
-        }, 300);
+        }, 100);
       }
     },
     fallbackImg: function (e) {
