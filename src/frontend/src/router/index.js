@@ -45,7 +45,7 @@ router.beforeEach(async function (to, from, next) {
 
   let tl = gsap.timeline();
   tl.set(".float-up", { opacity: 1 });
-  tl.to(".float-up", {
+  tl.to(".float-up, canvas", {
     duration: 0.2,
     opacity: 0
   });

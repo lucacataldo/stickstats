@@ -107,7 +107,7 @@ export default {
 	.container {
 		width: 90%;
 		left: 5%;
-		text-align: l;
+		text-align: center;
 		padding: 30px;
 	}
 
