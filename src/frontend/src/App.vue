@@ -60,8 +60,6 @@ export default {
 				and check back often for new features!`,
 			length: 15000
 		});
-
-		this.animate();
 	}
 };
 </script>
