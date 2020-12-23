@@ -11,6 +11,7 @@
 		<div class="description float-up">
 			StickStats compiles stats and standings from the NHL regular season to offer simple ratings on
 			a scale from 1-100. You'll find teams listed from best to worst based on these ratings below.
+			Select a team to view their in-depth stats as well as historical rankings.
 		</div>
 
 		<div class="teamGrid">
