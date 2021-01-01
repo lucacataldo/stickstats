@@ -49,10 +49,9 @@ export default Vue.observable({
   },
   getHistoricalRatings: async function (id, range = 30) {
 
-    // let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}`)
-    // const firstYear = parseInt(data.data.teams[0].firstYearOfPlay)
-
-    const firstYear = new Date().getFullYear() - range;
+    // const firstYear = new Date().getFullYear() - range;
+    // TODO - hardcoded because covid sucks
+    const firstYear = 2020 - range;
 
     var teamData = {}
 
