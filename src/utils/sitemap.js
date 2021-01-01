@@ -16,6 +16,11 @@ let generate = async () => {
 
   fs.writeFileSync("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n
+    <url>
+      <loc>https://stickstats.club</loc>
+      <lastmod>${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}</lastmod>
+      <changefreq>weekly</changefreq>
+    </url>
   `)
   teams.forEach(team => {
     fs.appendFileSync('sitemap.xml', `
