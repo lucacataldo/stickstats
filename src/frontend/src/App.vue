@@ -20,7 +20,7 @@
 		<div class="copyright">
 			{{ $teams.copyright }}
 			<br />
-			<a target="_blank" href="https://cataldo.ca">
+			<a rel="noopener" target="_blank" href="https://cataldo.ca">
 				Created by <b>Cataldo <i class="fas fa-external-link-alt"></i></b>
 			</a>
 		</div>
@@ -55,9 +55,9 @@ export default {
 			message: `
 				Hey, thanks for checking out StickStats. We're currently in <b>BETA</b> meaning 
 				that there might be some hiccups and bugs along the way. If you do happen 
-				to come accross a bug or have a suggestion, feel free to send us a message 
-				<b><a target="_blank" href="https://cataldo.ca#chat">here <i class="fas fa-external-link-alt"></i></a> </b> 
-				and check back often for new features!`,
+				to come accross a bug or have a suggestion, feel free to send us a message on 
+				<b><a rel="noopener" target="_blank" href="https://cataldo.ca#chat">Cataldo Software's </a> </b> 
+				<i class="fas fa-external-link-alt"></i> website and check back often for new features!`,
 			length: 15000
 		});
 	}
@@ -80,6 +80,7 @@ export default {
 	--light: hsl(249, 10%, 9%);
 	--lrMargins: 100px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
+  font-display: fallback;
 }
 
 body {
@@ -108,7 +109,7 @@ body {
 .subtitle {
 	display: block;
 	font-weight: 100;
-	opacity: 0.3;
+	opacity: 0.5;
 }
 
 h1 {
@@ -140,7 +141,7 @@ a:visited,
 .beta-tag {
 	position: absolute;
 	font-size: 15px;
-	opacity: 0.3;
+	opacity: 0.5;
 	top: 0px;
 	right: 0px;
 	margin-top: -10px;

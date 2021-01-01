@@ -8,7 +8,7 @@
 		<input v-model="searchTerm" type="text" placeholder="Filter teams..." class="searchBox" />
 		<i class="fas fa-search"></i>
 
-		<div class="description float-up">
+		<div class="description">
 			StickStats compiles stats and standings from the NHL regular season to offer simple ratings on
 			a scale from 1-100. You'll find teams listed from best to worst based on these ratings below.
 			Select your favourite hockey team to view their in-depth stats as well as historical rankings.
@@ -26,9 +26,10 @@
 				<h3>{{ team.name }}</h3>
 				<img
 					class="logo"
-					v-bind:src="
+					:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
 					"
+          :alt="`${team.name} logo`"
 					@error="fallbackImg"
 				/>
 				<span class="subtitle">Our Rating</span>
