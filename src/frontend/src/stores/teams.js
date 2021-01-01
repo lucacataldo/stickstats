@@ -113,8 +113,11 @@ export default Vue.observable({
         `https://statsapi.web.nhl.com/api/v1/teams?expand=team.stats&season=${season}`
       );
     } catch (error) {
+      this.loading = false
+      alert("Cannot get season.")
+      return
       // todo: fix
-      window.location = "/stickstats/404"
+      // window.location = "/stickstats/404"
     }
 
     this.teams = response.data.teams;
