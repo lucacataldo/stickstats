@@ -98,8 +98,10 @@ export default Vue.observable({
   getData: async function (season) {
     this.loading = true;
     if (!season) {
-      let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
-      season = currentSeason.data.seasons[0].seasonId;
+      // TODO - hardcoded because covid sucks
+      // let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
+      // season = currentSeason.data.seasons[0].seasonId;
+      season = "20192020"
     } else {
       season = this.formatSeason(season);
     }
