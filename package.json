@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd src/frontend && npm run serve",
-    "build": "cd src/frontend && npm run build"
+    "build": "cd src/frontend && npm run build",
+    "sitemap": "cd src/utils && node sitemap.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,7 @@
   "devDependencies": {
     "@vue/cli-plugin-router": "^4.5.6"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }

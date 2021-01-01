@@ -56,12 +56,12 @@
 				<div class="stats">
 					<stat-box
 						class="float-up"
-						v-for="stat in sorted.filter(
-							s => {
-                return (s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1) ||
-                  ($teams.nameTranslations[s.name].toLowerCase().indexOf(filterTerm.toLowerCase()) > -1)
-              }
-						)"
+						v-for="stat in sorted.filter(s => {
+							return (
+								s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1 ||
+								$teams.nameTranslations[s.name].toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
+							);
+						})"
 						v-bind:key="stat.name + rawOrRank + filterTerm"
 						v-bind:stat="stat"
 					></stat-box>
@@ -123,7 +123,7 @@ export default {
 	props: {
 		theme: String
 	},
-	async mounted() {
+	async beforeCreate() {
 		window.scrollTo(0, 0);
 		if (this.$route.params.seasonId) {
 			await this.$teams.getData(parseInt(this.$route.params.seasonId));
@@ -131,19 +131,20 @@ export default {
 			await this.$teams.getData();
 		}
 
-		this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
+    this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
+    document.title = `StickStats | ${this.team.name} ${this.$route.params.seasonId} Stats, Analytics and Ratings`
 	},
 	methods: {
 		rawOrRankEvent: function(state) {
-      this.rawOrRank = state ? 1 : 0;
-      this.animate(".stats ")
+			this.rawOrRank = state ? 1 : 0;
+			this.animate(".stats ");
 		}
-  },
-  watch: {
-    filterTerm: function () {
-      this.animate(".stats ")
-    }
-  }
+	},
+	watch: {
+		filterTerm: function() {
+			this.animate(".stats ");
+		}
+	}
 };
 </script>
 
