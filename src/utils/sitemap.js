@@ -3,7 +3,7 @@ const axios = require("axios");
 
 let generate = async () => {
 
-  const d = new Date();
+  const date = new Date().toISOString().split('T')[0];
 
   const baseUrl = "https://stickstats.club"
 
@@ -18,7 +18,7 @@ let generate = async () => {
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n
     <url>
       <loc>https://stickstats.club</loc>
-      <lastmod>${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}</lastmod>
+      <lastmod>${date}</lastmod>
       <changefreq>weekly</changefreq>
     </url>
   `)
@@ -26,7 +26,7 @@ let generate = async () => {
     fs.appendFileSync('sitemap.xml', `
     <url>
         <loc>${baseUrl}/team/${team.id}/season/${season}</loc>
-        <lastmod>${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}</lastmod>
+        <lastmod>${date}</lastmod>
         <changefreq>weekly</changefreq>
     </url>
     `);

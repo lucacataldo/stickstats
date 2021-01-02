@@ -29,7 +29,7 @@
 					:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
 					"
-          :alt="`${team.name} logo`"
+					:alt="`${team.name} logo`"
 					@error="fallbackImg"
 				/>
 				<span class="subtitle">Our Rating</span>
@@ -61,20 +61,20 @@ export default {
 		}
 	},
 	async mounted() {
-    document.title = "StickStats | Hockey Stats and Analytics"
+		document.title = "StickStats | Hockey Stats and Analytics";
 		if (this.$route.params.seasonId) {
 			await this.$teams.getData(parseInt(this.$route.params.seasonId));
 		} else {
 			await this.$teams.getData();
-    }
-    
-    this.animate(".teamGrid ")
-  },
-  watch: {
-    searchTerm: function () {
-      this.animate(".teamGrid ")
-    }
-  }
+		}
+
+		this.animate(".teamGrid ");
+	},
+	watch: {
+		searchTerm: function() {
+			this.animate(".teamGrid ");
+		}
+	}
 };
 </script>
 
@@ -95,7 +95,7 @@ export default {
 .fa-search {
 	position: absolute;
 	font-size: 20px;
-  margin-top: 3px;
+	margin-top: 3px;
 	margin-left: -55px;
 	padding: 15px;
 }
@@ -131,8 +131,8 @@ export default {
 	background: var(--light);
 }
 
-.team:focus{
-  box-shadow: 0px 0px 0px 5px var(--highlight);
+.team:focus {
+	box-shadow: 0px 0px 0px 5px var(--highlight);
 }
 
 .team * {

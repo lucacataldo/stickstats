@@ -79,8 +79,8 @@ export default {
 	--mainText: #fefefe;
 	--light: hsl(249, 10%, 9%);
 	--lrMargins: 100px;
-	font-family: Heebo, Arial, Helvetica, sans-serif;
-  font-display: fallback;
+  font-family: Heebo, Arial, Helvetica, sans-serif;
+  font-display: swap;
 }
 
 body {
@@ -113,6 +113,7 @@ body {
 }
 
 h1 {
+  font-weight: 900 !important;
 	font-size: 60px;
 }
 

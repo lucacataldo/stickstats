@@ -3,8 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import teams from "./stores/teams";
 import gsap from "gsap";
+import AsyncAssets from "./utils/AsyncAssets"
 
 Vue.prototype.$teams = teams;
+
+AsyncAssets()
 
 Vue.mixin({
   data() {
