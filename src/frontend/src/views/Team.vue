@@ -3,6 +3,14 @@
 		<div @click="$router.go(-1)" class="close">
 			<i class="fas fa-arrow-left"></i>
 		</div>
+		<jump-menu
+			:items="[
+				{ name: 'Info', tag: '#info' },
+				{ name: 'History', tag: '#history' },
+				{ name: 'Roster', tag: '#roster' },
+				{ name: 'Team Stats', tag: '#teamStats' }
+			]"
+		/>
 		<div class="season">
 			<h2>
 				<season-selector :toPrefix="`/team/${team.id}`" />
@@ -10,17 +18,17 @@
 		</div>
 		<loader v-if="$teams.loading" />
 		<div v-else class="loaded">
-			<div class="top">
+			<div class="top" id="info">
 				<div class="logo float-up">
 					<img
 						v-bind:src="
 							`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
 						"
 						@error="fallbackImg"
-						width="200px"
+						width="150px"
 					/>
 				</div>
-				<div class="float-up">
+				<div class="float-up team-info">
 					<h1>
 						{{ team.name }}
 					</h1>
@@ -31,16 +39,23 @@
 						in the NHL.
 					</p>
 				</div>
+				<stat-box
+					style="margin-top: 50px"
+					class="float-up"
+					id="our-rating"
+					v-bind:stat="{ name: 'Our Rating', value: team.overall }"
+				/>
 			</div>
-			<stat-box
-				style="margin-top: 50px"
-				class="float-up"
-				v-bind:stat="{ name: 'Our Rating', value: team.overall }"
-			/>
 
-			<team-chart :theme="theme" :teamId="team.id" />
+			<team-chart :theme="theme" :teamId="team.id" id="history" />
 
-			<div class="statsCont">
+			<team-roster :teamId="team.id" :season="$route.params.seasonId" id="roster" />
+
+			<div class="statsCont" id="teamStats">
+				<h1>Team Stats</h1>
+				<div>
+					<input class="searchBox" v-model="filterTerm" placeholder="filter stats" type="text" />
+				</div>
 				<flipper-switch
 					class="float-up"
 					@flipped="rawOrRankEvent"
@@ -49,10 +64,7 @@
 					v-bind:default-state="true"
 					optOne="Raw Data"
 					optTwo="Rankings"
-				></flipper-switch>
-				<div>
-					<input class="searchBox" v-model="filterTerm" placeholder="filter stats" type="text" />
-				</div>
+				/>
 				<div class="stats">
 					<stat-box
 						class="float-up"
@@ -77,6 +89,8 @@ import SeasonSelector from "../components/SeasonSelector.vue";
 import StatBox from "../components/StatBox";
 import Loader from "../components/Loader";
 import TeamChart from "../components/TeamChart.vue";
+import TeamRoster from "../components/TeamRoster.vue";
+import JumpMenu from "../components/JumpMenu.vue";
 export default {
 	name: "Team",
 	components: {
@@ -84,7 +98,9 @@ export default {
 		StatBox,
 		SeasonSelector,
 		Loader,
-		TeamChart
+		TeamChart,
+		TeamRoster,
+		JumpMenu
 	},
 	data() {
 		return {
@@ -131,8 +147,8 @@ export default {
 			await this.$teams.getData();
 		}
 
-    this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
-    document.title = `StickStats | ${this.team.name} ${this.$route.params.seasonId} Stats, Analytics and Ratings`
+		this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
+		document.title = `StickStats | ${this.team.name} ${this.$route.params.seasonId} Stats, Analytics and Ratings`;
 	},
 	methods: {
 		rawOrRankEvent: function(state) {
@@ -166,7 +182,6 @@ p {
 .season {
 	position: relative;
 	margin: 20px 0px;
-	z-index: 100;
 	text-align: center;
 }
 
@@ -175,8 +190,14 @@ p {
 	align-items: center;
 }
 
-.logo {
-	padding-right: 50px;
+.team-info {
+	padding: 0px 20px;
+}
+
+#our-rating {
+	text-align: center;
+	min-width: 150px;
+	margin-right: 20px;
 }
 
 .close {
@@ -193,7 +214,7 @@ p {
 	padding: 15px;
 	font-size: 30px;
 	cursor: pointer;
-	z-index: 10;
+	z-index: 21;
 	transition: all 0.3s ease;
 }
 
@@ -206,9 +227,23 @@ p {
 	transform: scale(1.2);
 }
 
+.statsCont {
+	text-align: center;
+}
+
 .stats {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.searchBox {
+	margin: 20px 0px;
+}
+
+@media screen and (max-width: 1280px) {
+	.top {
+		flex-direction: column;
+	}
 }
 
 @media screen and (max-width: 768px) {
@@ -220,13 +255,7 @@ p {
 	.top {
 		flex-direction: column;
 	}
-
-	.logo {
-		padding: 0px;
-	}
-
 	.stats {
-		text-align: left;
 		grid-template-columns: 1fr 1fr;
 	}
 }
@@ -235,6 +264,10 @@ p {
 	.stats {
 		text-align: center;
 		grid-template-columns: 1fr;
+	}
+
+	.container {
+		padding: 0px 10px;
 	}
 }
 </style>

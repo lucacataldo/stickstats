@@ -52,7 +52,7 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-  margin: 40px 0px;
+  margin-bottom: 40px;
 }
 
 .wrapper {
