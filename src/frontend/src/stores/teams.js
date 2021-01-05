@@ -1,5 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
+import FormatSeason from "../utils/FormatSeason"
 export default Vue.observable({
   loading: false,
   teams: [],
@@ -39,10 +40,7 @@ export default Vue.observable({
     savePctRank: "Save Percentage",
     shootingPctRank: "Shooting Percentage"
   },
-  formatSeason: function (season) {
-    season = parseInt(season);
-    return `${season}${season + 1}`
-  },
+  formatSeason: FormatSeason,
   getTeamSeason: async function (id, season) {
     let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}?expand=team.stats&season=${this.formatSeason(season)}`)
 

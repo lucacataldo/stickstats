@@ -75,7 +75,7 @@ export default {
 }
 
 :root {
-	--mainBg: hsl(249, 54%, 3%);
+	--mainBg: rgb(5, 4, 12);
 	--mainText: #fefefe;
 	--light: hsl(249, 10%, 9%);
 	--lrMargins: 100px;

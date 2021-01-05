@@ -55,7 +55,7 @@ export default {
 		limit: function() {
 			this.animate(".rosterCont ");
 		},
-		loadMore: function () {
+		loadMore: function() {
 			this.animate(".rosterCont ");
 		}
 	},
@@ -64,8 +64,7 @@ export default {
 			return this.roster
 				.filter(p => {
 					return (
-						p.position.type === "Forward" &&
-						p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+						p.position.type === "Forward" && p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
 					);
 				})
 				.slice(0, this.loadMore ? 1000 : 15);
@@ -74,8 +73,7 @@ export default {
 			if (this.loadMore) {
 				return this.roster.filter(p => {
 					return (
-						p.position.type === "Goalie" &&
-						p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+						p.position.type === "Goalie" && p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
 					);
 				});
 			} else {
@@ -124,7 +122,7 @@ export default {
 	z-index: 10;
 	bottom: 0px;
 	background: var(--mainBg);
-	background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+	background: linear-gradient(0deg, rgba(5, 4, 12, 1) 20%, rgba(0, 0, 0, 0) 100%);
 	font-weight: bold;
 }
 
@@ -143,7 +141,7 @@ export default {
 	box-shadow: 0px 0px 0px 3px var(--highlight);
 }
 
-h1{
+h1 {
 	font-size: 40px;
 	margin-bottom: 20px;
 }

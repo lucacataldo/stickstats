@@ -27,6 +27,16 @@ const routes = [
     component: () => import("../views/Team.vue")
   },
   {
+    path: "/player/:id",
+    name: "View Team Stats",
+    component: () => import("../views/Player.vue")
+  },
+  {
+    path: "/player/:id/season/:seasonId",
+    name: "View Team Stats",
+    component: () => import("../views/Player.vue")
+  },
+  {
     path: "*",
     name: "404",
     component: () => import("../views/404.vue")

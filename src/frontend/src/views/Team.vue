@@ -171,7 +171,7 @@ h1 {
 
 .container {
 	box-sizing: border-box;
-	padding: 0px 100px;
+	padding: 0px var(--lrMargins);
 	background: var(--mainBg);
 }
 
@@ -191,6 +191,7 @@ p {
 }
 
 .team-info {
+	flex-grow: 1;
 	padding: 0px 20px;
 }
 
@@ -249,7 +250,6 @@ p {
 @media screen and (max-width: 768px) {
 	.container {
 		text-align: center;
-		padding: 0px 25px;
 	}
 
 	.top {
@@ -264,10 +264,6 @@ p {
 	.stats {
 		text-align: center;
 		grid-template-columns: 1fr;
-	}
-
-	.container {
-		padding: 0px 10px;
 	}
 }
 </style>
