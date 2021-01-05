@@ -54,32 +54,45 @@ export default {
 		},
 		limit: function() {
 			this.animate(".rosterCont ");
+		},
+		loadMore: function () {
+			this.animate(".rosterCont ");
 		}
 	},
 	computed: {
 		forwards: function() {
-			return this.roster.filter(p => {
-				return (
-					p.position.type === "Forward" &&
-					p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
-				);
-			});
+			return this.roster
+				.filter(p => {
+					return (
+						p.position.type === "Forward" &&
+						p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+					);
+				})
+				.slice(0, this.loadMore ? 1000 : 15);
 		},
 		goalies: function() {
-			return this.roster.filter(p => {
-				return (
-					p.position.type === "Goalie" &&
-					p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
-				);
-			});
+			if (this.loadMore) {
+				return this.roster.filter(p => {
+					return (
+						p.position.type === "Goalie" &&
+						p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+					);
+				});
+			} else {
+				return [];
+			}
 		},
 		defense: function() {
-			return this.roster.filter(p => {
-				return (
-					p.position.type === "Defenseman" &&
-					p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
-				);
-			});
+			if (this.loadMore) {
+				return this.roster.filter(p => {
+					return (
+						p.position.type === "Defenseman" &&
+						p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+					);
+				});
+			} else {
+				return [];
+			}
 		}
 	},
 	async mounted() {
@@ -98,7 +111,7 @@ export default {
 	margin-top: 50px;
 	max-height: 600px;
 	overflow-y: hidden;
-  margin-bottom: 50px;
+	margin-bottom: 50px;
 }
 
 .load-more {
@@ -121,13 +134,18 @@ export default {
 	padding: 10px 20px;
 	border-radius: 50px;
 	cursor: pointer;
-  transition: all 0.3s ease;
+	transition: all 0.3s ease;
 }
 
 .load-more-button:hover {
 	background: var(--light);
 	color: var(--mainText);
-  box-shadow: 0px 0px 0px 3px var(--highlight);
+	box-shadow: 0px 0px 0px 3px var(--highlight);
+}
+
+h1{
+	font-size: 40px;
+	margin-bottom: 20px;
 }
 
 h2 {

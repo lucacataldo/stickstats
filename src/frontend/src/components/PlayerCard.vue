@@ -3,7 +3,8 @@
 		<span class="name">{{ player.person.fullName }}</span>
 		<img
 			:src="`http://nhl.bamcontent.com/images/headshots/current/168x168/${player.person.id}.jpg`"
-			:alt="player.person.fullName + ' Photo'"
+			:alt="player.person.fullName"
+      loading="lazy"
 		/>
 		<span class="bottomText">
 			<span>{{ player.position.abbreviation }}</span>
