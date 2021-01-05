@@ -201,7 +201,7 @@ p {
 }
 
 .close {
-	position: fixed;
+	position: absolute;
 	background: var(--light);
 	border-radius: 100%;
 	width: 20px;
