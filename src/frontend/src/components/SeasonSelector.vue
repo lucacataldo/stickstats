@@ -1,11 +1,11 @@
 <template>
 	<div class="seasonSelector">
-		<div class="selector noselect" @click="isOpen = !isOpen">
+		<div class="selector noselect" @click="open">
 			{{ `${$teams.season.slice(0, 4)}-${$teams.season.slice(4, 8)}` }}
 			<i class="fa fa-history"></i>
 		</div>
 		<div class="seasons" v-if="isOpen">
-			<i class="fa fa-times close" @click="isOpen = false"></i>
+			<i class="fa fa-times close" @click="close"></i>
 			<h1 class="float-up noselect">Select a season</h1>
 			<router-link
 				:to="`${toPrefix}/season/${season.slice(0, 4)}`"
@@ -32,14 +32,14 @@ export default {
 			type: String,
 			default: ""
 		}
-  },
-  watch: {
-    isOpen: function (newVal) {
-      if (newVal) {
-        this.animate(".seasons ")
-      }
-    }
-  },
+	},
+	watch: {
+		isOpen: function(newVal) {
+			if (newVal) {
+				this.animate(".seasons ");
+			}
+		}
+	},
 	mounted() {
 		let thisYear = new Date().getFullYear();
 		for (let i = 0; i < 10; i++) {
@@ -55,6 +55,16 @@ export default {
 				this.isOpen = false;
 			}
 		});
+	},
+	methods: {
+		open: function() {
+			this.isOpen = true;
+			document.querySelector(".season").style.zIndex = 101;
+		},
+		close: function() {
+			this.isOpen = false;
+			document.querySelector(".season").style.zIndex = 10;
+		}
 	}
 };
 </script>
@@ -62,6 +72,7 @@ export default {
 <style scoped>
 .seasonSelector {
 	display: inline-block;
+	background: var(--mainBg);
 }
 
 .close {
@@ -103,7 +114,7 @@ export default {
 
 .selector {
 	cursor: pointer;
-  opacity: 0;
+	opacity: 0;
 	animation: fadeIn 0.5s 0.3s ease forwards;
 	padding: 0px 5px;
 	margin: 0px 10px;
@@ -119,9 +130,9 @@ export default {
 	}
 }
 
-.selector i{
-  transition: transform 0.4s ease;
-  transform: scale(0.7);
+.selector i {
+	transition: transform 0.4s ease;
+	transform: scale(0.7);
 }
 
 .selector:hover i {

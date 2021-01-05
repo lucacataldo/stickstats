@@ -40,10 +40,16 @@ export default Vue.observable({
     shootingPctRank: "Shooting Percentage"
   },
   formatSeason: function (season) {
+    season = parseInt(season);
     return `${season}${season + 1}`
   },
   getTeamSeason: async function (id, season) {
     let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}?expand=team.stats&season=${this.formatSeason(season)}`)
+
+    return data
+  },
+  getTeamRoster: async function (id, season) {
+    let data = await axios.get(` https://statsapi.web.nhl.com/api/v1/teams/${id}/roster?season=${this.formatSeason(season)}`)
 
     return data
   },
