@@ -4,6 +4,7 @@
 		<img
 			:src="`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${player.person.id}.jpg`"
 			:alt="player.person.fullName"
+			@error="fallbackImg"
 			loading="lazy"
 		/>
 		<span v-if="player.position" class="bottomText">
