@@ -1,12 +1,12 @@
 <template>
-	<router-link :to="`/player/${player.person.id}`" class="player float-up">
+	<router-link :to="`/player/${player.person.id}`" :class="{ 'float-up': float }" class="player">
 		<span class="name">{{ player.person.fullName }}</span>
 		<img
 			:src="`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${player.person.id}.jpg`"
 			:alt="player.person.fullName"
 			loading="lazy"
 		/>
-		<span class="bottomText">
+		<span v-if="player.position" class="bottomText">
 			<span>{{ player.position.abbreviation }}</span>
 			<span class="number">#{{ player.jerseyNumber }}</span>
 		</span>
@@ -16,7 +16,11 @@
 <script>
 export default {
 	props: {
-		player: Object
+		player: Object,
+		float: {
+			type: Boolean,
+			default: true
+		}
 	}
 };
 </script>
