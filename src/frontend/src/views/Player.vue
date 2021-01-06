@@ -65,9 +65,9 @@
 			</router-link>
 		</div>
 		<div class="statCont">
-      <h2>
-        Stats
-      </h2>
+			<h2>
+				Stats
+			</h2>
 			<canvas id="offChartCanvas"> </canvas>
 			<canvas id="toiChartCanvas"> </canvas>
 		</div>
@@ -96,6 +96,11 @@ export default {
 			return this.stats[this.index].stat;
 		}
 	},
+	watch: {
+		theme: function() {
+			this.refresh();
+		}
+	},
 	async mounted() {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
@@ -104,24 +109,28 @@ export default {
 	},
 	methods: {
 		isMobile: function() {
-			return window.innerWidth < 512;
+			return window.innerWidth < 768;
 		},
 		drawOffChart: function() {
 			let ctx = document.getElementById("offChartCanvas").getContext("2d");
 
 			let offOnly = this.currentStats;
 
-      delete offOnly.shifts;
-      delete offOnly.timeOnIce;
-      delete offOnly.powerPlayTimeOnIce;
-      delete offOnly.evenTimeOnIce;
-      delete offOnly.shortHandedTimeOnIce;
+			delete offOnly.shifts;
+			delete offOnly.timeOnIce;
+			delete offOnly.powerPlayTimeOnIce;
+			delete offOnly.evenTimeOnIce;
+			delete offOnly.shortHandedTimeOnIce;
+			delete offOnly.plusMinus;
 
-			let labels = Object.keys(offOnly);
+			let labels = Object.keys(offOnly).map(l => {
+				const res = l.replace(/([A-Z])/g, " $1");
+				return res.charAt(0).toUpperCase() + res.slice(1);
+			});
 
 			let values = Object.values(offOnly);
 
-			new Chart(ctx, {
+			this.offChart = new Chart(ctx, {
 				type: this.isMobile() ? "bar" : "horizontalBar",
 				data: {
 					labels: labels,
@@ -133,10 +142,26 @@ export default {
 					]
 				},
 				options: {
-					maintainAspectRatio: true,
+					maintainAspectRatio: false,
 					aspectRatio: this.isMobile() ? 0.8 : 1.5,
 					legend: {
 						display: false
+					},
+					tooltips: {
+						mode: "y",
+						intersect: false,
+						enabled: true,
+						titleAlign: "center",
+						titleFontSize: 16,
+						titleFontColor: "#dedede",
+						bodyFontSize: 25,
+						bodyFontColor: this.theme,
+						bodyAlign: "center",
+						displayColors: false,
+						cornerRadius: 20,
+						xPadding: 15,
+						yPadding: 15,
+						backgroundColor: "#111111"
 					},
 					scales: {
 						xAxes: [
@@ -146,6 +171,9 @@ export default {
 									stepsize: 1,
 									maxTicksLimit: 200,
 									fontColor: "rgba(255, 255, 255, 0.6)"
+								},
+								gridLines: {
+									color: "rgba(255, 255, 255, 0.2)"
 								}
 							}
 						],
@@ -153,14 +181,24 @@ export default {
 							{
 								ticks: {
 									fontColor: "#ffffff"
+								},
+								gridLines: {
+									color: "rgba(255, 255, 255, 0.1)"
 								}
 							}
 						]
-					}
+					},
+					responsiveAnimationDuration: 500
 				}
 			});
+		},
+		refresh: function() {
+			this.offChart.destroy();
+			this.drawOffChart();
 		}
-	}
+	},
+	offChart: null,
+	timeChart: null
 };
 </script>
 

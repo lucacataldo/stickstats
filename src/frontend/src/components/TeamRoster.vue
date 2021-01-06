@@ -108,6 +108,7 @@ export default {
 	text-align: center;
 	margin-top: 50px;
 	max-height: 600px;
+	transition: max-height 0.4s ease;
 	overflow-y: hidden;
 	margin-bottom: 50px;
 }
