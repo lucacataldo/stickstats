@@ -9,9 +9,8 @@
 			/>
 			<div class="info">
 				<h1>
-					<span class="position">{{ player.primaryPosition.abbreviation }}</span> {{ player.fullName }} #{{
-						player.primaryNumber
-					}}
+					<span class="position">{{ player.primaryPosition.abbreviation }}</span>
+					{{ player.fullName }} #{{ player.primaryNumber }}
 				</h1>
 				<div class="attributes">
 					<div>
@@ -30,8 +29,12 @@
 
 					<div>
 						<h2>
-							<img height="20px" :src="`https://restcountries.eu/data/${player.birthCountry.toLowerCase()}.svg`" alt="">
-							{{ player.birthCity }}, {{ player.birthStateProvince }} {{player.birthCountry}}
+							<img
+								height="20px"
+								:src="`https://restcountries.eu/data/${player.birthCountry.toLowerCase()}.svg`"
+								alt=""
+							/>
+							{{ player.birthCity }}, {{ player.birthStateProvince }} {{ player.birthCountry }}
 						</h2>
 					</div>
 
@@ -61,22 +64,102 @@
 				/>
 			</router-link>
 		</div>
+		<div class="statCont">
+      <h2>
+        Stats
+      </h2>
+			<canvas id="offChartCanvas"> </canvas>
+			<canvas id="toiChartCanvas"> </canvas>
+		</div>
 	</div>
 </template>
 
 <script>
+import Chart from "chart.js";
 import Loader from "../components/Loader";
 export default {
 	data() {
 		return {
-			player: {}
+			player: {},
+			stats: {},
+			index: 0
 		};
+	},
+	props: {
+		theme: String
 	},
 	components: {
 		Loader
 	},
-	async beforeCreate() {
+	computed: {
+		currentStats: function() {
+			return this.stats[this.index].stat;
+		}
+	},
+	async mounted() {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
+		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
+
+		this.drawOffChart();
+	},
+	methods: {
+		isMobile: function() {
+			return window.innerWidth < 512;
+		},
+		drawOffChart: function() {
+			let ctx = document.getElementById("offChartCanvas").getContext("2d");
+
+			let offOnly = this.currentStats;
+
+      delete offOnly.shifts;
+      delete offOnly.timeOnIce;
+      delete offOnly.powerPlayTimeOnIce;
+      delete offOnly.evenTimeOnIce;
+      delete offOnly.shortHandedTimeOnIce;
+
+			let labels = Object.keys(offOnly);
+
+			let values = Object.values(offOnly);
+
+			new Chart(ctx, {
+				type: this.isMobile() ? "bar" : "horizontalBar",
+				data: {
+					labels: labels,
+					datasets: [
+						{
+							data: values,
+							backgroundColor: this.theme
+						}
+					]
+				},
+				options: {
+					maintainAspectRatio: true,
+					aspectRatio: this.isMobile() ? 0.8 : 1.5,
+					legend: {
+						display: false
+					},
+					scales: {
+						xAxes: [
+							{
+								ticks: {
+									suggestedMin: 0,
+									stepsize: 1,
+									maxTicksLimit: 200,
+									fontColor: "rgba(255, 255, 255, 0.6)"
+								}
+							}
+						],
+						yAxes: [
+							{
+								ticks: {
+									fontColor: "#ffffff"
+								}
+							}
+						]
+					}
+				}
+			});
+		}
 	}
 };
 </script>
@@ -123,15 +206,19 @@ i.leftHanded {
 	flex-grow: 1;
 }
 
+.statCont {
+	margin-top: 50px;
+}
+
 @media screen and (max-width: 768px) {
 	.top {
 		flex-direction: column;
 		text-align: center;
 	}
 
-  .top > *{
-    margin: 20px 0px;
-  }
+	.top > * {
+		margin: 20px 0px;
+	}
 
 	.attributes {
 		justify-content: center;
