@@ -5,7 +5,9 @@
 			<router-link to="/">
 				<h1 class="title">
 					<span class="beta-tag">BETA</span>
-					<span class="highlight">{</span> <h1 style="display: inline">StickStats</h1> <span class="highlight">}</span>
+					<span class="highlight">{</span>
+					&nbsp;<h1 style="display: inline">StickStats</h1>&nbsp;
+					<span class="highlight">}</span>
 				</h1>
 			</router-link>
 			<settings-popup></settings-popup>
@@ -58,7 +60,7 @@ export default {
 				to come accross a bug or have a suggestion, feel free to send us a message on 
 				<b><a rel="noopener" target="_blank" href="https://cataldo.ca#chat">Cataldo Software's </a> </b> 
 				<i class="fas fa-external-link-alt"></i> website and check back often for new features!`,
-			length: 15000
+			length: process.env.VUE_APP_DEV_MODE ? 2000 : 15000
 		});
 	}
 };
@@ -79,8 +81,8 @@ export default {
 	--mainText: #fefefe;
 	--light: hsl(249, 10%, 9%);
 	--lrMargins: 100px;
-  font-family: Heebo, Arial, Helvetica, sans-serif;
-  font-display: swap;
+	font-family: Heebo, Arial, Helvetica, sans-serif;
+	font-display: swap;
 }
 
 body {
@@ -113,7 +115,7 @@ body {
 }
 
 h1 {
-  font-weight: 900 !important;
+	font-weight: 900 !important;
 	font-size: 60px;
 }
 

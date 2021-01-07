@@ -66,17 +66,54 @@
 		</div>
 		<div class="statCont">
 			<h2>
-				Stats
+				Offensive Stats
 			</h2>
-			<canvas id="offChartCanvas"> </canvas>
-			<canvas id="toiChartCanvas"> </canvas>
+			<div>
+				<h2>{{ currentStats.points }} Points</h2>
+				<h3>{{ currentStats.goals }} Goals | {{ currentStats.assists }} Assists</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20)]"
+					:values="[currentStats.goals, currentStats.assists]"
+					:labels="['Goals', 'Assists']"
+				/>
+			</div>
+
+			<div>
+				<h2>{{ currentStats.goals }} Goals</h2>
+				<h3>
+					{{ currentStats.goals - (currentStats.powerPlayGoals + currentStats.shortHandedGoals) }}
+					EV | {{ currentStats.powerPlayGoals }} PP | {{ currentStats.shortHandedGoals }} SH
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						currentStats.goals - (currentStats.powerPlayGoals + currentStats.shortHandedGoals),
+						currentStats.powerPlayGoals,
+						currentStats.shortHandedGoals
+					]"
+					:labels="['Even Strength', 'PowerPlay', 'ShortHanded']"
+				/>
+			</div>
+
+			<div>
+				<h2>{{ currentStats.shotPct }}% Shooting</h2>
+				<h3>
+					{{ currentStats.shots }} Shots | {{ currentStats.shots - currentStats.goals }} Saved
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[currentStats.goals, currentStats.shots - currentStats.goals]"
+					:labels="['Goals', 'Saved Shots']"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import Chart from "chart.js";
 import Loader from "../components/Loader";
+import PieChart from "../components/PieChart";
+import { darken } from "khroma";
 export default {
 	data() {
 		return {
@@ -89,116 +126,28 @@ export default {
 		theme: String
 	},
 	components: {
-		Loader
+		Loader,
+		PieChart
 	},
 	computed: {
 		currentStats: function() {
-			return this.stats[this.index].stat;
-		}
-	},
-	watch: {
-		theme: function() {
-			this.refresh();
+			try {
+				return this.stats[this.index].stat;
+			} catch (error) {
+				return {};
+			}
 		}
 	},
 	async mounted() {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
 
-		this.drawOffChart();
+		window.scrollTo(0,0)
+		console.log(this.currentStats);
 	},
 	methods: {
-		isMobile: function() {
-			return window.innerWidth < 768;
-		},
-		drawOffChart: function() {
-			let ctx = document.getElementById("offChartCanvas").getContext("2d");
-
-			let offOnly = this.currentStats;
-
-			delete offOnly.shifts;
-			delete offOnly.timeOnIce;
-			delete offOnly.powerPlayTimeOnIce;
-			delete offOnly.evenTimeOnIce;
-			delete offOnly.shortHandedTimeOnIce;
-			delete offOnly.plusMinus;
-
-			let labels = Object.keys(offOnly).map(l => {
-				const res = l.replace(/([A-Z])/g, " $1");
-				return res.charAt(0).toUpperCase() + res.slice(1);
-			});
-
-			let values = Object.values(offOnly);
-
-			this.offChart = new Chart(ctx, {
-				type: this.isMobile() ? "bar" : "horizontalBar",
-				data: {
-					labels: labels,
-					datasets: [
-						{
-							data: values,
-							backgroundColor: this.theme
-						}
-					]
-				},
-				options: {
-					maintainAspectRatio: false,
-					aspectRatio: this.isMobile() ? 0.8 : 1.5,
-					legend: {
-						display: false
-					},
-					tooltips: {
-						mode: "y",
-						intersect: false,
-						enabled: true,
-						titleAlign: "center",
-						titleFontSize: 16,
-						titleFontColor: "#dedede",
-						bodyFontSize: 25,
-						bodyFontColor: this.theme,
-						bodyAlign: "center",
-						displayColors: false,
-						cornerRadius: 20,
-						xPadding: 15,
-						yPadding: 15,
-						backgroundColor: "#111111"
-					},
-					scales: {
-						xAxes: [
-							{
-								ticks: {
-									suggestedMin: 0,
-									stepsize: 1,
-									maxTicksLimit: 200,
-									fontColor: "rgba(255, 255, 255, 0.6)"
-								},
-								gridLines: {
-									color: "rgba(255, 255, 255, 0.2)"
-								}
-							}
-						],
-						yAxes: [
-							{
-								ticks: {
-									fontColor: "#ffffff"
-								},
-								gridLines: {
-									color: "rgba(255, 255, 255, 0.1)"
-								}
-							}
-						]
-					},
-					responsiveAnimationDuration: 500
-				}
-			});
-		},
-		refresh: function() {
-			this.offChart.destroy();
-			this.drawOffChart();
-		}
-	},
-	offChart: null,
-	timeChart: null
+		darken
+	}
 };
 </script>
 
@@ -245,7 +194,27 @@ i.leftHanded {
 }
 
 .statCont {
+	text-align: center;
 	margin-top: 50px;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.statCont > h2 {
+	font-size: 30px;
+	flex-basis: 100%;
+	flex-grow: 1;
+	margin-bottom: 25px;
+}
+
+.statCont > div {
+	margin-bottom: 50px;
+	width: 50%;
+}
+
+.statCont canvas {
+	margin-top: 10px;
 }
 
 @media screen and (max-width: 768px) {
@@ -260,6 +229,11 @@ i.leftHanded {
 
 	.attributes {
 		justify-content: center;
+	}
+
+	.statCont > div {
+		margin-bottom: 50px;
+		width: 100%;
 	}
 }
 </style>
