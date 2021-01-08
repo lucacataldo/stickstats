@@ -4,6 +4,7 @@
 
 <script>
 import Chart from "chart.js";
+import { lighten } from "khroma";
 export default {
 	props: {
 		values: {
@@ -37,7 +38,7 @@ export default {
 						{
 							data: this.values,
 							backgroundColor: this.colors,
-							hoverBackgroundColor: "#dedede",
+							hoverBackgroundColor: lighten(this.colors[0], 20),
 							borderColor: "#000000"
 						}
 					],
@@ -49,17 +50,17 @@ export default {
 						display: false
 					},
 					tooltips: {
-            displayColors: false,
-            caretSize: 3,
-            xPadding: 10,
-            yPadding: 10,
-            bodyFontStyle: "bold",
-            bodyFontSize: 18,
-            position: "nearest",
-            backgroundColor: "#111111",
-            cornerRadius: 5,
+						displayColors: false,
+						caretSize: 3,
+						xPadding: 10,
+						yPadding: 10,
+						bodyFontStyle: "bold",
+						bodyFontSize: 18,
+						position: "nearest",
+						backgroundColor: "#111111",
+						cornerRadius: 5
 					},
-					cutoutPercentage: 70
+					cutoutPercentage: 30
 				}
 			});
 		},
