@@ -106,6 +106,23 @@
 					:labels="['Goals', 'Saved Shots']"
 				/>
 			</div>
+
+			<div>
+				<h2>Point Breakdown</h2>
+				<h3>
+					{{ currentStats.points - (currentStats.powerPlayPoints + currentStats.shortHandedPoints) }}
+					EV | {{ currentStats.powerPlayPoints }} PP | {{ currentStats.shortHandedPoints }} SH
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						currentStats.points - (currentStats.powerPlayPoints + currentStats.shortHandedPoints),
+						currentStats.powerPlayPoints,
+						currentStats.shortHandedPoints
+					]"
+					:labels="['Even Strength', 'PowerPlay', 'ShortHanded']"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -142,7 +159,7 @@ export default {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
 
-		window.scrollTo(0,0)
+		window.scrollTo(0, 0);
 		console.log(this.currentStats);
 	},
 	methods: {

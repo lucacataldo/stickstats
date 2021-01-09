@@ -55,13 +55,13 @@ export default Vue.observable({
 
     // const firstYear = new Date().getFullYear() - range;
     // TODO - hardcoded because covid sucks
-    const firstYear = 2020 - range;
+    const firstYear = 2019 - range;
 
     var teamData = {}
 
     for (let i = firstYear; i < (new Date().getFullYear()); i++) {
       try {
-        if (localStorage.getItem(`${id}-${i}`)) {
+        if (localStorage.getItem(`${id}-${i}`) && (i !== firstYear)) {
           teamData[i] = JSON.parse(localStorage.getItem(`${id}-${i}`)).overall
         } else {
           let resp = await this.getTeamSeason(id, i);
