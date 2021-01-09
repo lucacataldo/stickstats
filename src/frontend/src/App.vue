@@ -60,7 +60,7 @@ export default {
 				to come accross a bug or have a suggestion, feel free to send us a message on 
 				<b><a rel="noopener" target="_blank" href="https://cataldo.ca#chat">Cataldo Software's </a> </b> 
 				<i class="fas fa-external-link-alt"></i> website and check back often for new features!`,
-			length: process.env.VUE_APP_DEV_MODE ? 2000 : 15000
+			length: process.env.VUE_APP_TOAST_LENGTH || 15000
 		});
 	}
 };

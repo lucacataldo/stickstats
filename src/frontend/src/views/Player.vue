@@ -64,7 +64,7 @@
 				/>
 			</router-link>
 		</div>
-		<div class="statCont">
+		<div v-if="isSkater" class="statCont">
 			<h2>
 				Offensive Stats
 			</h2>
@@ -110,7 +110,9 @@
 			<div>
 				<h2>Point Breakdown</h2>
 				<h3>
-					{{ currentStats.points - (currentStats.powerPlayPoints + currentStats.shortHandedPoints) }}
+					{{
+						currentStats.points - (currentStats.powerPlayPoints + currentStats.shortHandedPoints)
+					}}
 					EV | {{ currentStats.powerPlayPoints }} PP | {{ currentStats.shortHandedPoints }} SH
 				</h3>
 				<pie-chart
@@ -121,6 +123,32 @@
 						currentStats.shortHandedPoints
 					]"
 					:labels="['Even Strength', 'PowerPlay', 'ShortHanded']"
+				/>
+			</div>
+		</div>
+		<div v-if="isGoalie" class="statCont">
+			<h2>
+				Goalie Stats
+			</h2>
+			<div>
+				<h2>Wins: {{ Math.round(1000 * (currentStats.wins / currentStats.games)) / 10 }}%</h2>
+				<h3>{{ currentStats.wins }} Wins | {{ currentStats.games }} Games</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20)]"
+					:values="[currentStats.wins, currentStats.games - currentStats.wins]"
+					:labels="['Wins', 'Losses']"
+				/>
+			</div>
+
+			<div>
+				<h2>Save Pct: {{ currentStats.savePercentage }}</h2>
+				<h3>
+					{{ currentStats.shotsAgainst }} Shots | {{ currentStats.saves }} Saves | {{ currentStats.goalsAgainst }} GA 
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20)]"
+					:values="[currentStats.saves, currentStats.goalsAgainst]"
+					:labels="['Saves', 'Goals Against']"
 				/>
 			</div>
 		</div>
@@ -152,6 +180,23 @@ export default {
 				return this.stats[this.index].stat;
 			} catch (error) {
 				return {};
+			}
+		},
+		isSkater: function() {
+			if (this.player.primaryPosition) {
+				return (
+					this.player.primaryPosition.type === "Forward" ||
+					this.player.primaryPosition.type === "Defenseman"
+				);
+			} else {
+				return false;
+			}
+		},
+		isGoalie: function() {
+			if (this.player.primaryPosition) {
+				return this.player.primaryPosition.type === "Goalie";
+			} else {
+				return false;
 			}
 		}
 	},
