@@ -53,9 +53,7 @@ export default Vue.observable({
   },
   getHistoricalRatings: async function (id, range = 30) {
 
-    // const firstYear = new Date().getFullYear() - range;
-    // TODO - hardcoded because covid sucks
-    const firstYear = 2019 - range;
+    const firstYear = new Date().getFullYear() - range;
 
     var teamData = {}
 
@@ -102,9 +100,8 @@ export default Vue.observable({
   getData: async function (season) {
     this.loading = true;
     if (!season) {
-      // TODO - hardcoded because covid sucks
-      // let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
-      // season = currentSeason.data.seasons[0].seasonId;
+      let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
+      season = currentSeason.data.seasons[0].seasonId;
       season = "20192020"
     } else {
       season = this.formatSeason(season);
