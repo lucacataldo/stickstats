@@ -75,9 +75,9 @@ export default {
 }
 
 :root {
-	--mainBg: hsl(249, 54%, 3%);
+	--mainBg: #05040c;
 	--mainText: #fefefe;
-	--light: hsl(249, 10%, 9%);
+	--light: #151519;
 	--lrMargins: 100px;
   font-family: Heebo, Arial, Helvetica, sans-serif;
   font-display: swap;
