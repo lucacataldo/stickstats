@@ -102,7 +102,6 @@ export default Vue.observable({
     if (!season) {
       let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
       season = currentSeason.data.seasons[0].seasonId;
-      season = "20192020"
     } else {
       season = this.formatSeason(season);
     }
