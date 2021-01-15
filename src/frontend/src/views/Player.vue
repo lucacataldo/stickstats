@@ -64,6 +64,17 @@
 				/>
 			</router-link>
 		</div>
+		<div class="season">
+			<h2>{{ player.fullName }} {{ currentSeason }} Season Stats</h2>
+		</div>
+		<toaster
+			:openProp="isLimited"
+			:messageProp="
+				`<h3 style='margin-bottom: 10px'>Please Note</h3> This player may have limited stats available for this season.`
+			"
+			:lengthProp="15000"
+		/>
+
 		<div v-if="isSkater" class="statCont">
 			<h2>
 				Offensive Stats
@@ -143,7 +154,8 @@
 			<div>
 				<h2>Save Pct: {{ currentStats.savePercentage }}</h2>
 				<h3>
-					{{ currentStats.shotsAgainst }} Shots | {{ currentStats.saves }} Saves | {{ currentStats.goalsAgainst }} GA 
+					{{ currentStats.shotsAgainst }} Shots | {{ currentStats.saves }} Saves |
+					{{ currentStats.goalsAgainst }} GA
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20)]"
@@ -159,6 +171,7 @@
 import Loader from "../components/Loader";
 import PieChart from "../components/PieChart";
 import { darken } from "khroma";
+import Toaster from "../components/Toaster";
 export default {
 	data() {
 		return {
@@ -172,7 +185,8 @@ export default {
 	},
 	components: {
 		Loader,
-		PieChart
+		PieChart,
+		Toaster
 	},
 	computed: {
 		currentStats: function() {
@@ -181,6 +195,20 @@ export default {
 			} catch (error) {
 				return {};
 			}
+		},
+		currentSeason: function() {
+			try {
+				return `${this.stats[this.index].season.slice(0, 4)}-${this.stats[this.index].season.slice(
+					4,
+					8
+				)}`;
+			} catch (error) {
+				return "SEASON";
+			}
+		},
+		isLimited: function() {
+      let len = Object.keys(this.currentStats).length;
+			return this.currentStats && 2 < len && len < 8;
 		},
 		isSkater: function() {
 			if (this.player.primaryPosition) {
@@ -205,7 +233,6 @@ export default {
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
 
 		window.scrollTo(0, 0);
-		console.log(this.currentStats);
 	},
 	methods: {
 		darken
@@ -249,6 +276,11 @@ i.leftHanded {
 	border-radius: 20px;
 	background: var(--highlight);
 	color: var(--mainBg);
+}
+
+.season {
+	margin-top: 50px;
+	text-align: center;
 }
 
 .info {

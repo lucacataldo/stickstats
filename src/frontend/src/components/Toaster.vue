@@ -1,11 +1,11 @@
 <template>
 	<transition name="open">
-		<div v-if="isOpen" class="container">
+		<div v-if="isOpen" class="msgContainer">
 			<div class="top">
 				<i class="fas fa-times close noselect" @click="isOpen = false"></i>
 			</div>
 			<div class="message">
-				<span v-html="options.message"> </span>
+				<div v-html="options.message"></div>
 			</div>
 		</div>
 	</transition>
@@ -23,6 +23,20 @@ export default {
 			isOpen: false
 		};
 	},
+	props: {
+		openProp: {
+			type: Boolean,
+			default: false
+		},
+		messageProp: {
+			type: String,
+			default: ""
+		},
+		lengthProp: {
+			type: Number,
+			default: 10000
+		}
+	},
 	methods: {
 		toast: function(opts = { message: "message", length: 5000 }) {
 			this.options = opts;
@@ -32,12 +46,23 @@ export default {
 				this.isOpen = false;
 			}, opts.length);
 		}
+	},
+	mounted() {
+    console.log(this.openProp, this.messageProp);
+		if (this.openProp === true) {
+			setTimeout(() => {
+				this.toast({
+					message: this.messageProp,
+					length: this.lengthProp
+				});
+			}, 500);
+		}
 	}
 };
 </script>
 
 <style scoped>
-.container {
+.msgContainer {
 	position: fixed;
 	width: 50%;
 	left: 25%;
@@ -70,7 +95,7 @@ export default {
 	line-height: 16px;
 }
 
-.message span {
+.message > div {
 	text-align: center;
 }
 
@@ -104,14 +129,14 @@ export default {
 }
 
 @media screen and (max-width: 1280px) {
-	.container {
+	.msgContainer {
 		width: 90%;
 		left: 5%;
 		text-align: center;
 		padding: 30px;
 	}
 
-	.message span {
+	.message > div {
 		padding: 5px;
 	}
 }

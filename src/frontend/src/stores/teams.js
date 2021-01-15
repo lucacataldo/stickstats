@@ -87,6 +87,10 @@ export default Vue.observable({
     return teamData
   },
   rate: function (team) {
+    if (!team.teamStats[0].splits[0].stat.gamesPlayed) {
+      return 0  
+    }
+
     const stats = team.teamStats[0].splits[1].stat;
     var sum = 0;
     var num = 1;
