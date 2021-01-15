@@ -48,7 +48,6 @@ export default {
 		}
 	},
 	mounted() {
-    console.log(this.openProp, this.messageProp);
 		if (this.openProp === true) {
 			setTimeout(() => {
 				this.toast({
