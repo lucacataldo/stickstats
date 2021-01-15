@@ -22,6 +22,15 @@ let generate = async () => {
       <changefreq>weekly</changefreq>
     </url>
   `)
+
+  fs.appendFileSync('sitemap.xml', `
+  <url>
+    <loc>https://stickstats.club/</loc>
+    <lastmod>${date}</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  `);
+
   teams.forEach(team => {
     fs.appendFileSync('sitemap.xml', `
     <url>
