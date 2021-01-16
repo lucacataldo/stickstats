@@ -1,7 +1,7 @@
 <template>
 	<div class="seasonSelector">
 		<div class="selector noselect" @click="open">
-			{{ `${$teams.season.slice(0, 4)}-${$teams.season.slice(4, 8)}` }}
+			{{ `${currentSeason.slice(0, 4)}-${currentSeason.slice(4, 8)}` }}
 			<i class="fa fa-history"></i>
 		</div>
 		<div class="seasons" v-if="isOpen">
@@ -31,6 +31,10 @@ export default {
 		toPrefix: {
 			type: String,
 			default: ""
+		},
+		currentSeason: {
+			type: String,
+			default: ""
 		}
 	},
 	watch: {
@@ -44,6 +48,10 @@ export default {
 		let thisYear = new Date().getFullYear();
 		for (let i = 0; i < 10; i++) {
 			this.seasons[i] = `${thisYear - i - 1}${thisYear - i}`;
+		}
+
+		if (this.currentSeason === "") {
+			this.currentSeason = new Date().getFullYear() - 1 + "" + new Date().getFullYear();
 		}
 
 		document.addEventListener("click", e => {

@@ -2,10 +2,10 @@
 	<div>
 		<div>
 			<h2 class="seasonCont">
-				<season-selector />
+				<season-selector :currentSeason="$teams.season" />
 			</h2>
 		</div>
-		<input v-model="searchTerm" type="text" placeholder="Filter teams..." class="searchBox" />
+		<input v-model="searchTerm" type="text" placeholder="Search (teams or players)" class="searchBox" />
 		<i class="fas fa-search"></i>
 
 		<div class="description">
@@ -19,7 +19,7 @@
 			<router-link
 				class="team float-up"
 				v-else
-				v-bind:key="team.id + '' + Date.now()"
+				v-bind:key="team.id"
 				v-bind:to="`/team/${team.id}/season/${$teams.season.slice(0, 4)}`"
 				v-for="team in $teams.teams.filter(searchAlgorithm)"
 			>
@@ -38,19 +38,37 @@
 				</span>
 			</router-link>
 		</div>
+		<loader v-if="this.playersLoading" message="Loading player results..." />
+		<div v-if="playerResults.length && !this.playersLoading" class="playerResults">
+			<h1>Players</h1>
+			<player-card
+				v-for="player in playerResults"
+				:key="player.id"
+				:player="{ person: { fullName: player.name, id: player.id } }"
+				:float="false"
+			/>
+		</div>
 	</div>
 </template>
 
 <script>
 import SeasonSelector from "../components/SeasonSelector.vue";
 import Loader from "../components/Loader.vue";
+import PlayerCard from "../components/PlayerCard.vue";
+
 export default {
-	components: { SeasonSelector, Loader },
+	components: {
+		SeasonSelector,
+		Loader,
+		PlayerCard
+	},
 	name: "Home",
 	data() {
 		return {
 			searchTerm: "",
-			searchResults: []
+			searchResults: [],
+			playerResults: [],
+			playersLoading: false
 		};
 	},
 	methods: {
@@ -70,8 +88,21 @@ export default {
 
 		this.animate(".teamGrid ");
 	},
+	timer: 0,
 	watch: {
 		searchTerm: function() {
+			this.playersLoading = true;
+			clearTimeout(this.timer);
+			this.timer = setTimeout(async () => {
+				if (this.searchTerm.length) {
+					let res = this.$players.searchPlayers(this.searchTerm);
+					this.playerResults = res;
+				} else {
+					this.playerResults = [];
+				}
+				this.playersLoading = false;
+			}, 1000);
+
 			this.animate(".teamGrid ");
 		}
 	}
@@ -142,6 +173,18 @@ export default {
 .rating {
 	line-height: 60px;
 	font-size: 50px;
+}
+
+.playerResults {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.playerResults h1 {
+	text-align: center;
+	flex-basis: 100%;
+	flex-grow: 1;
 }
 
 @media screen and (max-width: 1280px) {

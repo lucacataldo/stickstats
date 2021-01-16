@@ -1,5 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
+import FormatSeason from "../utils/FormatSeason"
 export default Vue.observable({
   loading: false,
   teams: [],
@@ -39,10 +40,7 @@ export default Vue.observable({
     savePctRank: "Save Percentage",
     shootingPctRank: "Shooting Percentage"
   },
-  formatSeason: function (season) {
-    season = parseInt(season);
-    return `${season}${season + 1}`
-  },
+  formatSeason: FormatSeason,
   getTeamSeason: async function (id, season) {
     let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}?expand=team.stats&season=${this.formatSeason(season)}`)
 
@@ -55,15 +53,13 @@ export default Vue.observable({
   },
   getHistoricalRatings: async function (id, range = 30) {
 
-    // const firstYear = new Date().getFullYear() - range;
-    // TODO - hardcoded because covid sucks
-    const firstYear = 2020 - range;
+    const firstYear = new Date().getFullYear() - range;
 
     var teamData = {}
 
     for (let i = firstYear; i < (new Date().getFullYear()); i++) {
       try {
-        if (localStorage.getItem(`${id}-${i}`)) {
+        if (localStorage.getItem(`${id}-${i}`) && (i !== firstYear)) {
           teamData[i] = JSON.parse(localStorage.getItem(`${id}-${i}`)).overall
         } else {
           let resp = await this.getTeamSeason(id, i);
@@ -91,6 +87,10 @@ export default Vue.observable({
     return teamData
   },
   rate: function (team) {
+    if (!team.teamStats[0].splits[0].stat.gamesPlayed) {
+      return 0  
+    }
+
     const stats = team.teamStats[0].splits[1].stat;
     var sum = 0;
     var num = 1;
@@ -104,10 +104,8 @@ export default Vue.observable({
   getData: async function (season) {
     this.loading = true;
     if (!season) {
-      // TODO - hardcoded because covid sucks
-      // let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
-      // season = currentSeason.data.seasons[0].seasonId;
-      season = "20192020"
+      let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
+      season = currentSeason.data.seasons[0].seasonId;
     } else {
       season = this.formatSeason(season);
     }

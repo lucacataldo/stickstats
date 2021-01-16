@@ -2,10 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import teams from "./stores/teams";
+import players from "./stores/players";
 import gsap from "gsap";
 import AsyncAssets from "./utils/AsyncAssets"
 
 Vue.prototype.$teams = teams;
+Vue.prototype.$players = players;
 
 AsyncAssets()
 
