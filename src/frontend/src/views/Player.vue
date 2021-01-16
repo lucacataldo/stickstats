@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-			<router-link v-if="player.currentTeam" :to="`/team/${player.currentTeam.id}`">
+			<router-link style="text-align: center" v-if="player.currentTeam" :to="`/team/${player.currentTeam.id}`">
 				<img
 					v-bind:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${player.currentTeam.id}.svg`
@@ -62,10 +62,15 @@
 					@error="fallbackImg"
 					width="200px"
 				/>
+        <h4>Current Team</h4>
 			</router-link>
 		</div>
 		<div class="season">
-			<h2>{{ player.fullName }} {{ currentSeason }} Season Stats</h2>
+			<h2>
+				{{ player.fullName }}
+				<season-selector :currentSeason="currentSeason" :toPrefix="`/player/${player.id}`" /> Season
+				Stats
+			</h2>
 		</div>
 		<toaster
 			:openProp="isLimited"
@@ -172,6 +177,7 @@ import Loader from "../components/Loader";
 import PieChart from "../components/PieChart";
 import { darken } from "khroma";
 import Toaster from "../components/Toaster";
+import SeasonSelector from "../components/SeasonSelector";
 export default {
 	data() {
 		return {
@@ -186,7 +192,8 @@ export default {
 	components: {
 		Loader,
 		PieChart,
-		Toaster
+		Toaster,
+		SeasonSelector
 	},
 	computed: {
 		currentStats: function() {
@@ -198,16 +205,13 @@ export default {
 		},
 		currentSeason: function() {
 			try {
-				return `${this.stats[this.index].season.slice(0, 4)}-${this.stats[this.index].season.slice(
-					4,
-					8
-				)}`;
+				return this.stats[this.index].season;
 			} catch (error) {
-				return "SEASON";
+				return "00000000";
 			}
 		},
 		isLimited: function() {
-      let len = Object.keys(this.currentStats).length;
+			let len = Object.keys(this.currentStats).length;
 			return this.currentStats && 2 < len && len < 8;
 		},
 		isSkater: function() {
@@ -232,6 +236,14 @@ export default {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
 
+		if (this.$route.params.seasonId) {
+			try {
+				const seasonId = this.$route.params.seasonId + (parseInt(this.$route.params.seasonId) + 1);
+				this.index = this.stats.findIndex(t => t.season === seasonId);
+			} catch (error) {
+				this.index = 0;
+			}
+		}
 		window.scrollTo(0, 0);
 	},
 	methods: {

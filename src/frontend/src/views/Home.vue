@@ -2,7 +2,7 @@
 	<div>
 		<div>
 			<h2 class="seasonCont">
-				<season-selector />
+				<season-selector :currentSeason="$teams.season" />
 			</h2>
 		</div>
 		<input v-model="searchTerm" type="text" placeholder="Search (teams or players)" class="searchBox" />

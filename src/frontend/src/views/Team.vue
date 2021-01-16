@@ -13,7 +13,7 @@
 		/>
 		<div class="season">
 			<h2>
-				<season-selector :toPrefix="`/team/${team.id}`" />
+				<season-selector :currentSeason="$teams.season" :toPrefix="`/team/${team.id}`" />
 			</h2>
 		</div>
 		<loader v-if="$teams.loading" />
