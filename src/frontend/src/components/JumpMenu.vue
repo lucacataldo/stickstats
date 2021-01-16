@@ -26,7 +26,7 @@ export default {
 					if (entry.isIntersecting) {
 						document.querySelector(`#menu-button-${entry.target.id}`).style.boxShadow =
 							"0px 2px 0px var(--highlight)";
-					} else if (!entry.isIntersecting) {
+					} else if (!entry.isIntersecting && document.querySelector(`#menu-button-${entry.target.id}`)) {
 						document.querySelector(`#menu-button-${entry.target.id}`).style.boxShadow =
 							"0px 0px 0px var(--highlight)";
 					}
