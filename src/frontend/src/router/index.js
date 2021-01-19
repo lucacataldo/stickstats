@@ -17,6 +17,11 @@ const routes = [
     component: () => import("../views/Wallpapers.vue")
   },
   {
+    path: "/dangle",
+    name: "Dangle",
+    component: () => import("../views/Dangle.vue")
+  },
+  {
     path: "/season/:seasonId",
     name: "Season",
     component: Home
