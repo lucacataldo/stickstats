@@ -88,7 +88,7 @@ export default Vue.observable({
   },
   rate: function (team) {
     if (!team.teamStats[0].splits[0].stat.gamesPlayed) {
-      return 0  
+      return 0
     }
 
     const stats = team.teamStats[0].splits[1].stat;
@@ -137,5 +137,19 @@ export default Vue.observable({
     });
 
     this.loading = false;
+  },
+  getSchedule: async function (id, month) {
+    let monthStart, monthEnd
+    if (month < 10) {
+      monthStart = `0${month}`
+      monthEnd = `0${month+1}`
+    } else {
+      monthStart = `${month}`
+      monthEnd = `${month+1}`
+    }
+
+    let data = (await axios.get(`https://statsapi.web.nhl.com/api/v1/schedule?teamId=${id}&expand=games.broadcasts&startDate=2021-${monthStart}-01&endDate=2021-${monthEnd}-01`)).data
+
+    return data
   }
 });
