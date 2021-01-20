@@ -1,24 +1,50 @@
 <template>
-	<div class="cont">
-		<h2>Team Schedule for {{ this.months[month] }}</h2>
+	<div class="cont" :class="{ darkTheme: theme === false, lightTheme: theme === true }">
+		<div class="result" v-if="doneImg">
+			<i @click="closeResult" class="fa fa-2x fa-times"></i>
+			<h1>Here's your wallpaper!</h1>
+			<p>Tap or click the image to download</p>
+			<a target="_blank" :href="wallpaperImg" download="wallpaper.jpeg">
+				<img :src="wallpaperImg" />
+			</a>
+		</div>
+		<h2 class="float-up">Team Schedule for {{ this.months[month] }}</h2>
 
-		<div class="bgSelector">
-			<label class="button" for="imgInput">
-				<i class="fa fa-image"></i>
-			</label>
+		<div class="bgSelector float-up">
+			<label class="button" for="imgInput"> <i class="fa fa-image"></i> Custom BG </label>
 			<input type="file" name="imgInput" id="imgInput" @change="handleImage" />
 
 			<div class="button download" @click="download">Download Wallpaper</div>
 		</div>
+		<div>
+			<flipper-switch
+				class="float-up"
+				@flipped="darkLightEvent"
+				height="20px"
+				width="80px"
+				optOne="Dark Text"
+				optTwo="Light Text"
+			/>
+		</div>
 
-		<div class="calCont">
+		<loader message="Generating Wallpaper..." v-if="loading" />
+
+		<div>
+			<br />
+			<h3 class="float-up">Preview</h3>
+			<br />
+		</div>
+
+		<div class="calCont float-up">
 			<img
 				:src="
-					`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${$route.params.id}.svg`
+					`https://www-league.nhlstatic.com/images/logos/teams-current-primary-${
+						theme ? 'light' : 'dark'
+					}/${$route.params.id}.svg`
 				"
 				class="inlineImg"
-        width="100px"
-        height="100px"
+				width="150px"
+				height="150px"
 				@error="fallbackImg"
 			/>
 			<h1>
@@ -37,12 +63,12 @@
 						</div>
 						<img
 							:src="
-								`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${
-									notThisTeam(day.teams).team.id
-								}.svg`
+								`https://www-league.nhlstatic.com/images/logos/teams-current-primary-${
+									theme ? 'light' : 'dark'
+								}/${notThisTeam(day.teams).team.id}.svg`
 							"
-              width="50px"
-              height="50px"
+							width="65px"
+							height="65px"
 							class="logo"
 							@error="fallbackImg"
 						/>
@@ -52,6 +78,11 @@
 					</div>
 				</div>
 			</div>
+			<div class="watermark">
+				<span class="color-highlight">{</span>
+				StickStats.club
+				<span class="color-highlight">}</span>
+			</div>
 			<img class="calBg" v-if="customImg" :src="img" alt="Calendar Image" />
 		</div>
 	</div>
@@ -59,12 +90,19 @@
 
 <script>
 import Vue from "vue";
-import html2canvas from "html2canvas";
+import { toJpeg } from "html-to-image";
+import FlipperSwitch from "../components/FlipperSwitch.vue";
+import Loader from "../components/Loader.vue";
 export default {
+	components: { FlipperSwitch, Loader },
 	data() {
 		return {
 			team: {},
+			theme: false,
 			month: 1,
+			loading: false,
+			doneImg: false,
+			wallpaperImg: "",
 			months: [
 				null,
 				"January",
@@ -87,8 +125,21 @@ export default {
 	},
 	async mounted() {
 		if (this.$route.params.id) {
+			if (this.$route.params.month) {
+				this.month = parseInt(this.$route.params.month);
+			} else {
+				this.month = new Date().getMonth() + 1;
+			}
+
+			if (window.innerWidth < 1024) {
+				this.scaleFactor = window.innerWidth / 1440;
+			} else {
+				this.scaleFactor = window.innerWidth / 1920;
+			}
+
+			document.querySelector(".calCont").style.transform = `scale(${this.scaleFactor})`;
+
 			let resp = await this.$teams.getSchedule(10, this.month);
-			console.log(resp);
 			let year = new Date().getFullYear();
 
 			let numDays = new Date(year, this.month, 0).getDate();
@@ -120,6 +171,9 @@ export default {
 				return teams.home;
 			}
 		},
+		darkLightEvent(state) {
+			this.theme = state;
+		},
 		getTime(date) {
 			date = new Date(date);
 			let h = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
@@ -128,18 +182,24 @@ export default {
 			return `${h}:${m} ${am_pm}`;
 		},
 		download() {
-			html2canvas(document.querySelector(".calCont"), {
-        allowTaint: true,
-        removeContainer: true,
-				scale: 2,
-				scrollX: -window.scrollX,
-				scrollY: -window.scrollY,
-				windowWidth: document.documentElement.offsetWidth,
-        windowHeight: document.documentElement.offsetHeight,
-			}).then(canvas => {
-				var image = canvas.toDataURL("image/jpeg", 1.0);
-				window.open(image, "_blank");
+			document.querySelector(".calCont").style.transform = `scale(1)`;
+			this.loading = true;
+			toJpeg(document.querySelector(".calCont"), {
+				pixelRatio: 1,
+				quality: 0.8
+			}).then(img => {
+				this.wallpaperImg = img;
+				document.querySelector(".calCont").style.transform = `scale(${this.scaleFactor})`;
+				this.loading = false;
+				this.doneImg = true;
+				document.querySelector("body").style.overflowY = "hidden";
 			});
+		},
+		closeResult(){
+			this.doneImg = false,
+			this.wallpaperImg = "",
+			document.querySelector("body").style.overflowY = "auto";
+			this.animate()
 		},
 		handleImage() {
 			this.customImg = false;
@@ -156,6 +216,20 @@ export default {
 </script>
 
 <style scoped>
+.darkTheme {
+	--calText: var(--mainText);
+	--calBg: url("/wall_bg.png");
+	--dayBg: #00000070;
+	--dayShad: none;
+}
+
+.lightTheme {
+	--calText: #222222;
+	--calBg: url("/wall_bg_light.png");
+	--dayBg: #ffffff90;
+	--dayShad: 0px 0px 10px #00000020;
+}
+
 .cont {
 	display: flex;
 	justify-content: center;
@@ -164,7 +238,34 @@ export default {
 	text-align: center;
 }
 
+.result {
+	position: fixed;
+	padding: 50px;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	background: var(--mainBg);
+	z-index: 25;
+	top: 0px;
+	overflow-y: auto;
+	left: 0px;
+}
+
+.result i {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	cursor: pointer;
+}
+
+.result img {
+	max-width: 100%;
+	max-height: 100%;
+	margin-top: 50px;
+}
+
 .inlineImg {
+	z-index: 2;
 	display: block;
 }
 
@@ -192,17 +293,21 @@ export default {
 .calCont {
 	width: 1080px;
 	height: 1920px;
-	background: var(--light);
+	background: var(--calBg);
+	background-size: 100px;
+	color: var(--calText);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	transform-origin: top;
-  position: relative;
+	position: relative;
 }
 
 .calCont h1 {
+	text-shadow: 0px 0px 5px var(--dayBg);
 	margin-bottom: 20px;
+	z-index: 2;
 }
 
 .cal {
@@ -214,7 +319,7 @@ export default {
 }
 
 .calBg {
-	object-fit: fill;
+	object-fit: cover;
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -228,7 +333,8 @@ export default {
 	box-sizing: border-box;
 	padding: 5px;
 	margin: 0.6%;
-	background: #00000050;
+	background: var(--dayBg);
+	box-shadow: var(--dayShad);
 	border-radius: 15px;
 }
 
@@ -237,11 +343,14 @@ export default {
 	font-weight: bold;
 }
 
-.day .logo {
-	margin: 10px 0px;
+.day .time {
+	opacity: 0.8;
 }
 
-.day .time {
-	opacity: 0.6;
+.watermark {
+	position: absolute;
+	bottom: 15px;
+	justify-self: self-end;
+	font-weight: 900;
 }
 </style>

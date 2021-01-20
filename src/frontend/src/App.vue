@@ -6,7 +6,9 @@
 				<h1 class="title">
 					<span class="beta-tag">BETA</span>
 					<span class="highlight">{</span>
-					&nbsp;<h1 style="display: inline">StickStats</h1>&nbsp;
+					&nbsp;
+					<h1 style="display: inline">StickStats</h1>
+					&nbsp;
 					<span class="highlight">}</span>
 				</h1>
 			</router-link>
@@ -83,6 +85,10 @@ export default {
 	--lrMargins: 100px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 	font-display: swap;
+}
+
+.color-highlight {
+	color: var(--highlight) !important;
 }
 
 body {

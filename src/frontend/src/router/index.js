@@ -27,6 +27,11 @@ const routes = [
     component: () => import("../views/Team.vue")
   },
   {
+    path: "/team/:id/schedule/month/:month",
+    name: "Team Schedule",
+    component: () => import("../views/TeamSchedule.vue")
+  },
+  {
     path: "/team/:id/schedule",
     name: "Team Schedule",
     component: () => import("../views/TeamSchedule.vue")
