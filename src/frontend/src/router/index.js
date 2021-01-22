@@ -1,57 +1,38 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "@/views/Home.vue";
 import gsap from "gsap"
+
+// Route Groups
+import marketing from "@/router/routes/marketing"
+import teams from "@/router/routes/teams"
+import players from "@/router/routes/players"
 
 Vue.use(VueRouter);
 
-const routes = [
+var routes = [
   {
     path: "/",
     name: "Home",
     component: Home
   },
   {
-    path: "/wallpapers",
-    name: "Wallpapers",
-    component: () => import("../views/Wallpapers.vue")
-  },
-  {
-    path: "/dangle",
-    name: "Dangle",
-    component: () => import("../views/Dangle.vue")
-  },
-  {
     path: "/season/:seasonId",
     name: "Season",
     component: Home
   },
-  {
-    path: "/team/:id",
-    name: "View Team Stats",
-    component: () => import("../views/Team.vue")
-  },
-  {
-    path: "/team/:id/season/:seasonId",
-    name: "View Team Stats",
-    component: () => import("../views/Team.vue")
-  },
-  {
-    path: "/player/:id",
-    name: "View Team Stats",
-    component: () => import("../views/Player.vue")
-  },
-  {
-    path: "/player/:id/season/:seasonId",
-    name: "View Team Stats",
-    component: () => import("../views/Player.vue")
-  },
-  {
-    path: "*",
-    name: "404",
-    component: () => import("../views/404.vue")
-  }
 ];
+
+routes = routes.concat(marketing)
+routes = routes.concat(teams)
+routes = routes.concat(players)
+
+routes.push({
+  path: "*",
+  name: "404",
+  component: () => import("@/views/404.vue")
+})
+
 
 const router = new VueRouter({
   mode: "history",
