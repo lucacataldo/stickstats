@@ -1,6 +1,6 @@
 <template>
 	<div v-if="team.teamStats" class="team" :class="oneOrTwo">
-		<div class="row">
+		<router-link :to="`/team/${team.id}`" class="row">
 			<img
 				:src="
 					`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${team.id}.svg`
@@ -12,7 +12,7 @@
 			<h2>
 				{{ team.abbreviation }}
 			</h2>
-		</div>
+		</router-link>
 		<div v-for="(stat, lab) in team.teamStats[0].splits[0].stat" :key="lab" class="row">
 			<div class="label">
 				{{ $teams.nameTranslations[lab] }}
@@ -69,6 +69,7 @@ export default {
 	text-align: center;
 	box-sizing: border-box;
 	padding: 10px;
+  animation: fadeIn 1s ease forwards;
 }
 
 .row {
