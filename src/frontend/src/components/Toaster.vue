@@ -69,7 +69,7 @@ export default {
 	min-height: 100px;
 	background: var(--light);
 	z-index: 100;
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 	box-shadow: 0px 00px 50px 20px rgba(0, 0, 0, 0.9);
 	display: flex;
 	flex-direction: column;

@@ -88,7 +88,7 @@ p {
   height: 354px;
 	margin: 10px;
   background: var(--light);
-  border-radius: 20px;
+  border-radius: var(--mainBorderRad);
   overflow: hidden;
   transition: box-shadow 0.4s ease;
 }

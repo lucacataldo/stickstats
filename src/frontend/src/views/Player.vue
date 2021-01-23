@@ -285,7 +285,7 @@ i.leftHanded {
 
 .position {
 	padding: 0px 10px;
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 	background: var(--highlight);
 	color: var(--mainBg);
 }

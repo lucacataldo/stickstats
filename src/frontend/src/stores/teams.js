@@ -42,6 +42,9 @@ export default Vue.observable({
   },
   formatSeason: FormatSeason,
   getTeamSeason: async function (id, season) {
+    if (!season) {
+      season = await this.getCurrentSeason()
+    }
     let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}?expand=team.stats&season=${this.formatSeason(season)}`)
 
     return data
@@ -88,7 +91,7 @@ export default Vue.observable({
   },
   rate: function (team) {
     if (!team.teamStats[0].splits[0].stat.gamesPlayed) {
-      return 0  
+      return 0
     }
 
     const stats = team.teamStats[0].splits[1].stat;
@@ -104,8 +107,7 @@ export default Vue.observable({
   getData: async function (season) {
     this.loading = true;
     if (!season) {
-      let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
-      season = currentSeason.data.seasons[0].seasonId;
+      season = await this.getCurrentSeason();
     } else {
       season = this.formatSeason(season);
     }
@@ -137,5 +139,14 @@ export default Vue.observable({
     });
 
     this.loading = false;
+  },
+  getCurrentSeason: async function () {
+    try {
+      let s = await await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`)
+      return s.data.seasons[0].seasonId
+    } catch (error) {
+      console.log("Error getting current season \n\n", error);
+      return ""
+    }
   }
 });

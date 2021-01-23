@@ -155,7 +155,7 @@ export default {
 	flex-direction: column;
 	padding: 20px;
 	transition: background 0.4s ease, box-shadow 0.5s ease;
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 }
 
 .team:hover {

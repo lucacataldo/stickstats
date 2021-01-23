@@ -81,6 +81,7 @@ export default {
 	--mainText: #fefefe;
 	--light: #151519;
 	--lrMargins: 100px;
+  --mainBorderRad: 20px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 	font-display: swap;
 }

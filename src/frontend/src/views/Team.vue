@@ -11,6 +11,7 @@
 				{ name: 'Team Stats', tag: '#teamStats' }
 			]"
 		/>
+		<compare-team-button />
 		<div class="season">
 			<h2>
 				<season-selector :currentSeason="$teams.season" :toPrefix="`/team/${team.id}`" />
@@ -91,6 +92,7 @@ import Loader from "../components/Loader";
 import TeamChart from "../components/TeamChart.vue";
 import TeamRoster from "../components/TeamRoster.vue";
 import JumpMenu from "../components/JumpMenu.vue";
+import CompareTeamButton from "@/components/CompareTeamButton.vue";
 export default {
 	name: "Team",
 	components: {
@@ -100,7 +102,8 @@ export default {
 		Loader,
 		TeamChart,
 		TeamRoster,
-		JumpMenu
+		JumpMenu,
+		CompareTeamButton
 	},
 	data() {
 		return {
