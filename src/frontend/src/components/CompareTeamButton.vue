@@ -4,10 +4,15 @@
 			<i class="fa fa-exchange-alt"></i>
 		</div>
 		<div class="selectorCont" v-if="isOpen">
+			<i class="fa fa-angle-down close" @click="close"></i>
 			<h3>Compare With</h3>
 			<input ref="inp" placeholder="Search..." type="text" v-model="searchTerm" />
 			<div class="results">
-				<router-link v-for="team in results" :key="team.id" :to="`../compare/${team.id}`">
+				<router-link
+					v-for="team in results"
+					:key="team.id"
+					:to="`/team/${$route.params.id}/compare/${team.id}`"
+				>
 					<img
 						class="resultImg"
 						:src="
@@ -33,24 +38,34 @@ export default {
 		};
 	},
 	mounted() {
-		this.results = this.$teams.teams;
+		this.results = this.$teams.teams.filter(t => {
+			return parseInt(t.id) !== parseInt(this.$route.params.id);
+		});
 	},
 	methods: {
 		open() {
-			this.isOpen = !this.isOpen;
+			this.isOpen = true;
 			setTimeout(() => {
 				this.$refs.inp.focus();
 			}, 100);
+		},
+		close() {
+			this.isOpen = false;
 		}
 	},
 	watch: {
 		searchTerm(newVal) {
 			if (newVal) {
-				this.results = this.$teams.teams.filter(
-					t => t.name.toLowerCase().indexOf(newVal.toLowerCase()) > -1
-				);
+				this.results = this.$teams.teams.filter(t => {
+					return (
+						t.name.toLowerCase().indexOf(newVal.toLowerCase()) > -1 &&
+						parseInt(t.id) !== parseInt(this.$route.params.id)
+					);
+				});
 			} else {
-				this.results = this.$teams.teams;
+				this.results = this.$teams.teams.filter(t => {
+					return parseInt(t.id) !== parseInt(this.$route.params.id);
+				});
 			}
 		}
 	}
@@ -92,6 +107,20 @@ export default {
 	color: var(--light);
 }
 
+.close {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	padding: 10px;
+	font-size: 1.2em;
+	transition: opacity 0.3s ease;
+	cursor: pointer;
+}
+
+.close:hover {
+	opacity: 0.6;
+}
+
 .selectorCont {
 	width: 100%;
 	height: 100%;
@@ -103,7 +132,7 @@ export default {
 	text-align: center;
 	display: flex;
 	flex-direction: column;
-  font-weight: 900;
+	font-weight: 900;
 }
 
 input {
@@ -132,7 +161,7 @@ input:focus {
 	flex-wrap: wrap;
 	flex-grow: 0;
 	overflow-y: auto;
-  margin-top: 10px;
+	margin-top: 10px;
 }
 
 .results a:any-link {
@@ -142,13 +171,13 @@ input:focus {
 	box-sizing: border-box;
 	padding: 5px;
 	transition: background 0.3s ease, color 0.3s ease;
-  border-radius: 100px;
-  margin: 5px 0px;
-  padding: 10px;
+	border-radius: 100px;
+	margin: 5px 0px;
+	padding: 10px;
 }
 
 .results a:hover {
-  background: rgba(255, 255, 255, 0.05);
+	background: rgba(255, 255, 255, 0.05);
 }
 
 .results a span {
