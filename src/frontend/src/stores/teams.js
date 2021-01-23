@@ -52,20 +52,24 @@ export default Vue.observable({
     return data
   },
   getHistoricalRatings: async function (id, range = 30) {
+    let thisYear = (await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`)).data.seasons[0].seasonId;
+    thisYear = parseInt(thisYear.slice(0,4))
 
-    const firstYear = new Date().getFullYear() - range;
+    const firstYear = thisYear - range;
 
     var teamData = {}
 
-    for (let i = firstYear; i < (new Date().getFullYear()); i++) {
+    for (let i = firstYear; i <= thisYear; i++) {
       try {
-        if (localStorage.getItem(`${id}-${i}`) && (i !== firstYear)) {
+        if (localStorage.getItem(`${id}-${i}`) && (i !== thisYear)) {
           teamData[i] = JSON.parse(localStorage.getItem(`${id}-${i}`)).overall
         } else {
           let resp = await this.getTeamSeason(id, i);
           if (resp.status === 200) {
             teamData[i] = this.rate(resp.data.teams[0])
-            localStorage.setItem(`${id}-${i}`, JSON.stringify({ year: i, overall: teamData[i] }))
+            if (i !== thisYear) {
+              localStorage.setItem(`${id}-${i}`, JSON.stringify({ year: i, overall: teamData[i] }))
+            }
           } else {
             teamData[i] = null;
             localStorage.setItem(`${id}-${i}`, JSON.stringify({ year: i, overall: null }))
@@ -88,7 +92,7 @@ export default Vue.observable({
   },
   rate: function (team) {
     if (!team.teamStats[0].splits[0].stat.gamesPlayed) {
-      return 0  
+      return 0
     }
 
     const stats = team.teamStats[0].splits[1].stat;
