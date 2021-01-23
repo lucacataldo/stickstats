@@ -14,9 +14,6 @@
 			</h2>
 		</router-link>
 		<div v-for="(stat, lab) in team.teamStats[0].splits[0].stat" :key="lab" class="row">
-			<div class="label">
-				{{ $teams.nameTranslations[lab] }}
-			</div>
 			<div class="statNum" :class="{ winner: isWinner(diffs[lab]) }">
 				<span>
 					{{ formatStat(stat, lab) }}
@@ -78,7 +75,9 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	font-size: 1.2em;
-	margin: 5px 0px;
+	padding: 5px 0px;
+  box-sizing: border-box;
+  height: 70px;
 }
 
 .one {
@@ -100,12 +99,7 @@ export default {
 	justify-content: start;
 }
 
-.statDiff {
-	width: 50px;
-}
-
 .statNum {
-	width: 150px;
 	font-weight: 900;
 	font-size: 1.75em;
 }

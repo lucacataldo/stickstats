@@ -4,6 +4,14 @@
 			<h2>Current Season Comparison</h2>
 		</div>
 		<compare-team-box oneOrTwo="one" :team="teamOne" :diffs="diffs" />
+		<div class="labels">
+      <div>
+
+      </div>
+			<div v-for="lab in labels" :key="lab">
+				{{ lab }}
+			</div>
+		</div>
 		<compare-team-box oneOrTwo="two" :team="teamTwo" :diffs="diffs" />
 	</div>
 </template>
@@ -16,7 +24,8 @@ export default {
 		return {
 			teamOne: {},
 			teamTwo: {},
-			diffs: {}
+			diffs: {},
+			labels: []
 		};
 	},
 	components: {
@@ -38,6 +47,7 @@ export default {
 			});
 
 			this.diffs = tempDiffs;
+			this.labels = labels.map(l => this.$teams.nameTranslations[l]);
 		} else {
 			alert("not gucci");
 		}
@@ -48,8 +58,8 @@ export default {
 <style scoped>
 .cont {
 	display: grid;
-	grid-template-areas: "top top" "one two";
-	grid-template-columns: 1fr 1fr;
+	grid-template-areas: "top top top" "one lab two";
+	grid-template-columns: 2fr 1fr 2fr;
 }
 
 .top {
@@ -57,10 +67,29 @@ export default {
 	text-align: center;
 }
 
+.labels {
+	text-align: center;
+	grid-area: lab;
+  box-sizing: border-box;
+	padding: 10px;
+}
+
+.labels > div {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+  justify-content: center;
+	font-size: 1.2em;
+	padding: 5px 0px;
+  box-sizing: border-box;
+  height: 70px;
+}
+
 @media screen and (max-width: 992px) {
 	.cont {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
+    font-size: 0.7em;
 	}
 }
 </style>
