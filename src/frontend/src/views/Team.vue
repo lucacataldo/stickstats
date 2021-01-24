@@ -62,7 +62,7 @@
 					@flipped="rawOrRankEvent"
 					height="20px"
 					width="80px"
-					v-bind:default-state="true"
+					v-bind:default-state="false"
 					optOne="Raw Data"
 					optTwo="Rankings"
 				/>
@@ -108,7 +108,7 @@ export default {
 	data() {
 		return {
 			team: undefined,
-			rawOrRank: 1,
+			rawOrRank: 0,
 			filterTerm: ""
 		};
 	},

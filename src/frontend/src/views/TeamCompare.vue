@@ -1,39 +1,56 @@
 <template>
-	<div class="cont">
+	<div>
 		<div class="top">
 			<h2>Current Season Comparison</h2>
 		</div>
-		<div>
-			<div class="row">
+		<div class="cont">
+			<div class="topRow">
 				<img
 					:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${teamOne.id}.svg`
 					"
 					@error="fallbackImg"
-					width="75px"
+					class="topLogo"
 					:alt="teamOne.name"
 				/>
-        <div>
-          V.S.
-        </div>
-        <img
+				<div>
+					V.S.
+				</div>
+				<img
 					:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${teamTwo.id}.svg`
 					"
 					@error="fallbackImg"
-					width="75px"
+					class="topLogo"
 					:alt="teamTwo.name"
 				/>
 			</div>
-			<div v-for="lab in labels" :key="lab" class="row float-up">
+			<div v-for="lab in labels" :key="lab" class="box float-up">
 				<div class="label">
 					{{ $teams.nameTranslations[lab] }}
 				</div>
-				<div class="stat one" :class="{ winner: diffs[lab] > 0 }">
-					{{ formatStat(teamOne.teamStats[0].splits[0].stat[lab], lab) }}
+				<div class="diff">
+					<img
+						v-if="diffs[lab] !== 0"
+						:src="
+							`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${
+								diffs[lab] > 0 ? teamOne.id : teamTwo.id
+							}.svg`
+						"
+						width="75px"
+					/>
+					<div v-if="diffs[lab] !== 0">
+						{{ diffs[lab] > 0 ? "+" : "" }}{{ formatStat(diffs[lab], lab) }}
+					</div>
+					<div v-else>TIE</div>
 				</div>
-				<div class="stat two" :class="{ winner: diffs[lab] < 0 }">
-					{{ formatStat(teamTwo.teamStats[0].splits[0].stat[lab], lab) }}
+				<div>
+					<div class="stat one" :class="{ winner: diffs[lab] > 0 }">
+						{{ formatStat(teamOne.teamStats[0].splits[0].stat[lab], lab) }}
+					</div>
+					<div class="stat two" :class="{ winner: diffs[lab] < 0 }">
+						{{ formatStat(teamTwo.teamStats[0].splits[0].stat[lab], lab) }}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -41,6 +58,8 @@
 </template>
 
 <script>
+import RoundNum from "../utils/RoundNum";
+import Stat from "../utils/Stat";
 export default {
 	data() {
 		return {
@@ -68,51 +87,81 @@ export default {
 			this.diffs = tempDiffs;
 			this.labels = labels;
 		} else {
-			alert("not gucci");
-    }
-    
-    this.animate()
+			alert("Something went wrong while loading comparison data.");
+		}
+
+		this.animate();
 	},
 	methods: {
-		formatStat(stat, lab) {
+		formatStatOld(stat, lab) {
 			stat = parseFloat(stat);
 			if (stat.toFixed !== undefined) {
 				if (this.$teams.nameTranslations[lab].indexOf("Perc") > -1) {
 					if (stat < 1) {
-						return stat * 100 + "%";
+						return RoundNum(stat * 100, 1) + "%";
 					} else {
-						return `${stat}%`;
+						return `${RoundNum(stat, 1)}%`;
 					}
 				} else if (this.$teams.nameTranslations[lab].indexOf("Wins ") > -1) {
-					return stat * 100 + "%";
+					return RoundNum(stat * 100, 1) + "%";
 				} else {
-					return Math.round(stat * 100) / 100;
+					return RoundNum(stat, 0);
 				}
 			} else {
-				return stat;
+				return RoundNum(stat, 2);
 			}
-		}
-	}
+		},
+		formatStat: Stat.formatStat,
+		formatName: Stat.formatName
+	},
+	RoundNum
 };
 </script>
 
 <style scoped>
 .cont {
-}
-
-.row {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+}
+
+.topLogo {
+	width: 100px;
+}
+
+.topRow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 50px 0px;
+	flex-grow: 1;
+	flex-basis: 100%;
+}
+
+.box {
+	box-sizing: border-box;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
 	text-align: center;
 	margin: 10px 0px;
 	font-weight: bold;
+	width: 250px;
+	height: 250px;
+	margin: 15px;
+	border-radius: var(--mainBorderRad);
+	background: var(--light);
 }
 
 .label {
-	width: 100%;
 	font-size: 1.2em;
+}
+
+.diff {
+	font-size: 2.5em;
+	display: flex;
 }
 
 .winner {
@@ -120,18 +169,19 @@ export default {
 }
 
 .stat {
-	width: 50%;
-	padding: 0px 10px;
+	display: inline-block;
 	box-sizing: border-box;
-	font-size: 2em;
+	font-size: 1.8em;
+	width: 50%;
+	box-sizing: border-box;
 }
 
-.one {
-	text-align: right;
+.stat.one {
+	padding-right: 5px;
 }
 
-.two {
-	text-align: left;
+.stat.two {
+	padding-left: 5px;
 }
 
 .top {
