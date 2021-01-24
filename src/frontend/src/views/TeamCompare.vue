@@ -3,22 +3,44 @@
 		<div class="top">
 			<h2>Current Season Comparison</h2>
 		</div>
-		<compare-team-box oneOrTwo="one" :team="teamOne" :diffs="diffs" />
-		<div class="labels">
-      <div>
-
-      </div>
-			<div v-for="lab in labels" :key="lab">
-				{{ lab }}
+		<div>
+			<div class="row">
+				<img
+					:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${teamOne.id}.svg`
+					"
+					@error="fallbackImg"
+					width="75px"
+					:alt="teamOne.name"
+				/>
+        <div>
+          V.S.
+        </div>
+        <img
+					:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${teamTwo.id}.svg`
+					"
+					@error="fallbackImg"
+					width="75px"
+					:alt="teamTwo.name"
+				/>
+			</div>
+			<div v-for="lab in labels" :key="lab" class="row float-up">
+				<div class="label">
+					{{ $teams.nameTranslations[lab] }}
+				</div>
+				<div class="stat one" :class="{ winner: diffs[lab] > 0 }">
+					{{ formatStat(teamOne.teamStats[0].splits[0].stat[lab], lab) }}
+				</div>
+				<div class="stat two" :class="{ winner: diffs[lab] < 0 }">
+					{{ formatStat(teamTwo.teamStats[0].splits[0].stat[lab], lab) }}
+				</div>
 			</div>
 		</div>
-		<compare-team-box oneOrTwo="two" :team="teamTwo" :diffs="diffs" />
 	</div>
 </template>
 
 <script>
-import CompareTeamBox from "@/components/CompareTeamBox.vue";
-
 export default {
 	data() {
 		return {
@@ -27,9 +49,6 @@ export default {
 			diffs: {},
 			labels: []
 		};
-	},
-	components: {
-		CompareTeamBox
 	},
 	async mounted() {
 		if (this.$route.params.id && this.$route.params.compareId) {
@@ -47,9 +66,31 @@ export default {
 			});
 
 			this.diffs = tempDiffs;
-			this.labels = labels.map(l => this.$teams.nameTranslations[l]);
+			this.labels = labels;
 		} else {
 			alert("not gucci");
+    }
+    
+    this.animate()
+	},
+	methods: {
+		formatStat(stat, lab) {
+			stat = parseFloat(stat);
+			if (stat.toFixed !== undefined) {
+				if (this.$teams.nameTranslations[lab].indexOf("Perc") > -1) {
+					if (stat < 1) {
+						return stat * 100 + "%";
+					} else {
+						return `${stat}%`;
+					}
+				} else if (this.$teams.nameTranslations[lab].indexOf("Wins ") > -1) {
+					return stat * 100 + "%";
+				} else {
+					return Math.round(stat * 100) / 100;
+				}
+			} else {
+				return stat;
+			}
 		}
 	}
 };
@@ -57,39 +98,46 @@ export default {
 
 <style scoped>
 .cont {
-	display: grid;
-	grid-template-areas: "top top top" "one lab two";
-	grid-template-columns: 2fr 1fr 2fr;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	margin: 10px 0px;
+	font-weight: bold;
+}
+
+.label {
+	width: 100%;
+	font-size: 1.2em;
+}
+
+.winner {
+	color: var(--highlight);
+}
+
+.stat {
+	width: 50%;
+	padding: 0px 10px;
+	box-sizing: border-box;
+	font-size: 2em;
+}
+
+.one {
+	text-align: right;
+}
+
+.two {
+	text-align: left;
 }
 
 .top {
-	grid-area: top;
 	text-align: center;
-}
-
-.labels {
-	text-align: center;
-	grid-area: lab;
-  box-sizing: border-box;
-	padding: 10px;
-}
-
-.labels > div {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-  justify-content: center;
-	font-size: 1.2em;
-	padding: 5px 0px;
-  box-sizing: border-box;
-  height: 70px;
 }
 
 @media screen and (max-width: 992px) {
-	.cont {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-    font-size: 0.7em;
-	}
 }
 </style>

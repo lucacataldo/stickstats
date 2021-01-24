@@ -9,9 +9,6 @@
 				width="75px"
 				:alt="team.name"
 			/>
-			<h2>
-				{{ team.abbreviation }}
-			</h2>
 		</router-link>
 		<div v-for="(stat, lab) in team.teamStats[0].splits[0].stat" :key="lab" class="row">
 			<div class="statNum" :class="{ winner: isWinner(diffs[lab]) }">
