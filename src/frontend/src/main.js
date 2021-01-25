@@ -28,7 +28,7 @@ Vue.mixin({
             duration: 0.3,
             opacity: 1,
             y: 0,
-            stagger: 0.03
+            stagger: 0.05
           });
           this.animateStarted = false
         }, 100);

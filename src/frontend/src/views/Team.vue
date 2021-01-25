@@ -11,6 +11,7 @@
 				{ name: 'Team Stats', tag: '#teamStats' }
 			]"
 		/>
+		<compare-team-button />
 		<div class="season">
 			<h2>
 				<season-selector :currentSeason="$teams.season" :toPrefix="`/team/${team.id}`" />
@@ -61,7 +62,7 @@
 					@flipped="rawOrRankEvent"
 					height="20px"
 					width="80px"
-					v-bind:default-state="true"
+					v-bind:default-state="false"
 					optOne="Raw Data"
 					optTwo="Rankings"
 				/>
@@ -71,7 +72,9 @@
 						v-for="stat in sorted.filter(s => {
 							return (
 								s.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1 ||
-								$teams.nameTranslations[s.name].toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
+								formatName(s.name)
+									.toLowerCase()
+									.indexOf(filterTerm.toLowerCase()) > -1
 							);
 						})"
 						v-bind:key="stat.name + rawOrRank + filterTerm"
@@ -91,6 +94,8 @@ import Loader from "../components/Loader";
 import TeamChart from "../components/TeamChart.vue";
 import TeamRoster from "../components/TeamRoster.vue";
 import JumpMenu from "../components/JumpMenu.vue";
+import CompareTeamButton from "@/components/CompareTeamButton.vue";
+import Stat from "../utils/Stat";
 export default {
 	name: "Team",
 	components: {
@@ -100,12 +105,13 @@ export default {
 		Loader,
 		TeamChart,
 		TeamRoster,
-		JumpMenu
+		JumpMenu,
+		CompareTeamButton
 	},
 	data() {
 		return {
 			team: undefined,
-			rawOrRank: 1,
+			rawOrRank: 0,
 			filterTerm: ""
 		};
 	},
@@ -154,7 +160,8 @@ export default {
 		rawOrRankEvent: function(state) {
 			this.rawOrRank = state ? 1 : 0;
 			this.animate(".stats ");
-		}
+		},
+		formatName: Stat.formatName
 	},
 	watch: {
 		filterTerm: function() {

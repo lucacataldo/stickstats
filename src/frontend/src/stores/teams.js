@@ -7,41 +7,11 @@ export default Vue.observable({
   copyright: "",
   season: "",
   seasonSimple: "",
-  nameTranslations: {
-    gamesPlayed: "Games Played",
-    wins: "Wins",
-    losses: "Losses",
-    ot: "Overtime Wins",
-    pts: "Points",
-    ptPctg: "Points Percentage",
-    goalsPerGame: "Goals / Game",
-    goalsAgainstPerGame: "Goals Against / Game",
-    evGGARatio: "Even Strength GGA Ratio",
-    powerPlayPercentage: "PP Percentage",
-    powerPlayGoals: "PP Goals",
-    powerPlayGoalsAgainst: "PP Goals Against",
-    powerPlayOpportunities: "PP Opportunities",
-    penaltyKillOpportunities: "PK Opportunities",
-    penaltyKillPercentage: "PK Percentage",
-    shotsPerGame: "Shots / Game",
-    shotsAllowed: "Shots Allowed",
-    winScoreFirst: "Wins - Scores 1st",
-    winOppScoreFirst: "Wins - Opp. Scores 1st",
-    winLeadFirstPer: "Wins - Leads 1st",
-    winLeadSecondPer: "Wins - Leads 2nd",
-    winOutshootOpp: "Wins (Outshot Opp.)",
-    winOutshotByOpp: "Wins (Opp. Outshot)",
-    faceOffsTaken: "Faceoffs",
-    faceOffsWon: "Faceoffs Won",
-    faceOffsLost: "Faceoffs Lost",
-    faceOffWinPercentage: "Faceoff Win Percentage",
-    shootingPctg: "Shooting Percentage",
-    savePctg: "Save Percentage",
-    savePctRank: "Save Percentage",
-    shootingPctRank: "Shooting Percentage"
-  },
   formatSeason: FormatSeason,
   getTeamSeason: async function (id, season) {
+    if (!season) {
+      season = await this.getCurrentSeason()
+    }
     let data = await axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${id}?expand=team.stats&season=${this.formatSeason(season)}`)
 
     return data
@@ -108,8 +78,7 @@ export default Vue.observable({
   getData: async function (season) {
     this.loading = true;
     if (!season) {
-      let currentSeason = await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`);
-      season = currentSeason.data.seasons[0].seasonId;
+      season = await this.getCurrentSeason();
     } else {
       season = this.formatSeason(season);
     }
@@ -141,5 +110,14 @@ export default Vue.observable({
     });
 
     this.loading = false;
+  },
+  getCurrentSeason: async function () {
+    try {
+      let s = await await axios.get(`https://statsapi.web.nhl.com/api/v1/seasons/current`)
+      return s.data.seasons[0].seasonId
+    } catch (error) {
+      console.log("Error getting current season \n\n", error);
+      return ""
+    }
   }
 });

@@ -88,7 +88,7 @@ export default {
 	top: 0px;
 	right: 25px;
 	padding: 10px;
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 	box-sizing: border-box;
 	transform-origin: top right;
 	transform: scale(1);
@@ -119,7 +119,7 @@ li {
 	margin: 5px;
 	list-style: none;
 	width: 25px;
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 	height: 25px;
 	cursor: pointer;
 	transition: transform 0.3s ease;

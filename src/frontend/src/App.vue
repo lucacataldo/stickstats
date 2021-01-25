@@ -6,7 +6,9 @@
 				<h1 class="title">
 					<span class="beta-tag">BETA</span>
 					<span class="highlight">{</span>
-					&nbsp;<h1 style="display: inline">StickStats</h1>&nbsp;
+					&nbsp;
+					<h1 style="display: inline">StickStats</h1>
+					&nbsp;
 					<span class="highlight">}</span>
 				</h1>
 			</router-link>
@@ -81,6 +83,7 @@ export default {
 	--mainText: #fefefe;
 	--light: #151519;
 	--lrMargins: 100px;
+	--mainBorderRad: 20px;
 	font-family: Heebo, Arial, Helvetica, sans-serif;
 	font-display: swap;
 }
@@ -116,7 +119,7 @@ body {
 
 h1 {
 	font-weight: 900 !important;
-	font-size: 60px;
+	font-size: 55px;
 }
 
 .header {
@@ -161,7 +164,7 @@ a:visited,
 .button {
 	padding: 10px 20px;
 	border-radius: 100px;
-	color: var(--highlight);
+	color: var(--mainText);
 	box-shadow: 0px 0px 0px 3px var(--highlight);
 	transition: all 0.3s ease;
 	font-weight: bold;
@@ -217,6 +220,16 @@ a:visited,
 @media screen and (max-width: 768px) {
 	:root {
 		--lrMargins: 10px;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
 	}
 }
 </style>

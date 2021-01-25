@@ -39,7 +39,7 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	text-align: center;
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 	cursor: pointer;
 	transition: box-shadow 0.3s ease;
 }

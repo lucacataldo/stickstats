@@ -152,7 +152,7 @@ export default {
 	padding: 5px 10px;
 	margin: 2px 0px;
 	color: var(--mainText);
-	border-radius: 20px;
+	border-radius: var(--mainBorderRad);
 	transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
