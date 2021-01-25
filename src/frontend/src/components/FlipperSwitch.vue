@@ -1,5 +1,5 @@
 <template>
-	<div class="root" :style="{ fontSize: height }">
+	<div class="root" :style="{ fontSize: height, marginBottom }">
 		{{ optOne }}
 		<div class="wrapper" :style="{ height: height, width: width }" @click="flip">
 			<div class="switch" :style="{ height: height }" :class="{ flipped: state }"></div>
@@ -30,6 +30,10 @@ export default {
 		width: {
 			type: String,
 			default: "100px"
+    },
+    marginBottom: {
+			type: String,
+			default: "40px"
 		},
 		defaultState: Boolean,
 		optOne: {
