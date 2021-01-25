@@ -119,7 +119,7 @@ body {
 
 h1 {
 	font-weight: 900 !important;
-	font-size: 60px;
+	font-size: 55px;
 }
 
 .header {
@@ -164,7 +164,7 @@ a:visited,
 .button {
 	padding: 10px 20px;
 	border-radius: 100px;
-	color: var(--highlight);
+	color: var(--mainText);
 	box-shadow: 0px 0px 0px 3px var(--highlight);
 	transition: all 0.3s ease;
 	font-weight: bold;

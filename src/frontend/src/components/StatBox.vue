@@ -1,15 +1,16 @@
 <template>
 	<div class="wrapper">
 		<h2>
-			{{ $teams.nameTranslations[stat.name] ? $teams.nameTranslations[stat.name] : stat.name }}
+			{{formatName(stat.name)}}
 		</h2>
 		<h1 class="highlight">
-			{{ parsedValue }}
+			{{ formatStat(stat.value, stat.name) }}
 		</h1>
 	</div>
 </template>
 
 <script>
+import Stat from "../utils/Stat";
 export default {
 	name: "StatBox",
 	props: {
@@ -22,15 +23,19 @@ export default {
 				return stringy;
 			} else {
 				return Math.round(parseFloat(this.stat.value) * 100) / 100;
-			}
+      }
 		}
+	},
+	methods: {
+		formatName: Stat.formatName,
+		formatStat: Stat.formatStat
 	}
 };
 </script>
 
 <style scoped>
 h1 {
-	font-size: 100px;
+	font-size: 80px;
 }
 
 h2 {
