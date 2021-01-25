@@ -51,7 +51,8 @@ export default {
 		toggleSettings: function() {}
 	},
 	async mounted() {
-    this.$teams.init()
+		localStorage.clear();
+		this.$teams.init();
 		if (localStorage.themeColour) {
 			this.themeColour = localStorage.themeColour;
 		}
@@ -145,17 +146,17 @@ a:visited,
 	position: relative;
 }
 
-.title .highlight{
-  display: inline-block;
-  transition: transform 0.3s ease;
+.title .highlight {
+	display: inline-block;
+	transition: transform 0.3s ease;
 }
 
-.title:hover .highlight{
-  transform: translateX(5px) !important;
+.title:hover .highlight {
+	transform: translateX(5px) !important;
 }
 
-.title:hover .highlight:nth-child(2){
-  transform: translateX(-5px) !important;
+.title:hover .highlight:nth-child(2) {
+	transform: translateX(-5px) !important;
 }
 
 .beta-tag {
