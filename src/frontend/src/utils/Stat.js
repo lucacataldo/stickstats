@@ -1,5 +1,10 @@
 import RoundNum from "./RoundNum"
 const classifiers = {
+  "Our Rating": {
+    name: "Our Rating",
+    type: "Decimal",
+    category: "other"
+  },
   gamesPlayed: {
     name: "Games Played",
     type: "Integer",
@@ -13,7 +18,8 @@ const classifiers = {
   losses: {
     name: "Losses",
     type: "Integer",
-    category: "games"
+    category: "games",
+    inverse: true
   },
   ot: {
     name: "Overtime Wins",
@@ -38,7 +44,8 @@ const classifiers = {
   goalsAgainstPerGame: {
     name: "Goals Against (Average)",
     type: "Decimal",
-    category: "goals"
+    category: "goals",
+    inverse: true
   },
   evGGARatio: {
     name: "Even Strength GAA Ratio",
@@ -83,7 +90,8 @@ const classifiers = {
   shotsAllowed: {
     name: "Shots Allowed / Game",
     type: "Decimal",
-    category: "shots"
+    category: "shots",
+    inverse: true
   },
   winScoreFirst: {
     name: "Wins - Scores 1st",
@@ -128,7 +136,8 @@ const classifiers = {
   faceOffsLost: {
     name: "Faceoffs Lost",
     type: "Integer",
-    category: "faceoffs"
+    category: "faceoffs",
+    inverse: true
   },
   faceOffWinPercentage: {
     name: "Faceoff Win Percentage",
@@ -206,7 +215,7 @@ export default class Stat {
     try {
       return classifiers[lab].name
     } catch (error) {
-      console.log("Error formatting name", error);
+      console.log("Error formatting name" + lab, error);
       return lab
     }
   }
@@ -215,9 +224,13 @@ export default class Stat {
     try {
       return formatters[classifiers[lab].type](val)
     } catch (error) {
-      console.log("Error formatting stat", error);
+      console.log("Error formatting stat" + lab, error);
       return val
     }
+  }
+
+  static checkInverse(lab) {
+    return classifiers[lab].inverse === true
   }
 
   static categories = [

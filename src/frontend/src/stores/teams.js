@@ -6,8 +6,10 @@ export default Vue.observable({
   teams: [],
   copyright: "",
   season: "",
-  seasonSimple: "",
   formatSeason: FormatSeason,
+  init: async function () {
+    this.season = await this.getCurrentSeason()
+  },
   getTeamSeason: async function (id, season) {
     if (!season) {
       season = await this.getCurrentSeason()

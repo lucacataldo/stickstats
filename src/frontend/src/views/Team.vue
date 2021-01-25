@@ -150,6 +150,7 @@ export default {
 		if (this.$route.params.seasonId) {
 			await this.$teams.getData(parseInt(this.$route.params.seasonId));
 		} else {
+      this.$router.replace()
 			await this.$teams.getData();
 		}
 
