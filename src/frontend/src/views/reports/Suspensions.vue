@@ -1,128 +1,144 @@
 <template>
-	<div class="cont">
-		<h2>Suspension Stats</h2>
+	<div class="mainCont">
+		<div class="mainBlock bright">
+			<loader message="Loading historical ratings..." v-if="!loaded" />
+			<div v-else>
+				<h2>By the numbers:</h2>
+				<h1>Player Suspensions by the DOPS</h1>
+			</div>
+		</div>
 
-    <p>
-      <br>
-      Amount of suspensions handed out in play against each team.
-    </p>
+		<div class="mainBlock">
+			<p>
+				From 2016 to 2020 the NHL's Department of Player Safety has issued
+			</p>
+			<h1>{{ allSuspensions.length }} suspensions</h1>
+		</div>
 
-		<div class="statCont">
-			<div
-				class="stat float-up"
-				v-for="stat in stats.sort((a, b) => {
-					return parseInt(a.Count) < parseInt(b.Count);
-				})"
-				:key="stat.Team"
-			>
+		<div class="mainBlock bright">
+			<p>Of those {{ allSuspensions.length }} suspensions,</p>
+			<h1>{{ offenders[0].Count }}</h1>
+			<p>
+				went to the
 				<img
 					:src="
-						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${stat.AgainstTeam}.svg`
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${offenders[0].Team}.svg`
 					"
-					:alt="`Team logo`"
-					@error="fallbackImg"
+					class="imgSmallInline"
+					alt="Team Logo"
 				/>
-				<h1>
-					<b>{{ stat.Count }}</b>
-				</h1>
-				<p>
-					Offences Against
-				</p>
-			</div>
+				{{ getTeam(offenders[0].Team).name }}
+			</p>
 		</div>
 	</div>
 </template>
 
 <script>
 import axios from "axios";
+import Loader from "../../components/Loader.vue";
 export default {
+	components: { Loader },
 	data() {
 		return {
-			stats: []
+			loaded: false,
+			teams: [],
+			allSuspensions: [],
+			offenders: []
 		};
 	},
 	async mounted() {
-		let resp = await axios.get("https://stickstats.club/api/public/suspensions.php?CountAgainst");
-		this.stats = resp.data;
+		var resp = await axios.get("https://statsapi.web.nhl.com/api/v1/teams");
+		this.teams = resp.data.teams;
 
-		this.animate();
+		resp = await axios.get("https://stickstats.club/api/public/suspensions.php");
+		this.allSuspensions = resp.data;
+
+		resp = await axios.get("https://stickstats.club/api/public/suspensions.php?CountOffenders");
+		this.offenders = this.teams
+			.map(t => {
+				let retVal = resp.data.find(o => parseInt(o.Team) === t.id);
+				if (retVal) {
+					return retVal;
+				} else {
+					return { Team: t.id.toString(), Count: 0 };
+				}
+			})
+			.sort((a, b) => a.Count < b.Count);
+
+		document.querySelector(".header").classList.add("headerAnimate");
+		document.querySelector(".header").classList.add("collapsedHeader");
+
+		setTimeout(() => {
+			this.loaded = true;
+		}, 500);
+	},
+	methods: {
+		getTeam(id) {
+			id = parseInt(id);
+			return this.teams.find(t => t.id == id);
+		}
+	},
+	beforeDestroy() {
+		document.querySelector(".header").classList.remove("collapsedHeader");
+		setTimeout(() => {
+			document.querySelector(".header").classList.remove("headerAnimate");
+		}, 500);
 	}
 };
 </script>
 
-<style scoped>
-.cont {
-	text-align: center;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+<style>
+.headerAnimate {
+	transition: all 0.5s ease;
 }
 
-.statCont {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
-	max-width: 100%;
-	width: 1280px;
-	margin-top: 50px;
+.headerAnimate * {
+	transition: all 0.5s ease;
 }
 
-.stat {
-	border-radius: var(--mainBorderRad);
-	box-sizing: border-box;
-	background: var(--light);
-	padding: 20px;
-	margin: 15px;
-	width: 200px;
-	height: 250px;
-	display: flex;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	transition: box-shadow 0.3s ease;
-}
-
-.stat:hover {
-	box-shadow: 0px 0px 0px 3px var(--highlight);
-	position: relative;
-}
-
-.stat:hover img {
-	filter: saturate(0);
-}
-
-.stat:hover::after {
-	background: rgba(0, 0, 0, 0.5);
-	top: 0px;
-	left: 0px;
+.collapsedHeader {
+	height: 50px;
+	position: fixed;
 	width: 100%;
-	height: 100%;
-	box-sizing: border-box;
-	padding: 100px 0px;
-	font-weight: 900;
-	border-radius: var(--mainBorderRad);
-	position: absolute;
-	content: "View details";
+	mix-blend-mode: difference;
+}
+
+.collapsedHeader .container {
 	opacity: 0;
-	animation: statHover 0.5s 0.2s ease forwards;
 }
 
-@keyframes statHover {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
+.collapsedHeader .title,
+.collapsedHeader h1 {
+	font-size: 25px;
+	color: var(--highlight);
 }
 
-.stat img {
-	width: 100px;
-	margin-bottom: 15px;
-  transition: filter 0.3s ease;
+.collapsedHeader .title .beta-tag {
+	opacity: 0;
+}
+</style>
+
+<style scoped>
+.mainBlock {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.mainBlock p{
+	font-size: 25px;
+}
+
+.bright {
+	background: var(--highlight);
+	color: var(--mainBg);
+}
+
+.imgSmallInline{
+	height: 25px;
+	display: inline;
 }
 </style>
