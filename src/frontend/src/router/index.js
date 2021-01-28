@@ -7,6 +7,7 @@ import gsap from "gsap"
 import marketing from "@/router/routes/marketing"
 import teams from "@/router/routes/teams"
 import players from "@/router/routes/players"
+import special from "@/router/routes/reports"
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,7 @@ var routes = [
 routes = routes.concat(marketing)
 routes = routes.concat(teams)
 routes = routes.concat(players)
+routes = routes.concat(special)
 
 routes.push({
   path: "*",

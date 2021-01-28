@@ -1,0 +1,458 @@
+[
+  {
+    "Date": "26-Oct-19",
+    "Player": "Adam Lowry",
+    "Team": "WPG",
+    "AgainstTeam": "CGY"
+  },
+  {
+    "Date": "2-Oct-19",
+    "Player": "Milan Lucic",
+    "Team": "CGY",
+    "AgainstTeam": "CBJ"
+  },
+  {
+    "Date": "9-Oct-19",
+    "Player": "Nick Foligno",
+    "Team": "CBJ",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "18-Oct-19",
+    "Player": "Garnet Hathaway",
+    "Team": "WSH",
+    "AgainstTeam": "ANA"
+  },
+  {
+    "Date": "23-Oct-19",
+    "Player": "Robert Bortuzzo",
+    "Team": "STL",
+    "AgainstTeam": "NSH"
+  },
+  {
+    "Date": "23-Oct-19",
+    "Player": "Alexander Kerfoot",
+    "Team": "TOR",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "25-Oct-19",
+    "Player": "Erik Cernak",
+    "Team": "TBL",
+    "AgainstTeam": "BUF"
+  },
+  {
+    "Date": "15-Dec-19",
+    "Player": "Joel Farabee",
+    "Team": "PHI",
+    "AgainstTeam": "WPG"
+  },
+  {
+    "Date": "31-Dec-19",
+    "Player": "Kurtis MacDermid",
+    "Team": "LAK",
+    "AgainstTeam": "PHI"
+  },
+  {
+    "Date": "1-Jan-20",
+    "Player": "Corey Perry",
+    "Team": "DAL",
+    "AgainstTeam": "NSH"
+  },
+  {
+    "Date": "11-Jan-20",
+    "Player": "Zack Kassian",
+    "Team": "EDM",
+    "AgainstTeam": "CGY"
+  },
+  {
+    "Date": "8-Feb-20",
+    "Player": "Jeremy Lauzon",
+    "Team": "BOS",
+    "AgainstTeam": "ARI"
+  },
+  {
+    "Date": "13-Feb-20",
+    "Player": "Zack Kassian",
+    "Team": "EDM",
+    "AgainstTeam": "TBL"
+  },
+  {
+    "Date": "14-Feb-20",
+    "Player": "Evander Kane",
+    "Team": "SJS",
+    "AgainstTeam": "WPG"
+  },
+  {
+    "Date": "11-Mar-20",
+    "Player": "Brendan Lemieux",
+    "Team": "NYR",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "1-Aug-20",
+    "Player": "Drake Caggiula",
+    "Team": "CHI",
+    "AgainstTeam": "OTT"
+  },
+  {
+    "Date": "19-Aug-20",
+    "Player": "Matt Niskanen",
+    "Team": "PHI",
+    "AgainstTeam": "MTL"
+  },
+  {
+    "Date": "4-Sep-20",
+    "Player": "Ryan Reaves",
+    "Team": "VGS",
+    "AgainstTeam": "VAN"
+  },
+  {
+    "Date": "9-Sep-20",
+    "Player": "Alex Killorn",
+    "Team": "TBL",
+    "AgainstTeam": "NYI"
+  },
+  {
+    "Date": "22-Sep-17",
+    "Player": "Tom Wilson",
+    "Team": "WSH",
+    "AgainstTeam": "STL"
+  },
+  {
+    "Date": "23-Sep-17",
+    "Player": "Andrew Desjardins",
+    "Team": "NYR",
+    "AgainstTeam": "NJD"
+  },
+  {
+    "Date": "1-Oct-17",
+    "Player": "Tom Wilson",
+    "Team": "WSH",
+    "AgainstTeam": "STL"
+  },
+  {
+    "Date": "19-Oct-17",
+    "Player": "Erik Gudbranson",
+    "Team": "VAN",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "16-Nov-17",
+    "Player": "Radko Gudas",
+    "Team": "PHI",
+    "AgainstTeam": "WPG"
+  },
+  {
+    "Date": "18-Nov-17",
+    "Player": "Austin Watson",
+    "Team": "NSH",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "25-Nov-17",
+    "Player": "Gabriel Landeskog",
+    "Team": "COL",
+    "AgainstTeam": "CGY"
+  },
+  {
+    "Date": "29-Nov-17",
+    "Player": "Cedric Paquette",
+    "Team": "TBL",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "4-Dec-17",
+    "Player": "Brenden Dillon",
+    "Team": "SJS",
+    "AgainstTeam": "WSH"
+  },
+  {
+    "Date": "16-Dec-17",
+    "Player": "Erik Johnson",
+    "Team": "COL",
+    "AgainstTeam": "TBL"
+  },
+  {
+    "Date": "23-Dec-17",
+    "Player": "Zac Rinaldo",
+    "Team": "ARI",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "27-Dec-17",
+    "Player": "Fredrik Claesson",
+    "Team": "OTT",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "2-Jan-18",
+    "Player": "Patrick Maroon",
+    "Team": "EDM",
+    "AgainstTeam": "LAK"
+  },
+  {
+    "Date": "13-Jan-18",
+    "Player": "Andrew Cogliano",
+    "Team": "ANA",
+    "AgainstTeam": "LAK"
+  },
+  {
+    "Date": "23-Jan-18",
+    "Player": "Brad Marchand",
+    "Team": "BOS",
+    "AgainstTeam": "NJD"
+  },
+  {
+    "Date": "3-Feb-18",
+    "Player": "Filip Forsberg",
+    "Team": "NSH",
+    "AgainstTeam": "NYR"
+  },
+  {
+    "Date": "6-Feb-18",
+    "Player": "Alex Burrows",
+    "Team": "OTT",
+    "AgainstTeam": "NJD"
+  },
+  {
+    "Date": "10-Feb-18",
+    "Player": "Dustin Brown",
+    "Team": "LAK",
+    "AgainstTeam": "TBL"
+  },
+  {
+    "Date": "17-Feb-18",
+    "Player": "Miles Wood",
+    "Team": "NJD",
+    "AgainstTeam": "TBL"
+  },
+  {
+    "Date": "6-Mar-18",
+    "Player": "David Backes",
+    "Team": "BOS",
+    "AgainstTeam": "DET"
+  },
+  {
+    "Date": "11-Apr-18",
+    "Player": "Drew Doughty",
+    "Team": "LAK",
+    "AgainstTeam": "VGS"
+  },
+  {
+    "Date": "12-Apr-18",
+    "Player": "Nazem Kadri",
+    "Team": "TOR",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "17-Apr-18",
+    "Player": "Josh Morrissey",
+    "Team": "WIN",
+    "AgainstTeam": "MIN"
+  },
+  {
+    "Date": "18-Apr-18",
+    "Player": "Ryan Hartman",
+    "Team": "NSH",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "26-Apr-18",
+    "Player": "Evander Kane",
+    "Team": "SJS",
+    "AgainstTeam": "VGS"
+  },
+  {
+    "Date": "1-May-18",
+    "Player": "Tom Wilson",
+    "Team": "WSH",
+    "AgainstTeam": "PIT"
+  },
+  {
+    "Date": "19-Sep-18",
+    "Player": "MAX DOMI",
+    "Team": "MTL",
+    "AgainstTeam": "FLA"
+  },
+  {
+    "Date": "25-Sep-18",
+    "Player": "ROBERT BORTUZZO",
+    "Team": "STL",
+    "AgainstTeam": "WSH"
+  },
+  {
+    "Date": "30-Sep-18",
+    "Player": "TOM WILSON",
+    "Team": "WSH",
+    "AgainstTeam": "STL"
+  },
+  {
+    "Date": "13-Oct-18",
+    "Player": "MIKE MATHESON",
+    "Team": "FLA",
+    "AgainstTeam": "VAN"
+  },
+  {
+    "Date": "23-Oct-18",
+    "Player": "MARK BOROWIECKI",
+    "Team": "OTT",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "29-Oct-18",
+    "Player": "MARK BOROWIECKI",
+    "Team": "OTT",
+    "AgainstTeam": "VGS"
+  },
+  {
+    "Date": "2-Nov-18",
+    "Player": "BRENDAN LEMIEUX",
+    "Team": "WPG",
+    "AgainstTeam": "FLA"
+  },
+  {
+    "Date": "15-Nov-18",
+    "Player": "JOSH ARCHIBALD",
+    "Team": "ARI",
+    "AgainstTeam": "NSH"
+  },
+  {
+    "Date": "2-Dec-18",
+    "Player": "TYLER BERTUZZI",
+    "Team": "DET",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "6-Dec-18",
+    "Player": "MARK GIORDANO",
+    "Team": "CAL",
+    "AgainstTeam": "MIN"
+  },
+  {
+    "Date": "8-Dec-18",
+    "Player": "ZACH HYMAN",
+    "Team": "TOR",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "18-Dec-18",
+    "Player": "JUJHAR KHAIRA",
+    "Team": "EDM",
+    "AgainstTeam": "STL"
+  },
+  {
+    "Date": "22-Dec-18",
+    "Player": "Erik Karlsson",
+    "Team": "SJS",
+    "AgainstTeam": "LAK"
+  },
+  {
+    "Date": "27-Dec-18",
+    "Player": "David Backes",
+    "Team": "BOS",
+    "AgainstTeam": "NJD"
+  },
+  {
+    "Date": "15-Jan-19",
+    "Player": "Paul Byron",
+    "Team": "MTL",
+    "AgainstTeam": "FLA"
+  },
+  {
+    "Date": "17-Jan-19",
+    "Player": "Ryan Johansen",
+    "Team": "NSH",
+    "AgainstTeam": "WPG"
+  },
+  {
+    "Date": "11-Feb-19",
+    "Player": "Evgeni Malkin",
+    "Team": "PIT",
+    "AgainstTeam": "PHI"
+  },
+  {
+    "Date": "19-Feb-19",
+    "Player": "Radko Gudas",
+    "Team": "PHI",
+    "AgainstTeam": "TBL"
+  },
+  {
+    "Date": "21-Feb-19",
+    "Player": "Connor McDavid",
+    "Team": "EDM",
+    "AgainstTeam": "NYI"
+  },
+  {
+    "Date": "1-Mar-19",
+    "Player": "Kurtis Gabriel",
+    "Team": "NJD",
+    "AgainstTeam": "PHI"
+  },
+  {
+    "Date": "1-Mar-19",
+    "Player": "Adam Lowry",
+    "Team": "WIN",
+    "AgainstTeam": "NSH"
+  },
+  {
+    "Date": "9-Mar-19",
+    "Player": "Jakub Voracek",
+    "Team": "PHI",
+    "AgainstTeam": "NYI"
+  },
+  {
+    "Date": "9-Mar-19",
+    "Player": "Jack Eichel",
+    "Team": "BUF",
+    "AgainstTeam": "COL"
+  },
+  {
+    "Date": "20-Mar-19",
+    "Player": "Jean-Gabriel Pageau",
+    "Team": "OTT",
+    "AgainstTeam": "VAN"
+  },
+  {
+    "Date": "21-Mar-19",
+    "Player": "Yanni Gourde",
+    "Team": "TBL",
+    "AgainstTeam": "CAR"
+  },
+  {
+    "Date": "12-Apr-19",
+    "Player": "Nikita Kucherov",
+    "Team": "TBL",
+    "AgainstTeam": "CBJ"
+  },
+  {
+    "Date": "13-Apr-19",
+    "Player": "Nazem Kadri",
+    "Team": "TOR",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "14-Apr-19",
+    "Player": "Joe Thornton",
+    "Team": "SJS",
+    "AgainstTeam": "VGS"
+  },
+  {
+    "Date": "6-May-19",
+    "Player": "Charlie McAvoy",
+    "Team": "BOS",
+    "AgainstTeam": "CBJ"
+  },
+  {
+    "Date": "29-May-19",
+    "Player": "Oskar Sundqvist",
+    "Team": "STL",
+    "AgainstTeam": "BOS"
+  },
+  {
+    "Date": "6-Jun-19",
+    "Player": "Ivan Barbashev",
+    "Team": "STL",
+    "AgainstTeam": "BOS"
+  }
+ ]
