@@ -70,7 +70,7 @@ export default {
 	background: var(--light);
 	z-index: 100;
 	border-radius: var(--mainBorderRad);
-	box-shadow: 0px 00px 50px 20px rgba(0, 0, 0, 0.9);
+	box-shadow: 0px 00px 10px 0px rgba(0, 0, 0, 0.3);
 	display: flex;
 	flex-direction: column;
 	padding: 15px 50px;

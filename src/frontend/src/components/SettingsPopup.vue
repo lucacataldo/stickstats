@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<i class="fas fa-ellipsis-v settingsButton" @click="menuOpen = !menuOpen"></i>
+		<i class="fas fa-bars settingsButton" @click="menuOpen = !menuOpen"></i>
 		<transition name="menu">
 			<div v-if="menuOpen" class="menu">
 				<span>Theme Colour</span>

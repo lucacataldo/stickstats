@@ -10,25 +10,51 @@
 
 		<div class="mainBlock">
 			<p>
-				From 2016 to 2020 the NHL's Department of Player Safety has issued
+				From 2016 to 2020 the NHL's Department of Player Safety issued
 			</p>
 			<h1>{{ allSuspensions.length }} suspensions</h1>
 		</div>
 
-		<div class="mainBlock bright">
-			<p>Of those {{ allSuspensions.length }} suspensions,</p>
-			<h1>{{ offenders[0].Count }}</h1>
-			<p>
-				went to the
+		<div class="mainBlock bright row bumpZ">
+			<div class="flex column half">
+				<h1>{{ offenders[0].Count }}</h1>
+				<p>
+					of those {{ allSuspensions.length }} suspensions went to the
+					{{ getTeam(offenders[0].Team).name }}
+				</p>
+			</div>
+
+			<div class="flex half dark column bold">
 				<img
 					:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${offenders[0].Team}.svg`
 					"
-					class="imgSmallInline"
+					width="250px"
 					alt="Team Logo"
 				/>
 				{{ getTeam(offenders[0].Team).name }}
-			</p>
+			</div>
+			<div class="bottomText">
+				<div>Making them the <b>most suspended</b> team</div>
+			</div>
+		</div>
+
+		<div class="mainBlock dark row">
+			<div class="flex column half">
+				<h1>{{ offenders[0].Count }}</h1>
+				<p>of those {{ allSuspensions.length }} suspensions went to the</p>
+			</div>
+
+			<div class="flex half bright column bold">
+				<img
+					:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${offenders[0].Team}.svg`
+					"
+					width="250px"
+					alt="Team Logo"
+				/>
+				{{ getTeam(offenders[0].Team).name }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -66,7 +92,8 @@ export default {
 			.sort((a, b) => a.Count < b.Count);
 
 		document.querySelector(".header").classList.add("headerAnimate");
-		document.querySelector(".header").classList.add("collapsedHeader");
+    document.querySelector(".header").classList.add("collapsedHeader");
+    document.querySelector(".copyright").classList.add("hide")
 
 		setTimeout(() => {
 			this.loaded = true;
@@ -79,7 +106,8 @@ export default {
 		}
 	},
 	beforeDestroy() {
-		document.querySelector(".header").classList.remove("collapsedHeader");
+    document.querySelector(".header").classList.remove("collapsedHeader");
+    document.querySelector(".copyright").classList.remove("hide")
 		setTimeout(() => {
 			document.querySelector(".header").classList.remove("headerAnimate");
 		}, 500);
@@ -99,8 +127,9 @@ export default {
 .collapsedHeader {
 	height: 50px;
 	position: fixed;
+	z-index: 10;
 	width: 100%;
-	mix-blend-mode: difference;
+	background: var(--highlight);
 }
 
 .collapsedHeader .container {
@@ -108,17 +137,34 @@ export default {
 }
 
 .collapsedHeader .title,
-.collapsedHeader h1 {
+.collapsedHeader h1,
+.collapsedHeader .highlight {
 	font-size: 25px;
-	color: var(--highlight);
+  color: var(--light);
 }
 
 .collapsedHeader .title .beta-tag {
 	opacity: 0;
 }
+
+.hide{
+  display: none;
+}
 </style>
 
 <style scoped>
+.mainCont {
+	overflow-y: scroll;
+	width: 100%;
+	height: 100vh;
+	scroll-snap-type: y proximity;
+  background: var(--mainBg);
+}
+
+.mainCont > div {
+	scroll-snap-align: center;
+}
+
 .mainBlock {
 	width: 100%;
 	height: 100vh;
@@ -126,9 +172,52 @@ export default {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	flex-wrap: wrap;
+	position: relative;
 }
 
-.mainBlock p{
+.flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.column {
+	flex-direction: column;
+}
+
+.row {
+	flex-direction: row;
+}
+
+.half {
+	height: 100%;
+	flex-basis: 50%;
+	flex-shrink: 0;
+}
+
+.bottomText {
+	font-size: 20px;
+	position: absolute;
+	width: 100%;
+	bottom: -30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 60px;
+	padding: 10px 20px;
+	box-sizing: border-box;
+	background: var(--mainBg);
+	color: var(--mainText);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.mainBlock p {
 	font-size: 25px;
 }
 
@@ -137,8 +226,12 @@ export default {
 	color: var(--mainBg);
 }
 
-.imgSmallInline{
-	height: 25px;
-	display: inline;
+.dark {
+	background: var(--mainBg);
+	color: var(--mainText);
+}
+
+.bumpZ {
+	z-index: 5;
 }
 </style>
