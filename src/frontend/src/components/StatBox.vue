@@ -4,7 +4,7 @@
 			{{formatName(stat.name)}}
 		</h2>
 		<h1 class="highlight">
-			{{ formatStat(stat.value, stat.name) }}
+			{{ formatStat(stat.value, stat.name, rawrank) }}
 		</h1>
 	</div>
 </template>
@@ -14,7 +14,8 @@ import Stat from "../utils/Stat";
 export default {
 	name: "StatBox",
 	props: {
-		stat: Object
+		stat: Object,
+		rawrank: Number
 	},
 	computed: {
 		parsedValue: function() {

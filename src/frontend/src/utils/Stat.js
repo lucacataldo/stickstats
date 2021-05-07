@@ -220,8 +220,11 @@ export default class Stat {
     }
   }
 
-  static formatStat(val, lab) {
+  static formatStat(val, lab, isRank = false) {
     try {
+			if (isRank) {
+				return val
+			}
       return formatters[classifiers[lab].type](val)
     } catch (error) {
       console.log("Error formatting stat" + lab, error);

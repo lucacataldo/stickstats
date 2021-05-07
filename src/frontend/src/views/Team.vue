@@ -79,6 +79,7 @@
 						})"
 						v-bind:key="stat.name + rawOrRank + filterTerm"
 						v-bind:stat="stat"
+						v-bind:rawrank="rawOrRank"
 					></stat-box>
 				</div>
 			</div>
