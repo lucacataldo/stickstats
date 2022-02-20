@@ -31,7 +31,7 @@
 						<h2>
 							<img
 								height="20px"
-								:src="`https://restcountries.eu/data/${player.birthCountry.toLowerCase()}.svg`"
+								:src="`https://flagcdn.com/w40/${player.birthCountry.toLowerCase()}.png`"
 								alt=""
 							/>
 							{{ player.birthCity }}, {{ player.birthStateProvince }} {{ player.birthCountry }}
@@ -52,9 +52,20 @@
 							{{ player.weight }}lbs
 						</h2>
 					</div>
+
+					<div v-if="capData && capData.capHit">
+						<h2>
+							<i class="fas fa-coins"></i>
+							{{ capData.capHit }} (AAV)
+						</h2>
+					</div>
 				</div>
 			</div>
-			<router-link style="text-align: center" v-if="player.currentTeam" :to="`/team/${player.currentTeam.id}`">
+			<router-link
+				style="text-align: center"
+				v-if="player.currentTeam"
+				:to="`/team/${player.currentTeam.id}/season/${$teams.season.slice(0, 4)}`"
+			>
 				<img
 					v-bind:src="
 						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${player.currentTeam.id}.svg`
@@ -62,7 +73,7 @@
 					@error="fallbackImg"
 					width="200px"
 				/>
-        <h4>Current Team</h4>
+				<h4>Current Team</h4>
 			</router-link>
 		</div>
 		<div class="season">
@@ -183,7 +194,8 @@ export default {
 		return {
 			player: {},
 			stats: {},
-			index: 0
+			index: 0,
+			capData: {}
 		};
 	},
 	props: {
@@ -235,6 +247,7 @@ export default {
 	async mounted() {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
+		this.capData = await this.$players.getCapData(this.player);
 
 		if (this.$route.params.seasonId) {
 			try {

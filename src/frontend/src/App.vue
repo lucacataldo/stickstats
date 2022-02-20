@@ -23,10 +23,6 @@
 
 		<div class="copyright">
 			{{ $teams.copyright }}
-			<br />
-			<a rel="noopener" target="_blank" href="https://cataldo.ca">
-				Created by <b>Cataldo <i class="fas fa-external-link-alt"></i></b>
-			</a>
 		</div>
 	</div>
 </template>
@@ -60,11 +56,8 @@ export default {
 		this.$refs.toaster.toast({
 			message: `
 				Hey, thanks for checking out StickStats. We're currently in <b>BETA</b> meaning 
-				that there might be some hiccups and bugs along the way. If you do happen 
-				to come accross a bug or have a suggestion, feel free to send us a message on 
-				<b><a rel="noopener" target="_blank" href="https://cataldo.ca#chat">Cataldo Software's </a> </b> 
-				<i class="fas fa-external-link-alt"></i> website and check back often for new features!`,
-			length: process.env.VUE_APP_TOAST_LENGTH || 15000
+				that there might be some hiccups and bugs along the way.`,
+			length: process.env.VUE_APP_TOAST_LENGTH || 5000
 		});
 	}
 };

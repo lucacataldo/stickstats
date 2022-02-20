@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd src/frontend && npm run serve",
-    "build": "cd src/frontend && npm run build",
-    "sitemap": "cd src/utils && node sitemap.js"
+    "build": "cd src/scrapers/capfriendly && node index.js && cd ../../frontend && npm run build",
+    "sitemap": "cd src/utils && node sitemap.js",
+    "scrape": "cd src/scrapers/capfriendly && node index.js"
   },
   "repository": {
     "type": "git",
