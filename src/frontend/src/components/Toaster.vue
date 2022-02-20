@@ -66,7 +66,7 @@ export default {
 	width: 50%;
 	left: 25%;
 	bottom: 10px;
-	min-height: 100px;
+	min-height: 50px;
 	background: var(--light);
 	z-index: 100;
 	border-radius: var(--mainBorderRad);
@@ -91,7 +91,7 @@ export default {
 	text-align: center;
 	flex-grow: 1;
 	font-size: 15px;
-	line-height: 16px;
+	line-height: 18px;
 }
 
 .message > div {

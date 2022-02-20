@@ -55,42 +55,31 @@ export default {
 		limit: function() {
 			this.animate(".rosterCont ");
 		},
-		loadMore: function() {
-			this.animate(".rosterCont ");
-		}
 	},
 	computed: {
 		forwards: function() {
-			return this.roster
-				.filter(p => {
-					return (
-						p.position.type === "Forward" && p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
-					);
-				})
-				.slice(0, this.loadMore ? 1000 : 15);
+			return this.roster.filter(p => {
+				return (
+					p.position.type === "Forward" &&
+					p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+				);
+			});
 		},
 		goalies: function() {
-			if (this.loadMore) {
-				return this.roster.filter(p => {
-					return (
-						p.position.type === "Goalie" && p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
-					);
-				});
-			} else {
-				return [];
-			}
+			return this.roster.filter(p => {
+				return (
+					p.position.type === "Goalie" &&
+					p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+				);
+			});
 		},
 		defense: function() {
-			if (this.loadMore) {
-				return this.roster.filter(p => {
-					return (
-						p.position.type === "Defenseman" &&
-						p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
-					);
-				});
-			} else {
-				return [];
-			}
+			return this.roster.filter(p => {
+				return (
+					p.position.type === "Defenseman" &&
+					p.person.fullName.toLowerCase().indexOf(this.filterTerm.toLowerCase()) > -1
+				);
+			});
 		}
 	},
 	async mounted() {
