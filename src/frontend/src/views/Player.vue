@@ -31,7 +31,7 @@
 						<h2>
 							<img
 								height="20px"
-								:src="`https://flagcdn.com/w40/${player.birthCountry.toLowerCase()}.png`"
+								:src="findFlagUrlByIso3Code(player.birthCountry.toLowerCase())"
 								alt=""
 							/>
 							{{ player.birthCity }}, {{ player.birthStateProvince }} {{ player.birthCountry }}
@@ -224,6 +224,7 @@ import PieChart from "../components/PieChart";
 import { darken } from "khroma";
 import Toaster from "../components/Toaster";
 import SeasonSelector from "../components/SeasonSelector";
+import { findFlagUrlByIso3Code } from "country-flags-svg";
 export default {
 	data() {
 		return {
@@ -325,6 +326,7 @@ export default {
 	},
 	methods: {
 		darken,
+		findFlagUrlByIso3Code,
 		perGame(val, round = false) {
 			try {
 				val = parseInt(val);

@@ -6,8 +6,8 @@
 		<jump-menu
 			:items="[
 				{ name: 'Info', tag: '#info' },
-				{ name: 'History', tag: '#history' },
 				{ name: 'Roster', tag: '#roster' },
+				{ name: 'History', tag: '#history' },
 				{ name: 'Team Stats', tag: '#teamStats' }
 			]"
 		/>
@@ -48,9 +48,9 @@
 				/>
 			</div>
 
-			<team-chart :theme="theme" :teamId="team.id" id="history" />
-
 			<team-roster :teamId="team.id" :season="$route.params.seasonId" id="roster" />
+
+			<team-chart :theme="theme" :teamId="team.id" id="history" />
 
 			<div class="statsCont" id="teamStats">
 				<h1>Team Stats</h1>
@@ -151,7 +151,7 @@ export default {
 		if (this.$route.params.seasonId) {
 			await this.$teams.getData(parseInt(this.$route.params.seasonId));
 		} else {
-      this.$router.replace()
+			this.$router.replace();
 			await this.$teams.getData();
 		}
 
