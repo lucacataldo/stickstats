@@ -59,6 +59,13 @@
 							{{ capData.capHit }} (AAV)
 						</h2>
 					</div>
+
+					<div v-if="capData && contractExpires">
+						<h2>
+							<i class="fas fa-file-signature"></i>
+							{{ contractExpires }}
+						</h2>
+					</div>
 				</div>
 			</div>
 			<router-link
@@ -220,6 +227,36 @@ export default {
 				return this.stats[this.index].season;
 			} catch (error) {
 				return "00000000";
+			}
+		},
+		contractExpires: function() {
+			if (this.capData.yearsLeft) {
+				let expiryStatus = this.capData.expiryStatus || "FA";
+				console.log(this.capData.yearsLeft);
+				switch (parseInt(this.capData.yearsLeft)) {
+					case 1:
+						return `${expiryStatus} after this year`;
+
+					case 2:
+						return `${expiryStatus} after next year`;
+
+					case 3:
+						return `${expiryStatus} after 2 years`;
+
+					case 4:
+						return `${expiryStatus} after 3 years`;
+
+					case 5:
+						return `${expiryStatus} after 4 years`;
+
+					case 6:
+						return `${expiryStatus} after 5+ years`;
+
+					default:
+						return null;
+				}
+			} else {
+				return null;
 			}
 		},
 		isLimited: function() {

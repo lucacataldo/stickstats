@@ -6,6 +6,7 @@ const userAgent =
 	"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0";
 
 const teams = [
+	{ id: 10, name: "mapleleafs" },
 	{ id: 24, name: "ducks" },
 	{ id: 53, name: "coyotes" },
 	{ id: 6, name: "bruins" },
@@ -33,7 +34,6 @@ const teams = [
 	{ id: 55, name: "kraken" },
 	{ id: 19, name: "blues" },
 	{ id: 14, name: "lightning" },
-	{ id: 10, name: "mapleleafs" },
 	{ id: 23, name: "canucks" },
 	{ id: 54, name: "goldenknights" },
 	{ id: 15, name: "capitals" },
@@ -52,7 +52,7 @@ var timer = setInterval(() => {
 	} else {
 		clearInterval(timer);
 	}
-}, 250);
+}, 500);
 
 function getTeam(team) {
 	axios
@@ -80,8 +80,25 @@ function getTeam(team) {
 					.replace(/[\u0300-\u036f]/g, "");
 				let age = $("td:nth-child(7) > span:nth-child(1)").text();
 				let capHit = $("td:nth-child(9) > span:nth-child(1)").text();
+				let yearsLeft = 0;
+				let expiryStatus = "";
 
-				data[name] = { capHit, age };
+				let cols = $("td").each(function (i, elem) {
+					if (i > 7) {
+						let coltxt = $(this).find("span:nth-child(1)").text();
+						if (coltxt !== "") {
+							yearsLeft++;
+						}
+					}
+				});
+
+				if ($.text().includes("UFA")) {
+					expiryStatus = "UFA";
+				} else if ($.text().includes("RFA")) {
+					expiryStatus = "RFA";
+				}
+
+				data[name] = { capHit, age, yearsLeft, expiryStatus };
 
 				console.log(data[name]);
 			});
