@@ -187,7 +187,27 @@
 					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
 				/>
 			</div>
+
+			<div v-if="advancedStats && advancedStats.I_F_lowDangerShots">
+				<h2>Shot Danger</h2>
+				<h3>
+					{{ advancedStats.I_F_highDangerShots, }} High |
+					{{ advancedStats.I_F_mediumDangerShots, }} Med |
+					{{ advancedStats.I_F_lowDangerShots, }} Low
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						advancedStats.I_F_highDangerShots,
+						advancedStats.I_F_mediumDangerShots,
+						advancedStats.I_F_lowDangerShots
+					]"
+					:labels="['High Danger', 'Medium Danger', 'Low Danger']"
+				/>
+			</div>
 		</div>
+
+		<!-- If Goalie -->
 		<div v-if="isGoalie" class="statCont">
 			<h2>
 				Goalie Stats
@@ -225,13 +245,15 @@ import { darken } from "khroma";
 import Toaster from "../components/Toaster";
 import SeasonSelector from "../components/SeasonSelector";
 import { findFlagUrlByIso3Code } from "country-flags-svg";
+
 export default {
 	data() {
 		return {
 			player: {},
 			stats: {},
 			index: 0,
-			capData: {}
+			capData: {},
+			advancedStats: {}
 		};
 	},
 	props: {
@@ -313,6 +335,9 @@ export default {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
 		this.capData = await this.$players.getCapData(this.player);
+		this.advancedStats = await this.$players.getAdvancedStats(this.player.id);
+
+		console.log(this.advancedStats);
 
 		if (this.$route.params.seasonId) {
 			try {

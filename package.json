@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "country-flags-svg": "^1.1.6"
+    "country-flags-svg": "^1.1.6",
+    "papaparse": "^5.3.1"
   }
 }

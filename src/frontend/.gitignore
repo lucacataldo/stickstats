@@ -3,6 +3,7 @@ node_modules
 /dist
 /public/sitemap.xml
 /public/capdata
+/public/advanced_stats
 
 
 # local env files
