@@ -32,21 +32,40 @@ export default Vue.observable({
 		);
 		return data.data.stats[0].splits.reverse();
 	},
-	searchPlayers(term) {
+	async searchPlayers(term) {
 		try {
-			let res = getPlayerId(term);
-			if (Array.isArray(res)) {
-				return res.slice(0, 15);
-			} else {
-				try {
-					let player = getPlayerById(res);
-					return [player];
-				} catch (error) {
-					return [];
+			let r = await axios.get("https://stickstats.club/api/proxy.php", {
+				params: {
+					csurl: "https://api.nhle.com/stats/rest/en/players",
+					cayenneExp: `fullName likeIgnoreCase "%${term}%" and currentTeamId <> null`
 				}
-			}
+			});
+      
+
+			return r.data.data.map(p => {
+				return {
+					id: p.id,
+					name: `${p.firstName} ${p.lastName}`
+				};
+			});
 		} catch (error) {
-			return [];
+			console.error("Falling back to cache search\n\n", error);
+			try {
+				let res = getPlayerId(term);
+				if (Array.isArray(res)) {
+					console.log(res);
+					return res.slice(0, 15);
+				} else {
+					try {
+						let player = getPlayerById(res);
+						return [player];
+					} catch (error) {
+						return [];
+					}
+				}
+			} catch (error) {
+				return [];
+			}
 		}
 	}
 });

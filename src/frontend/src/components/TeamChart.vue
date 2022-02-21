@@ -57,7 +57,7 @@ export default {
 				this.chartObj.destroy();
 				await this.getData();
 				this.refresh();
-			}, 1000);
+			}, 200);
 		}
 	},
 	methods: {

@@ -90,12 +90,12 @@ export default {
 	},
 	timer: 0,
 	watch: {
-		searchTerm: function() {
+		searchTerm: async function() {
 			this.playersLoading = true;
 			clearTimeout(this.timer);
 			this.timer = setTimeout(async () => {
 				if (this.searchTerm.length) {
-					let res = this.$players.searchPlayers(this.searchTerm);
+					let res = await this.$players.searchPlayers(this.searchTerm);
 					this.playerResults = res;
 				} else {
 					this.playerResults = [];
