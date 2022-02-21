@@ -1,6 +1,9 @@
 import Vue from "vue";
 import axios from "axios";
+import Papa from "papaparse";
 import { getPlayerId, getPlayerById } from "@nhl-api/players";
+
+var AdvancedData = [];
 
 export default Vue.observable({
 	async getPlayerInfo(id) {
@@ -32,6 +35,17 @@ export default Vue.observable({
 		);
 		return data.data.stats[0].splits.reverse();
 	},
+	async getAdvancedStats(id) {
+		id = parseInt(id);
+		if (!AdvancedData.length) {
+			let r = await axios.get("/advanced_stats/skaters.csv");
+			AdvancedData = Papa.parse(r.data, { header: true }).data;
+		}
+
+		let found = AdvancedData.find(p => parseInt(p.playerId) === id && p.situation === "all");
+
+		return found;
+	},
 	async searchPlayers(term) {
 		try {
 			let r = await axios.get("https://stickstats.club/api/proxy.php", {
@@ -40,7 +54,6 @@ export default Vue.observable({
 					cayenneExp: `fullName likeIgnoreCase "%${term}%" and currentTeamId <> null`
 				}
 			});
-      
 
 			return r.data.data.map(p => {
 				return {
