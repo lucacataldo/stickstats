@@ -159,6 +159,34 @@
 					:labels="['Even Strength', 'PowerPlay', 'ShortHanded']"
 				/>
 			</div>
+
+			<div v-if="currentStats.timeOnIce">
+				<h2>Total Time On Ice</h2>
+				<h3>{{ currentStats.timeOnIce.split(":")[0] }}min</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						currentStats.evenTimeOnIce.split(':')[0],
+						currentStats.powerPlayTimeOnIce.split(':')[0],
+						currentStats.shortHandedTimeOnIce.split(':')[0]
+					]"
+					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
+				/>
+			</div>
+
+			<div v-if="currentStats.timeOnIce">
+				<h2>Average Time On Ice</h2>
+				<h3>{{ perGame(currentStats.timeOnIce.split(":")[0], true) }}min</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						perGame(currentStats.evenTimeOnIce.split(':')[0], 1),
+						perGame(currentStats.powerPlayTimeOnIce.split(':')[0], 1),
+						perGame(currentStats.shortHandedTimeOnIce.split(':')[0], 1)
+					]"
+					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
+				/>
+			</div>
 		</div>
 		<div v-if="isGoalie" class="statCont">
 			<h2>
@@ -232,7 +260,6 @@ export default {
 		contractExpires: function() {
 			if (this.capData.yearsLeft) {
 				let expiryStatus = this.capData.expiryStatus || "FA";
-				console.log(this.capData.yearsLeft);
 				switch (parseInt(this.capData.yearsLeft)) {
 					case 1:
 						return `${expiryStatus} after this year`;
@@ -297,7 +324,21 @@ export default {
 		window.scrollTo(0, 0);
 	},
 	methods: {
-		darken
+		darken,
+		perGame(val, round = false) {
+			try {
+				val = parseInt(val);
+				let avg = val / this.currentStats.games;
+
+				if (typeof round === "boolean" && round) {
+					return Math.round(avg);
+				} else if (typeof round === "number") {
+					return avg.toFixed(round);
+				}
+			} catch (error) {
+				return 0;
+			}
+		}
 	}
 };
 </script>
