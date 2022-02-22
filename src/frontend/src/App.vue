@@ -206,6 +206,10 @@ a:visited,
 	color: var(--mainBg);
 }
 
+a:any-link.niceLink{
+  color: var(--highlight) !important;
+}
+
 @media screen and (max-width: 1280px) {
 	:root {
 		--lrMargins: 25px;

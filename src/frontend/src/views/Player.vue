@@ -130,18 +130,6 @@
 			</div>
 
 			<div>
-				<h2>{{ currentStats.shotPct }}% Shooting</h2>
-				<h3>
-					{{ currentStats.shots }} Shots | {{ currentStats.shots - currentStats.goals }} Saved
-				</h3>
-				<pie-chart
-					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
-					:values="[currentStats.goals, currentStats.shots - currentStats.goals]"
-					:labels="['Goals', 'Saved Shots']"
-				/>
-			</div>
-
-			<div>
 				<h2>Point Breakdown</h2>
 				<h3>
 					{{
@@ -160,40 +148,43 @@
 				/>
 			</div>
 
-			<div v-if="currentStats.timeOnIce">
-				<h2>Total Time On Ice</h2>
-				<h3>{{ currentStats.timeOnIce.split(":")[0] }}min</h3>
+			<div>
+				<h2>Shot Percentage: {{ currentStats.shotPct }}%</h2>
+				<h3>
+					{{ currentStats.shots }} Shots On Goal |
+					{{ currentStats.shots - currentStats.goals }} Saved
+				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
-					:values="[
-						currentStats.evenTimeOnIce.split(':')[0],
-						currentStats.powerPlayTimeOnIce.split(':')[0],
-						currentStats.shortHandedTimeOnIce.split(':')[0]
-					]"
-					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
+					:values="[currentStats.goals, currentStats.shots - currentStats.goals]"
+					:labels="['Goals', 'Saved Shots']"
 				/>
 			</div>
 
-			<div v-if="currentStats.timeOnIce">
-				<h2>Average Time On Ice</h2>
-				<h3>{{ perGame(currentStats.timeOnIce.split(":")[0], true) }}min</h3>
+			<div v-if="advancedStats && viewingThisYear && advancedStats.I_F_shotAttempts">
+				<h2>{{ parseInt(advancedStats.I_F_shotAttempts) }} Shot Attempts</h2>
+				<h3>
+					{{ parseInt(advancedStats.I_F_shotsOnGoal) }} On Goal |
+					{{ parseInt(advancedStats.I_F_blockedShotAttempts) }} Blocked |
+					{{ parseInt(advancedStats.I_F_missedShots) }} Missed
+				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
 					:values="[
-						perGame(currentStats.evenTimeOnIce.split(':')[0], 1),
-						perGame(currentStats.powerPlayTimeOnIce.split(':')[0], 1),
-						perGame(currentStats.shortHandedTimeOnIce.split(':')[0], 1)
+						advancedStats.I_F_shotsOnGoal,
+						advancedStats.I_F_blockedShotAttempts,
+						advancedStats.I_F_missedShots
 					]"
-					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
+					:labels="['On Goal', 'Blocked', 'Missed']"
 				/>
 			</div>
 
-			<div v-if="advancedStats && advancedStats.I_F_lowDangerShots">
+			<div v-if="advancedStats && viewingThisYear && advancedStats.I_F_lowDangerShots">
 				<h2>Shot Danger</h2>
 				<h3>
-					{{ advancedStats.I_F_highDangerShots, }} High |
-					{{ advancedStats.I_F_mediumDangerShots, }} Med |
-					{{ advancedStats.I_F_lowDangerShots, }} Low
+					{{ parseInt(advancedStats.I_F_highDangerShots) }} High |
+					{{ parseInt(advancedStats.I_F_mediumDangerShots) }} Med |
+					{{ parseInt(advancedStats.I_F_lowDangerShots) }} Low
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
@@ -202,7 +193,24 @@
 						advancedStats.I_F_mediumDangerShots,
 						advancedStats.I_F_lowDangerShots
 					]"
-					:labels="['High Danger', 'Medium Danger', 'Low Danger']"
+					:labels="['High Danger Shots', 'Medium Danger Shots', 'Low Danger Shots']"
+				/>
+			</div>
+		</div>
+
+		<div v-if="isSkater" class="statCont">
+			<h2>Player Usage</h2>
+			<div v-if="currentStats.timeOnIce">
+				<h2>{{ currentStats.timeOnIce.split(":")[0] }} Minutes Played</h2>
+				<h3>{{ perGame(currentStats.timeOnIce.split(":")[0], true) }}min / game</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						currentStats.evenTimeOnIce.split(':')[0],
+						currentStats.powerPlayTimeOnIce.split(':')[0],
+						currentStats.shortHandedTimeOnIce.split(':')[0]
+					]"
+					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
 				/>
 			</div>
 		</div>
@@ -234,6 +242,15 @@
 					:labels="['Saves', 'Goals Against']"
 				/>
 			</div>
+		</div>
+
+		<br />
+
+		<div style="text-align: center;">
+			Advanced Stats courtesy of
+			<a target="_blank" class="niceLink" href="https://moneypuck.com"
+				>MoneyPuck <i class="fas fa-link"></i>
+			</a>
 		</div>
 	</div>
 </template>
@@ -278,6 +295,18 @@ export default {
 				return this.stats[this.index].season;
 			} catch (error) {
 				return "00000000";
+			}
+		},
+		viewingThisYear: function() {
+			try {
+				let now = new Date().getFullYear();
+				if (this.currentSeason.indexOf(now) === 0 || this.currentSeason.indexOf(now) === 4) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (error) {
+				return false;
 			}
 		},
 		contractExpires: function() {
@@ -434,7 +463,7 @@ i.leftHanded {
 
 .statCont > div {
 	margin-bottom: 50px;
-	width: 50%;
+	width: 33%;
 }
 
 .statCont canvas {
