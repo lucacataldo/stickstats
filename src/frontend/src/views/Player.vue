@@ -149,7 +149,7 @@
 			</div>
 
 			<div>
-				<h2>Shot Percentage: {{ currentStats.shotPct }}%</h2>
+				<h2>Shooting Pct: {{ currentStats.shotPct }}%</h2>
 				<h3>
 					{{ currentStats.shots }} Shots On Goal |
 					{{ currentStats.shots - currentStats.goals }} Saved
@@ -164,9 +164,8 @@
 			<div v-if="advancedStats && viewingThisYear && advancedStats.I_F_shotAttempts">
 				<h2>{{ parseInt(advancedStats.I_F_shotAttempts) }} Shot Attempts</h2>
 				<h3>
-					{{ parseInt(advancedStats.I_F_shotsOnGoal) }} On Goal |
 					{{ parseInt(advancedStats.I_F_blockedShotAttempts) }} Blocked |
-					{{ parseInt(advancedStats.I_F_missedShots) }} Missed
+					{{ parseInt(advancedStats.I_F_missedShots) }} Miss
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
@@ -180,7 +179,7 @@
 			</div>
 
 			<div v-if="advancedStats && viewingThisYear && advancedStats.I_F_lowDangerShots">
-				<h2>Shot Danger</h2>
+				<h2>Dangerous Shots</h2>
 				<h3>
 					{{ parseInt(advancedStats.I_F_highDangerShots) }} High |
 					{{ parseInt(advancedStats.I_F_mediumDangerShots) }} Med |
@@ -200,6 +199,14 @@
 
 		<div v-if="isSkater" class="statCont">
 			<h2>Player Usage</h2>
+
+			<div class="bigStat">
+				<div>
+					<h1>{{ currentStats.games }}</h1>
+					<h2>games played</h2>
+				</div>
+			</div>
+
 			<div v-if="currentStats.timeOnIce">
 				<h2>{{ currentStats.timeOnIce.split(":")[0] }} Minutes Played</h2>
 				<h3>{{ perGame(currentStats.timeOnIce.split(":")[0], true) }}min / game</h3>
@@ -212,6 +219,13 @@
 					]"
 					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
 				/>
+			</div>
+
+			<div v-if="advancedStats && viewingThisYear" class="bigStat">
+				<div>
+					<h1>{{ parseInt(advancedStats.I_F_shifts) }}</h1>
+					<h2>shifts</h2>
+				</div>
 			</div>
 		</div>
 
@@ -468,6 +482,22 @@ i.leftHanded {
 
 .statCont canvas {
 	margin-top: 10px;
+}
+
+.statCont .bigStat {
+  min-height: 200px;
+	font-size: 1.2em;
+	border-radius: 50px;
+	background: var(--highlight);
+	transition: background 0.3s ease;
+	color: var(--mainBg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.statCont .bigStat h1 {
+	font-size: 3em;
 }
 
 @media screen and (max-width: 768px) {
