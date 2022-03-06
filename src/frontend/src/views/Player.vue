@@ -1,94 +1,13 @@
 <template>
 	<div class="container">
 		<loader message="Loading player data..." v-if="!player.primaryPosition" />
-		<div v-else class="top">
-			<img
-				class="playerPhoto"
-				:src="`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${player.id}.jpg`"
-				:alt="player.fullName"
-			/>
-			<div class="info">
-				<h1>
-					<span class="position">{{ player.primaryPosition.abbreviation }}</span>
-					{{ player.fullName }} #{{ player.primaryNumber }}
-				</h1>
-				<div class="attributes">
-					<div>
-						<h2>
-							<i :class="{ leftHanded: player.shootsCatches == 'L' }" class="far fa-hand-paper"></i>
-							{{ player.shootsCatches }}
-						</h2>
-					</div>
-
-					<div>
-						<h2>
-							<i class="fa fa-arrows-alt-v"></i>
-							{{ player.height }}
-						</h2>
-					</div>
-
-					<div>
-						<h2>
-							<img
-								height="20px"
-								:src="findFlagUrlByIso3Code(player.birthCountry.toLowerCase())"
-								alt=""
-							/>
-							{{ player.birthCity }}, {{ player.birthStateProvince }} {{ player.birthCountry }}
-						</h2>
-					</div>
-
-					<div>
-						<h2>
-							<i class="fa fa-birthday-cake"></i>
-							{{ new Date(player.birthDate).toDateString().slice(4) }}
-							({{ player.currentAge }}yrs old)
-						</h2>
-					</div>
-
-					<div>
-						<h2>
-							<i class="fa fa-weight"></i>
-							{{ player.weight }}lbs
-						</h2>
-					</div>
-
-					<div v-if="capData && capData.capHit">
-						<h2>
-							<i class="fas fa-coins"></i>
-							{{ capData.capHit }} (AAV)
-						</h2>
-					</div>
-
-					<div v-if="capData && contractExpires">
-						<h2>
-							<i class="fas fa-file-signature"></i>
-							{{ contractExpires }}
-						</h2>
-					</div>
-				</div>
-			</div>
-			<router-link
-				style="text-align: center"
-				v-if="player.currentTeam"
-				:to="`/team/${player.currentTeam.id}/season/${$teams.season.slice(0, 4)}`"
-			>
-				<img
-					v-bind:src="
-						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${player.currentTeam.id}.svg`
-					"
-					@error="fallbackImg"
-					width="200px"
-				/>
-				<h4>Current Team</h4>
-			</router-link>
-		</div>
+		<PlayerBio v-else :player="player" :capData="capData" />
 		<div class="season">
-			<h2>
+			<!-- <h2>
 				{{ player.fullName }}
 				<season-selector :currentSeason="currentSeason" :toPrefix="`/player/${player.id}`" /> Season
 				Stats
-			</h2>
+			</h2> -->
 		</div>
 		<toaster
 			:openProp="isLimited"
@@ -97,6 +16,38 @@
 			"
 			:lengthProp="15000"
 		/>
+
+		<div v-if="isSkater" class="statCont">
+			<h2>Player Usage</h2>
+
+			<div class="bigStat">
+				<div>
+					<h1>{{ currentStats.games }}</h1>
+					<h2>games played</h2>
+				</div>
+			</div>
+
+			<div v-if="currentStats.timeOnIce">
+				<h2>{{ currentStats.timeOnIce.split(":")[0] }} Minutes Played</h2>
+				<h3>{{ perGame(currentStats.timeOnIce.split(":")[0], true) }}min / game</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						currentStats.evenTimeOnIce.split(':')[0],
+						currentStats.powerPlayTimeOnIce.split(':')[0],
+						currentStats.shortHandedTimeOnIce.split(':')[0]
+					]"
+					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
+				/>
+			</div>
+
+			<div v-if="advancedStats && viewingThisYear" class="bigStat">
+				<div>
+					<h1>{{ parseInt(advancedStats.I_F_shifts) }}</h1>
+					<h2>shifts</h2>
+				</div>
+			</div>
+		</div>
 
 		<div v-if="isSkater" class="statCont">
 			<h2>
@@ -197,43 +148,12 @@
 			</div>
 		</div>
 
-		<div v-if="isSkater" class="statCont">
-			<h2>Player Usage</h2>
-
-			<div class="bigStat">
-				<div>
-					<h1>{{ currentStats.games }}</h1>
-					<h2>games played</h2>
-				</div>
-			</div>
-
-			<div v-if="currentStats.timeOnIce">
-				<h2>{{ currentStats.timeOnIce.split(":")[0] }} Minutes Played</h2>
-				<h3>{{ perGame(currentStats.timeOnIce.split(":")[0], true) }}min / game</h3>
-				<pie-chart
-					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
-					:values="[
-						currentStats.evenTimeOnIce.split(':')[0],
-						currentStats.powerPlayTimeOnIce.split(':')[0],
-						currentStats.shortHandedTimeOnIce.split(':')[0]
-					]"
-					:labels="['Even Strength', 'Power Play', 'Penalty Kill']"
-				/>
-			</div>
-
-			<div v-if="advancedStats && viewingThisYear" class="bigStat">
-				<div>
-					<h1>{{ parseInt(advancedStats.I_F_shifts) }}</h1>
-					<h2>shifts</h2>
-				</div>
-			</div>
-		</div>
-
 		<!-- If Goalie -->
 		<div v-if="isGoalie" class="statCont">
 			<h2>
-				Goalie Stats
+				Basic Stats
 			</h2>
+
 			<div>
 				<h2>Wins: {{ Math.round(1000 * (currentStats.wins / currentStats.games)) / 10 }}%</h2>
 				<h3>{{ currentStats.wins }} Wins | {{ currentStats.games }} Games</h3>
@@ -242,6 +162,19 @@
 					:values="[currentStats.wins, currentStats.games - currentStats.wins]"
 					:labels="['Wins', 'Losses']"
 				/>
+			</div>
+
+			<div v-if="advancedStats && advancedStats.xGoals" class="bigStat">
+				<div>
+					<h1>
+						{{
+							parseFloat(
+								(parseFloat(advancedStats.xGoals) - parseFloat(advancedStats.goals)) / 6
+							).toFixed(2)
+						}}
+					</h1>
+					<h2>Wins Above Replacement</h2>
+				</div>
 			</div>
 
 			<div>
@@ -254,6 +187,126 @@
 					:colors="[theme, darken(theme, 20)]"
 					:values="[currentStats.saves, currentStats.goalsAgainst]"
 					:labels="['Saves', 'Goals Against']"
+				/>
+			</div>
+		</div>
+
+		<div v-if="isGoalie" class="statCont">
+			<h2>
+				Goals Against
+			</h2>
+
+			<div>
+				<h2>xGAA: {{ (advancedStats.xGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}</h2>
+				<h3>
+					Low:
+					{{
+						(
+							parseFloat(advancedStats.lowDangerxGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					}}
+					| Med:
+					{{
+						(
+							parseFloat(advancedStats.mediumDangerxGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					}}
+					| High:
+					{{
+						(
+							parseFloat(advancedStats.highDangerxGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					}}
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						(
+							parseFloat(advancedStats.lowDangerxGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2),
+						(
+							parseFloat(advancedStats.mediumDangerxGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2),
+						(
+							parseFloat(advancedStats.highDangerxGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					]"
+					:labels="['Low Danger xGAA', 'Medium Danger xGAA', 'High Danger xGAA']"
+				/>
+			</div>
+
+			<div v-if="advancedStats && advancedStats.goals" class="bigStat">
+				<div>
+					<h1>
+						{{
+							(parseInt(advancedStats.goals) / (parseInt(advancedStats.icetime) / 60 / 60)).toFixed(
+								2
+							)
+						}}
+					</h1>
+					<h2>
+						Actual GAA <br />
+						(
+						{{ parseFloat(advancedStats.goals) > parseFloat(advancedStats.xGoals) ? "+" : "" }}
+						{{
+							(
+								parseInt(advancedStats.goals) / (parseInt(advancedStats.icetime) / 60 / 60) -
+								advancedStats.xGoals / (advancedStats.icetime / 60 / 60)
+							).toFixed(2)
+						}}
+						)
+					</h2>
+				</div>
+			</div>
+
+			<div>
+				<h2>GAA Breakdown</h2>
+				<h3>
+					Low:
+					{{
+						(
+							parseFloat(advancedStats.lowDangerGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					}}
+					| Med:
+					{{
+						(
+							parseFloat(advancedStats.mediumDangerGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					}}
+					| High:
+					{{
+						(
+							parseFloat(advancedStats.highDangerGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					}}
+				</h3>
+				<pie-chart
+					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
+					:values="[
+						(
+							parseFloat(advancedStats.lowDangerGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2),
+						(
+							parseFloat(advancedStats.mediumDangerGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2),
+						(
+							parseFloat(advancedStats.highDangerGoals) /
+							(parseFloat(advancedStats.icetime) / 60 / 60)
+						).toFixed(2)
+					]"
+					:labels="['Low Danger GAA', 'Medium Danger GAA', 'High Danger GAA']"
 				/>
 			</div>
 		</div>
@@ -274,8 +327,9 @@ import Loader from "../components/Loader";
 import PieChart from "../components/PieChart";
 import { darken } from "khroma";
 import Toaster from "../components/Toaster";
-import SeasonSelector from "../components/SeasonSelector";
+// import SeasonSelector from "../components/SeasonSelector";
 import { findFlagUrlByIso3Code } from "country-flags-svg";
+import PlayerBio from "../components/PlayerBio.vue";
 
 export default {
 	data() {
@@ -294,7 +348,8 @@ export default {
 		Loader,
 		PieChart,
 		Toaster,
-		SeasonSelector
+		// SeasonSelector,
+		PlayerBio
 	},
 	computed: {
 		currentStats: function() {
@@ -323,35 +378,6 @@ export default {
 				return false;
 			}
 		},
-		contractExpires: function() {
-			if (this.capData.yearsLeft) {
-				let expiryStatus = this.capData.expiryStatus || "FA";
-				switch (parseInt(this.capData.yearsLeft)) {
-					case 1:
-						return `${expiryStatus} after this year`;
-
-					case 2:
-						return `${expiryStatus} after next year`;
-
-					case 3:
-						return `${expiryStatus} after 2 years`;
-
-					case 4:
-						return `${expiryStatus} after 3 years`;
-
-					case 5:
-						return `${expiryStatus} after 4 years`;
-
-					case 6:
-						return `${expiryStatus} after 5+ years`;
-
-					default:
-						return null;
-				}
-			} else {
-				return null;
-			}
-		},
 		isLimited: function() {
 			let len = Object.keys(this.currentStats).length;
 			return this.currentStats && 2 < len && len < 8;
@@ -378,7 +404,10 @@ export default {
 		this.player = (await this.$players.getPlayerInfo(this.$route.params.id)).data.people[0];
 		this.stats = await this.$players.getPlayerStats(this.$route.params.id);
 		this.capData = await this.$players.getCapData(this.player);
-		this.advancedStats = await this.$players.getAdvancedStats(this.player.id);
+		this.advancedStats = await this.$players.getAdvancedStats(
+			this.player.id,
+			this.isGoalie ? "goalie" : "skater"
+		);
 
 		console.log(this.advancedStats);
 
@@ -485,7 +514,9 @@ i.leftHanded {
 }
 
 .statCont .bigStat {
-  min-height: 200px;
+	box-sizing: border-box;
+	padding: 10px;
+	min-height: 275px;
 	font-size: 1.2em;
 	border-radius: 50px;
 	background: var(--highlight);
@@ -494,6 +525,7 @@ i.leftHanded {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border: solid 5px var(--mainBg);
 }
 
 .statCont .bigStat h1 {

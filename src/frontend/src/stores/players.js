@@ -3,7 +3,8 @@ import axios from "axios";
 import Papa from "papaparse";
 import { getPlayerId, getPlayerById } from "@nhl-api/players";
 
-var AdvancedData = [];
+var SkatersAdvancedData = [];
+var GoaliesAdvancedData = [];
 
 export default Vue.observable({
 	async getPlayerInfo(id) {
@@ -31,20 +32,36 @@ export default Vue.observable({
 	},
 	async getPlayerStats(id) {
 		let data = await axios.get(
-			`https://statsapi.web.nhl.com/api/v1/people/${id}/stats?stats=yearByYear`
+			`https://statsapi.web.nhl.com/api/v1/people/${id}/stats?stats=statsSingleSeason`
 		);
 		return data.data.stats[0].splits.reverse();
 	},
-	async getAdvancedStats(id) {
+	async getAdvancedStats(id, type = "skater") {
 		id = parseInt(id);
-		if (!AdvancedData.length) {
-			let r = await axios.get("/advanced_stats/skaters.csv");
-			AdvancedData = Papa.parse(r.data, { header: true }).data;
+
+		if (type === "skater") {
+			if (!SkatersAdvancedData.length) {
+				let r = await axios.get("/advanced_stats/skaters.csv");
+				SkatersAdvancedData = Papa.parse(r.data, { header: true }).data;
+			}
+
+			let found = SkatersAdvancedData.find(
+				p => parseInt(p.playerId) === id && p.situation === "all"
+			);
+
+			return found;
+		} else {
+			if (!GoaliesAdvancedData.length) {
+				let r = await axios.get("/advanced_stats/goalies.csv");
+				GoaliesAdvancedData = Papa.parse(r.data, { header: true }).data;
+			}
+
+			let found = GoaliesAdvancedData.find(
+				p => parseInt(p.playerId) === id && p.situation === "all"
+			);
+
+			return found;
 		}
-
-		let found = AdvancedData.find(p => parseInt(p.playerId) === id && p.situation === "all");
-
-		return found;
 	},
 	async searchPlayers(term) {
 		try {
