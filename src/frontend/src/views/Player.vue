@@ -542,18 +542,7 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-	.top {
-		flex-direction: column;
-		text-align: center;
-	}
 
-	.top > * {
-		margin: 20px 0px;
-	}
-
-	.attributes {
-		justify-content: center;
-	}
 
 	.statCont > div {
 		margin-bottom: 50px;
