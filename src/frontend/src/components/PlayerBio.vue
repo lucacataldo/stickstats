@@ -130,6 +130,10 @@ export default {
 	display: flex;
 }
 
+.info {
+	flex-grow: 1;
+}
+
 .playerPhoto {
 	margin: 0px 50px;
 	border-radius: 200px;

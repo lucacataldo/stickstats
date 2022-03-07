@@ -455,8 +455,6 @@ export default {
 			this.isGoalie ? "goalie" : "skater"
 		);
 
-		console.log(this.advancedStats);
-
 		if (this.$route.params.seasonId) {
 			try {
 				const seasonId = this.$route.params.seasonId + (parseInt(this.$route.params.seasonId) + 1);
@@ -495,44 +493,9 @@ export default {
 	background: var(--mainBg);
 }
 
-.top {
-	align-items: center;
-	display: flex;
-}
-
-.playerPhoto {
-	margin: 0px 50px;
-	border-radius: 200px;
-}
-
-i.leftHanded {
-	transform: scaleX(-1);
-}
-
-.attributes {
-	padding-top: 10px;
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.attributes > div {
-	margin-right: 30px;
-}
-
-.position {
-	padding: 0px 10px;
-	border-radius: var(--mainBorderRad);
-	background: var(--highlight);
-	color: var(--mainBg);
-}
-
 .season {
 	margin-top: 50px;
 	text-align: center;
-}
-
-.info {
-	flex-grow: 1;
 }
 
 .statCont {

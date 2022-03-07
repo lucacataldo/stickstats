@@ -83,7 +83,6 @@ export default Vue.observable({
 			try {
 				let res = getPlayerId(term);
 				if (Array.isArray(res)) {
-					console.log(res);
 					return res.slice(0, 15);
 				} else {
 					try {

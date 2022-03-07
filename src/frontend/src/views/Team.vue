@@ -54,9 +54,9 @@
 
 			<team-chart :theme="theme" :teamId="team.id" id="history" />
 
-			<div class="statsCont" id="odds" v-if="playoffOdds.wonCup">
+			<div class="statsCont" id="odds">
 				<h1 style="margin-bottom: 20px">Playoff Odds</h1>
-				<div class="stats">
+				<div v-if="playoffOdds.wonCup" class="stats">
 					<stat-box
 						type="perc"
 						:stat="{
