@@ -17,6 +17,30 @@
 			:lengthProp="15000"
 		/>
 
+		<!-- 
+			
+			
+			
+			
+
+
+
+
+
+			
+			If Skater
+
+
+
+
+
+			
+			
+			
+			
+			
+			-->
+
 		<div v-if="isSkater" class="statCont">
 			<h2>Player Usage</h2>
 
@@ -148,7 +172,29 @@
 			</div>
 		</div>
 
-		<!-- If Goalie -->
+		<!-- 
+			
+			
+			
+
+
+
+
+
+			
+			
+			If Goalie 
+			
+			
+
+
+
+
+
+			
+			
+			
+			-->
 		<div v-if="isGoalie" class="statCont">
 			<h2>
 				Basic Stats

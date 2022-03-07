@@ -8,6 +8,7 @@
 				{ name: 'Info', tag: '#info' },
 				{ name: 'Roster', tag: '#roster' },
 				{ name: 'History', tag: '#history' },
+				{ name: 'Playoff Odds', tag: '#odds' },
 				{ name: 'Team Stats', tag: '#teamStats' }
 			]"
 		/>
@@ -40,17 +41,72 @@
 						in the NHL.
 					</p>
 				</div>
+
 				<stat-box
 					style="margin-top: 50px"
 					class="float-up"
 					id="our-rating"
-					v-bind:stat="{ name: 'Our Rating', value: team.overall }"
+					:stat="{ name: 'Our Rating', value: team.overall }"
 				/>
 			</div>
 
 			<team-roster :teamId="team.id" :season="$route.params.seasonId" id="roster" />
 
 			<team-chart :theme="theme" :teamId="team.id" id="history" />
+
+			<div class="statsCont" id="odds" v-if="playoffOdds.wonCup">
+				<h1 style="margin-bottom: 20px">Playoff Odds</h1>
+				<div class="stats">
+					<stat-box
+						type="perc"
+						:stat="{
+							name: 'Win Division',
+							value: (parseFloat(playoffOdds.wonDivision) * 100).toFixed(0)
+						}"
+					/>
+					<stat-box
+						type="perc"
+						:stat="{
+							name: 'Make Playoffs',
+							value: (parseFloat(playoffOdds.madePlayoffs) * 100).toFixed(0)
+						}"
+					/>
+					<stat-box
+						type="perc"
+						:stat="{
+							name: 'Make 2nd Round',
+							value: (parseFloat(playoffOdds.round2) * 100).toFixed(0)
+						}"
+					/>
+					<stat-box
+						type="perc"
+						:stat="{
+							name: 'Make 3rd Round',
+							value: (parseFloat(playoffOdds.round3) * 100).toFixed(0)
+						}"
+					/>
+					<stat-box
+						type="perc"
+						:stat="{
+							name: 'Make Finals',
+							value: (parseFloat(playoffOdds.round4) * 100).toFixed(0)
+						}"
+					/>
+					<stat-box
+						type="perc"
+						:stat="{
+							name: 'Win Cup',
+							value: (parseFloat(playoffOdds.wonCup) * 100).toFixed(0)
+						}"
+					/>
+				</div>
+				<div style="text-align: center; margin-top: 50px">
+					Playoff Odds courtesy of
+					<a target="_blank" class="niceLink" href="https://moneypuck.com/predictions.htm"
+						>MoneyPuck <i class="fas fa-link"></i>
+					</a>
+				</div>
+			</div>
 
 			<div class="statsCont" id="teamStats">
 				<h1>Team Stats</h1>
@@ -113,7 +169,8 @@ export default {
 		return {
 			team: undefined,
 			rawOrRank: 0,
-			filterTerm: ""
+			filterTerm: "",
+			playoffOdds: {}
 		};
 	},
 	computed: {
@@ -157,6 +214,7 @@ export default {
 
 		this.team = this.$teams.teams.find(t => t.id === parseInt(this.$route.params.id));
 		document.title = `StickStats | ${this.team.name} ${this.$route.params.seasonId} Stats, Analytics and Ratings`;
+		this.playoffOdds = await this.$teams.getPlayoffOdds(this.team.abbreviation);
 	},
 	methods: {
 		rawOrRankEvent: function(state) {
@@ -238,7 +296,7 @@ p {
 }
 
 .statsCont {
-  margin-top: 50px;
+	margin-top: 50px;
 	text-align: center;
 }
 

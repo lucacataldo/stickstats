@@ -45,7 +45,10 @@ export default {
 					labels: this.labels
 				},
 				options: {
-					reponsive: true,
+					animation: {
+						duration: 2000
+					},
+					responsive: true,
 					legend: {
 						display: false
 					},
