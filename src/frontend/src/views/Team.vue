@@ -8,8 +8,8 @@
 				{ name: 'Info', tag: '#info' },
 				{ name: 'Roster', tag: '#roster' },
 				{ name: 'History', tag: '#history' },
-				{ name: 'Playoff Odds', tag: '#odds' },
-				{ name: 'Team Stats', tag: '#teamStats' }
+				{ name: 'Odds', tag: '#odds' },
+				{ name: 'Stats', tag: '#teamStats' }
 			]"
 		/>
 		<compare-team-button />
