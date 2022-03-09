@@ -102,8 +102,9 @@
 				</div>
 				<div style="text-align: center; margin-top: 50px">
 					Playoff Odds courtesy of
-					<a target="_blank" class="niceLink" href="https://moneypuck.com/predictions.htm"
-						>MoneyPuck <i class="fas fa-link"></i>
+					<a target="_blank" class="niceLink" href="https://moneypuck.com/predictions.htm">
+						MoneyPuck
+						<i class="fas fa-link" />
 					</a>
 				</div>
 			</div>

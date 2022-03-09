@@ -49,6 +49,11 @@ export default Vue.observable({
 				p => parseInt(p.playerId) === id && p.situation === "all"
 			);
 
+			Object.keys(found).forEach(key => {
+				let parsed = parseFloat(found[key]);
+				found[key] = isNaN(parsed) ? found[key] : parsed;
+			});
+
 			return found;
 		} else {
 			if (!GoaliesAdvancedData.length) {
@@ -59,6 +64,11 @@ export default Vue.observable({
 			let found = GoaliesAdvancedData.find(
 				p => parseInt(p.playerId) === id && p.situation === "all"
 			);
+
+			Object.keys(found).forEach(key => {
+				let parsed = parseFloat(found[key]);
+				found[key] = isNaN(parsed) ? found[key] : parsed;
+			});
 
 			return found;
 		}

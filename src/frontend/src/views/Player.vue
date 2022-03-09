@@ -67,7 +67,7 @@
 
 			<div v-if="advancedStats && viewingThisYear" class="bigStat">
 				<div>
-					<h1>{{ parseInt(advancedStats.I_F_shifts) }}</h1>
+					<h1>{{ advancedStats.I_F_shifts }}</h1>
 					<h2>shifts</h2>
 				</div>
 			</div>
@@ -137,10 +137,10 @@
 			</div>
 
 			<div v-if="advancedStats && viewingThisYear && advancedStats.I_F_shotAttempts">
-				<h2>{{ parseInt(advancedStats.I_F_shotAttempts) }} Shot Attempts</h2>
+				<h2>{{ advancedStats.I_F_shotAttempts }} Shot Attempts</h2>
 				<h3>
-					{{ parseInt(advancedStats.I_F_blockedShotAttempts) }} Blocked |
-					{{ parseInt(advancedStats.I_F_missedShots) }} Miss
+					{{ advancedStats.I_F_blockedShotAttempts }} Blocked |
+					{{ advancedStats.I_F_missedShots }} Miss
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
@@ -156,9 +156,8 @@
 			<div v-if="advancedStats && viewingThisYear && advancedStats.I_F_lowDangerShots">
 				<h2>Dangerous Shots</h2>
 				<h3>
-					{{ parseInt(advancedStats.I_F_highDangerShots) }} High |
-					{{ parseInt(advancedStats.I_F_mediumDangerShots) }} Med |
-					{{ parseInt(advancedStats.I_F_lowDangerShots) }} Low
+					{{ advancedStats.I_F_highDangerShots }} High |
+					{{ advancedStats.I_F_mediumDangerShots }} Med | {{ advancedStats.I_F_lowDangerShots }} Low
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
@@ -169,6 +168,123 @@
 					]"
 					:labels="['High Danger Shots', 'Medium Danger Shots', 'Low Danger Shots']"
 				/>
+			</div>
+		</div>
+
+		<div v-if="isSkater" class="statCont">
+			<h2>
+				Defensive Stats / 60
+			</h2>
+
+			<div class="bigStat">
+				<div>
+					<h1>
+						{{ (advancedStats.OnIce_A_xGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
+					</h1>
+					<h2>expected goals against</h2>
+				</div>
+			</div>
+
+			<div>
+				<h2>
+					{{
+						(
+							advancedStats.OnIce_A_unblockedShotAttempts /
+							(advancedStats.icetime / 60 / 60)
+						).toFixed(1)
+					}}
+					Shots Against
+				</h2>
+				<h3>
+					Low:
+					{{
+						(advancedStats.OnIce_A_lowDangerShots / (advancedStats.icetime / 60 / 60)).toFixed(1)
+					}}
+					| Med:
+					{{
+						(advancedStats.OnIce_A_mediumDangerShots / (advancedStats.icetime / 60 / 60)).toFixed(1)
+					}}
+					| High:
+					{{
+						(advancedStats.OnIce_A_highDangerShots / (advancedStats.icetime / 60 / 60)).toFixed(1)
+					}}
+				</h3>
+				<pie-chart
+					:colors="[darken(theme, 40), darken(theme, 20), theme]"
+					:values="[
+						(advancedStats.OnIce_A_lowDangerShots / (advancedStats.icetime / 60 / 60)).toFixed(1),
+						(advancedStats.OnIce_A_mediumDangerShots / (advancedStats.icetime / 60 / 60)).toFixed(
+							1
+						),
+						(advancedStats.OnIce_A_highDangerShots / (advancedStats.icetime / 60 / 60)).toFixed(1)
+					]"
+					:labels="['Low Danger', 'Medium Danger', 'High Danger']"
+				/>
+			</div>
+
+			<div class="bigStat">
+				<div>
+					<h1>
+						{{
+							(advancedStats.shotsBlockedByPlayer / (advancedStats.icetime / 60 / 60)).toFixed(2)
+						}}
+					</h1>
+					<h2>blocked shots</h2>
+				</div>
+			</div>
+
+			<div class="bigStat">
+				<div>
+					<h1>
+						{{ (advancedStats.I_F_takeaways / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
+					</h1>
+					<h2>takeaways</h2>
+				</div>
+			</div>
+
+			<div class="bigStat">
+				<div>
+					<h1>
+						{{ (advancedStats.I_F_dZoneGiveaways / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
+					</h1>
+					<h2>d-zone giveaways</h2>
+				</div>
+			</div>
+
+			<div class="bigStat">
+				<div>
+					<h1>
+						{{ (advancedStats.I_F_giveaways / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
+					</h1>
+					<h2>giveaways</h2>
+				</div>
+			</div>
+		</div>
+
+		<div v-if="isSkater" class="statCont">
+			<h2>
+				Pest Stats
+			</h2>
+
+			<div class="bigStat">
+				<div>
+					<h1>{{ advancedStats.penalityMinutesDrawn }}</h1>
+					<h2>penalty min drawn</h2>
+				</div>
+			</div>
+
+			<div class="bigStat">
+				<div>
+					<h1>{{ advancedStats.I_F_hits }}</h1>
+					<h2>hits</h2>
+				</div>
+			</div>
+
+			<div class="bigStat">
+				<div>
+					<h1>{{ advancedStats.penalityMinutes }}</h1>
+					<h2>penalty minutes</h2>
+				</div>
 			</div>
 		</div>
 
@@ -213,11 +329,7 @@
 			<div v-if="advancedStats && advancedStats.xGoals" class="bigStat">
 				<div>
 					<h1>
-						{{
-							parseFloat(
-								(parseFloat(advancedStats.xGoals) - parseFloat(advancedStats.goals)) / 6
-							).toFixed(2)
-						}}
+						{{ ((advancedStats.xGoals - advancedStats.goals) / 6).toFixed(2) }}
 					</h1>
 					<h2>Wins Above Replacement</h2>
 				</div>
@@ -246,42 +358,18 @@
 				<h2>xGAA: {{ (advancedStats.xGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}</h2>
 				<h3>
 					Low:
-					{{
-						(
-							parseFloat(advancedStats.lowDangerxGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
-					}}
+					{{ (advancedStats.lowDangerxGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 					| Med:
-					{{
-						(
-							parseFloat(advancedStats.mediumDangerxGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
-					}}
+					{{ (advancedStats.mediumDangerxGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 					| High:
-					{{
-						(
-							parseFloat(advancedStats.highDangerxGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
-					}}
+					{{ (advancedStats.highDangerxGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
 					:values="[
-						(
-							parseFloat(advancedStats.lowDangerxGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2),
-						(
-							parseFloat(advancedStats.mediumDangerxGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2),
-						(
-							parseFloat(advancedStats.highDangerxGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
+						(advancedStats.lowDangerxGoals / (advancedStats.icetime / 60 / 60)).toFixed(2),
+						(advancedStats.mediumDangerxGoals / (advancedStats.icetime / 60 / 60)).toFixed(2),
+						(advancedStats.highDangerxGoals / (advancedStats.icetime / 60 / 60)).toFixed(2)
 					]"
 					:labels="['Low Danger xGAA', 'Medium Danger xGAA', 'High Danger xGAA']"
 				/>
@@ -290,19 +378,15 @@
 			<div v-if="advancedStats && advancedStats.goals" class="bigStat">
 				<div>
 					<h1>
-						{{
-							(parseInt(advancedStats.goals) / (parseInt(advancedStats.icetime) / 60 / 60)).toFixed(
-								2
-							)
-						}}
+						{{ (advancedStats.goals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 					</h1>
 					<h2>
 						Actual GAA <br />
 						(
-						{{ parseFloat(advancedStats.goals) > parseFloat(advancedStats.xGoals) ? "+" : "" }}
+						{{ advancedStats.goals > advancedStats.xGoals ? "+" : "" }}
 						{{
 							(
-								parseInt(advancedStats.goals) / (parseInt(advancedStats.icetime) / 60 / 60) -
+								advancedStats.goals / (advancedStats.icetime / 60 / 60) -
 								advancedStats.xGoals / (advancedStats.icetime / 60 / 60)
 							).toFixed(2)
 						}}
@@ -315,42 +399,18 @@
 				<h2>GAA Breakdown</h2>
 				<h3>
 					Low:
-					{{
-						(
-							parseFloat(advancedStats.lowDangerGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
-					}}
+					{{ (advancedStats.lowDangerGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 					| Med:
-					{{
-						(
-							parseFloat(advancedStats.mediumDangerGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
-					}}
+					{{ (advancedStats.mediumDangerGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 					| High:
-					{{
-						(
-							parseFloat(advancedStats.highDangerGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
-					}}
+					{{ (advancedStats.highDangerGoals / (advancedStats.icetime / 60 / 60)).toFixed(2) }}
 				</h3>
 				<pie-chart
 					:colors="[theme, darken(theme, 20), darken(theme, 40)]"
 					:values="[
-						(
-							parseFloat(advancedStats.lowDangerGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2),
-						(
-							parseFloat(advancedStats.mediumDangerGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2),
-						(
-							parseFloat(advancedStats.highDangerGoals) /
-							(parseFloat(advancedStats.icetime) / 60 / 60)
-						).toFixed(2)
+						(advancedStats.lowDangerGoals / (advancedStats.icetime / 60 / 60)).toFixed(2),
+						(advancedStats.mediumDangerGoals / (advancedStats.icetime / 60 / 60)).toFixed(2),
+						(advancedStats.highDangerGoals / (advancedStats.icetime / 60 / 60)).toFixed(2)
 					]"
 					:labels="['Low Danger GAA', 'Medium Danger GAA', 'High Danger GAA']"
 				/>
@@ -537,13 +597,15 @@ export default {
 	border: solid 5px var(--mainBg);
 }
 
+.statCont .bigStat h3 {
+	opacity: 0.5;
+}
+
 .statCont .bigStat h1 {
 	font-size: 3em;
 }
 
 @media screen and (max-width: 768px) {
-
-
 	.statCont > div {
 		margin-bottom: 50px;
 		width: 100%;
