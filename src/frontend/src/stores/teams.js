@@ -42,7 +42,7 @@ export default Vue.observable({
 
 		for (let i = firstYear; i <= thisYear; i++) {
 			try {
-				if (localStorage.getItem(`${id}-${i}`) && i !== thisYear) {
+				if (localStorage.getItem(`${id}-${i}`) && i < thisYear - 2) {
 					teamData[i] = JSON.parse(localStorage.getItem(`${id}-${i}`)).overall;
 				} else {
 					let resp = await this.getTeamSeason(id, i);

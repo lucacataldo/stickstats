@@ -1,6 +1,6 @@
 let fonts = [
   "https://fonts.googleapis.com/css2?family=Heebo:wght@300;900",
-  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
 ]
 
 const load = async function () {

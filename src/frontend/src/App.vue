@@ -47,7 +47,6 @@ export default {
 		toggleSettings: function() {}
 	},
 	async mounted() {
-		localStorage.clear();
 		this.$teams.init();
 		if (localStorage.themeColour) {
 			this.themeColour = localStorage.themeColour;

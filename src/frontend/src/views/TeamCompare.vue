@@ -1,7 +1,7 @@
 <template>
 	<div class="cont">
 		<div class="top">
-			<h2>Current Season Comparison</h2>
+			<h2>Current Season Rating Comparison</h2>
 		</div>
 		<div class="topRow">
 			<div style="text-align: center">
@@ -47,6 +47,45 @@
 			<b>{{ teamTwo.better }}</b
 			>.
 		</p>
+
+		<h2>Fan Vote</h2>
+
+		<div class="voteCont">
+			<div class="voteButton">
+				<img
+					:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${teamOne.id}.svg`
+					"
+					@error="fallbackImg"
+					class="voteLogo"
+					:alt="teamOne.name"
+				/>
+				<div class="votePerc">
+					{{ oneVotes }}
+				</div>
+			</div>
+
+			<div class="voteBar">
+				<div class="tick" :style="{ left: tickPosition }">
+					
+				</div>
+			</div>
+
+			<div class="voteButton">
+				<img
+					:src="
+						`https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/${teamTwo.id}.svg`
+					"
+					@error="fallbackImg"
+					class="voteLogo"
+					:alt="teamTwo.name"
+				/>
+
+				<div class="votePerc">
+					{{ twoVotes }}
+				</div>
+			</div>
+		</div>
 
 		<div>
 			<h3>Filter by category</h3>
@@ -142,7 +181,8 @@ export default {
 			selectedCat: {},
 			filterResults: [],
 			showDiff: false,
-			toggledAll: true
+			toggledAll: true,
+			votes: [0, 0]
 		};
 	},
 	components: { FlipperSwitch },
@@ -201,6 +241,11 @@ export default {
 		this.refresh();
 
 		this.animate();
+
+		setInterval(() => {
+			Vue.set(this.votes, 0, this.votes[0] + Math.random() * 11);
+			Vue.set(this.votes, 1, this.votes[1] + Math.random() * 10);
+		}, 1000);
 	},
 	methods: {
 		categories() {
@@ -237,6 +282,43 @@ export default {
 		formatStat: Stat.formatStat,
 		formatName: Stat.formatName
 	},
+	computed: {
+		tickPosition() {
+			try {
+				const one = this.votes[0];
+				const two = this.votes[1];
+				let perc = 1;
+				perc -= one / (one + two);
+
+				if (isNaN(perc)) throw "NaN";
+				return `${perc * 100}%`;
+			} catch (error) {
+				return "50%";
+			}
+		},
+		oneVotes() {
+			try {
+				const one = this.votes[0];
+				const two = this.votes[1];
+				let perc = one / (one + two);
+				if (isNaN(perc)) throw "NaN";
+				return `${Math.round(perc * 100)}%`;
+			} catch (error) {
+				return "50%";
+			}
+		},
+		twoVotes() {
+			try {
+				const one = this.votes[0];
+				const two = this.votes[1];
+				let perc = two / (one + two);
+				if (isNaN(perc)) throw "NaN";
+				return `${Math.round(perc * 100)}%`;
+			} catch (error) {
+				return "50%";
+			}
+		}
+	},
 	RoundNum
 };
 </script>
@@ -262,6 +344,7 @@ export default {
 
 .topRow,
 .categories,
+.voteCont,
 .flipperCont {
 	display: flex;
 	align-items: center;
@@ -269,6 +352,55 @@ export default {
 	margin: 15px 0px;
 	flex-grow: 1;
 	flex-basis: 100%;
+}
+
+.voteCont {
+	margin: 0px 0px 15px 0px;
+}
+
+.voteCont > * {
+	margin: 0px 5px;
+}
+
+.voteButton {
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	color: var(--highlight);
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.voteButton img {
+	width: 50px;
+}
+
+.voteBar {
+	position: relative;
+	width: 500px;
+	height: 15px;
+	border-radius: 15px;
+	border: solid 3px var(--highlight);
+	background: var(--mainBg);
+	max-width: calc(100% - 150px);
+}
+
+.voteBar .tick {
+	transition: all 1s ease;
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	border-radius: 15px;
+	background: var(--highlight);
+}
+
+.votePerc {
+	font-weight: bold;
+	font-size: 25px;
+	flex-basis: 1;
+	flex-shrink: 0;
+	width: 100%;
 }
 
 h3 {
